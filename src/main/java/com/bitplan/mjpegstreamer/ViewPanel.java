@@ -141,7 +141,6 @@ public class ViewPanel extends JPanel implements ActionListener {
 	}
 
 	MJpegRunner runner;
-	private Thread runnerThread;
 
 	/**
 	 * start the streaming
@@ -152,9 +151,10 @@ public class ViewPanel extends JPanel implements ActionListener {
 			runner.stop();
 		}
 		try {
-			runner = new MJpegRunner(this, new URL(url));
-			runnerThread = new Thread(runner);
-			runnerThread.start();
+			runner = new MJpegRunner1();
+			//runner = new MJpegRunner2();
+			runner.init(this,url,null,null);
+			runner.start();
 		} catch (Exception ex) {
 			handle(ex);
 		}
