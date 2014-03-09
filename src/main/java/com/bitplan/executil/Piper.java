@@ -26,6 +26,7 @@ public class Piper implements java.lang.Runnable {
 			int bufferlen) {
 		this.input = input;
 		this.output = output;
+		this.bufferlen=bufferlen;
 	}
 
 	/**
