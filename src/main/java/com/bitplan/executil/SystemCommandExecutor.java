@@ -37,6 +37,7 @@ import java.util.logging.Logger;
  * 
  */
 public class SystemCommandExecutor {
+	public static boolean debug=true;
 	private List<String> commandInformation;
 	private String adminPassword;
 	private ThreadedStreamHandler inputStreamHandler;
@@ -79,11 +80,18 @@ public class SystemCommandExecutor {
 		if (commandInformation == null)
 			throw new NullPointerException(
 					"The commandInformation is required.");
-		logger.log(Level.INFO, String.valueOf(commandInformation.size()));
+		if (debug)
+			logger.log(Level.INFO, String.valueOf(commandInformation.size()));
 		this.commandInformation = commandInformation;
 		this.adminPassword = null;
 	}
 
+	/**
+	 * execute the command
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	public int executeCommand() throws IOException, InterruptedException {
 		int exitValue = -99;
 
@@ -140,17 +148,26 @@ public class SystemCommandExecutor {
 	}
 
 	/**
+	 * get the Standard Input Pipe
+	 * @return
+	 */
+	public  InputStream getStdInPipe() {
+		return inputStreamHandler.getInputStream();
+	}
+	
+	/**
 	 * Get the standard output (stdout) from the command you just exec'd.
 	 */
-	public String getStandardOutputFromCommand() {
+	public String getStandardOutputTextFromCommand() {
 		return inputStreamHandler.getOutputBuffer();
 	}
 
 	/**
 	 * Get the standard error (stderr) from the command you just exec'd.
 	 */
-	public String getStandardErrorFromCommand() {
+	public String getStandardErrorTextFromCommand() {
 		return errorStreamHandler.getOutputBuffer();
 	}
+
 
 }
