@@ -9,7 +9,7 @@ import java.net.URL;
 import org.junit.Test;
 
 import com.bitplan.executil.Piper;
-import com.bitplan.executil.SystemCommandExecutor;
+
 
 /**
  * Test command Line of mjpegstreamer
@@ -103,14 +103,15 @@ public class TestCommandLine {
 
 	@Test
 	public void testStdIn() throws Exception {
-		SystemCommandExecutor exec = SystemCommandExecutor.getExecutor("ls");
-		exec.executeCommand();
-		System.setIn(exec.getStdInPipe());
-		getPipeContent(System.in,debug);
-		/*
+		//SystemCommandExecutor exec = SystemCommandExecutor.getExecutor("ls");
+		//exec.executeCommand();
+		java.lang.Runtime rt = java.lang.Runtime.getRuntime();
+		// Start two processes: ps ax | grep rbe
+		java.lang.Process p1 = rt.exec("/opt/local/bin/gphoto2 --capture-movie=10 --stdout");
+		System.setIn(p1.getInputStream());
+		// getPipeContent(System.in,debug);
 		String[] args = { "-u", "-", "--start" };
 		testMJpegStreamer(args, 0, 5000);
-		*/
 	}
 
 }

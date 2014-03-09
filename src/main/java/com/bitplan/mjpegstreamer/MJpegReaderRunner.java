@@ -19,6 +19,14 @@ public interface MJpegReaderRunner extends Runnable {
 	public void init(ViewPanel viewer, String urlString, String user,
 			String pass) throws IOException;
 
+	/**
+	 * @param debug the debug to set
+	 */
+	public void setDebug(boolean debug);
+		
+	/**
+	 * connect
+	 */
 	public void connect();
 	
 	/**

@@ -41,26 +41,26 @@ import java.io.PrintWriter;
  */
 class ThreadedStreamHandler extends Thread {
 	InputStream inputStream;
+	String adminPassword;
+	OutputStream outputStream;
+
+	PrintWriter printWriter;
+	StringBuilder outputBuffer = new StringBuilder();
+	private boolean sudoIsRequested = false;
+
 	/**
 	 * @return the inputStream
 	 */
 	public InputStream getInputStream() {
 		return inputStream;
 	}
-
-	String adminPassword;
-	OutputStream outputStream;
-
+	
 	/**
 	 * @return the outputStream
 	 */
 	public OutputStream getOutputStream() {
 		return outputStream;
 	}
-
-	PrintWriter printWriter;
-	StringBuilder outputBuffer = new StringBuilder();
-	private boolean sudoIsRequested = false;
 
 	/**
 	 * A simple constructor for when the sudo command is not necessary. This
@@ -92,7 +92,8 @@ class ThreadedStreamHandler extends Thread {
 		this.outputStream = outputStream;
 		this.printWriter = new PrintWriter(outputStream);
 		this.adminPassword = adminPassword;
-		this.sudoIsRequested = true;
+		if (adminPassword!=null)
+			this.sudoIsRequested = true;
 	}
 
 	public void run() {
@@ -140,6 +141,10 @@ class ThreadedStreamHandler extends Thread {
 		}
 	}
 
+	/**
+	 * get the outputBuffer
+	 * @return
+	 */
 	public String getOutputBuffer() {
 		String out = outputBuffer.toString();
 		// clear StringBuilder once it's been read

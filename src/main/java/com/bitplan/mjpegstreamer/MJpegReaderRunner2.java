@@ -15,7 +15,6 @@ import java.io.*;
  */
 public class MJpegReaderRunner2 extends MJpegRunnerBase {
 
-	private HttpURLConnection conn;
 	private ByteArrayOutputStream jpgOut;
 
 	public final static String VERSION = "0.1.0";
@@ -44,11 +43,14 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 	public void stop() {
 		try {
 			jpgOut.close();
-			urlStream.close();
+			inputStream.close();
 		} catch (IOException e) {
 			handle("Error closing streams: ", e);
 		}
-		conn.disconnect();
+		if (conn instanceof HttpURLConnection) {
+			HttpURLConnection httpcon=(HttpURLConnection) conn;
+			httpcon.disconnect();
+		}
 	}
 
 	/**
@@ -61,7 +63,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 		int cur = 0;
 
 		try {
-			while (urlStream != null && (cur = urlStream.read()) >= 0) {
+			while (inputStream != null && (cur = inputStream.read()) >= 0) {
 				if (prev == 0xFF && cur == 0xD8) {
 					jpgOut = new ByteArrayOutputStream(8192);
 					jpgOut.write((byte) prev);

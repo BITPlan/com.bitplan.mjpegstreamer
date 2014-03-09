@@ -37,6 +37,7 @@ public class ViewPanel extends JPanel implements ActionListener {
 	private JPanel urlPanel;
 	private JPanel bottomPanel;
 	private ImageIcon imageIcon = new ImageIcon();
+	private boolean debug=false;
 
 	/**
 	 * set the Image
@@ -80,10 +81,12 @@ public class ViewPanel extends JPanel implements ActionListener {
 	 * @param url
 	 * @param autoStart
 	 *            -if true start the streaming
+	 * @param debug 
 	 * @throws IOException
 	 */
-	public void setup(String title, String url, boolean autoStart)
+	public void setup(String title, String url, boolean autoStart, boolean debug)
 			throws IOException {
+		this.debug=debug;
 		BufferedImage bg = getBufferedImage("/images/screen640x480.png");
 		setBufferedImage(bg);
 		this.setLayout(new BorderLayout());
@@ -151,6 +154,7 @@ public class ViewPanel extends JPanel implements ActionListener {
 			//runner = new MJpegReaderRunner1();
 			runner = new MJpegReaderRunner2();
 			runner.init(this,url,null,null);
+			runner.setDebug(debug);;
 			runner.start();
 		} catch (Exception ex) {
 			handle(ex);

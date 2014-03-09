@@ -18,9 +18,17 @@ import org.kohsuke.args4j.Option;
 public class MJpegViewer extends JPanel {
 
 	/**
+	 * VersionUID
+	 */
+	private static final long serialVersionUID = -8411137280369817459L;
+
+	/**
 	 * current Version of the tool
 	 */
 	public static final String VERSION = "0.0.1";
+
+	@Option(name = "-d", aliases = { "--debug" }, usage = "debug\nadds debugging output")
+	boolean debug = false;
 
 	@Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
 	boolean showHelp = false;
@@ -37,7 +45,6 @@ public class MJpegViewer extends JPanel {
 	@Option(name = "-v", aliases = { "--version" }, usage = "showVersion\nshow current version if this switch is used")
 	boolean showVersion = false;
 
-	public static boolean debug = false;
 	public static boolean testMode = false;
 
 	private static CmdLineParser parser;
@@ -55,26 +62,14 @@ public class MJpegViewer extends JPanel {
 	}
 
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * get the viewer
-	 * 
-	 */
-	public MJpegViewer() {
-
-	}
-
-	/**
 	 * handle the given Throwable
 	 * 
 	 * @param t
 	 */
 	public void handle(Throwable t) {
 		System.out.flush();
-		t.printStackTrace();
+		if (debug)
+			t.printStackTrace();
 		usage(t.getMessage());
 	}
 
@@ -109,13 +104,15 @@ public class MJpegViewer extends JPanel {
 		parser = new CmdLineParser(this);
 		try {
 			parser.parseArgument(args);
-			if (this.showVersion || debug) {
+			if (debug)
+				showVersion();
+			if (this.showVersion)  {
 				showVersion();
 			} else if (this.showHelp) {
 				showHelp();
 			} else {
 				ViewPanel viewPanel = new ViewPanel();
-				viewPanel.setup(title, url, autoStart);
+				viewPanel.setup(title, url, autoStart, debug);
 				exitCode = 0;
 			}
 		} catch (CmdLineException e) {

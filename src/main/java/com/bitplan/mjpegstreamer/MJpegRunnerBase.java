@@ -23,46 +23,60 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	protected ViewPanel viewer;
 	protected String urlString, user, pass;
 	protected boolean frameAvailable = false;
-	protected BufferedInputStream urlStream;
+	protected BufferedInputStream inputStream;
 
 	protected URL url;
 	protected byte[] curFrame;
 	protected int frameCount;
 	private Thread streamReader;
 	protected URLConnection conn;
-	public static boolean debug = true;
-	public static int READ_TIME_OUT=1000;
+	// constants
+	public boolean debug = true;
+	/**
+	 * @param debug the debug to set
+	 */
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
 
-    /**
-     * connect
-     */
-	public void connect() {
+	public static int READ_TIME_OUT = 1000;
+	public static int INPUT_BUFFER_SIZE = 8192;
 
+	/**
+	 * open the connection
+	 * @return
+	 */
+	public BufferedInputStream openConnection() {
+		BufferedInputStream result = null;
 		try {
 			url = new URL(urlString);
-		} catch (MalformedURLException e) {
-			handle("Invalid URL", e);
-			return;
-		}
-
-		try {
 			conn = url.openConnection();
 			if (user != null) {
 				String credentials = user + ":" + pass;
 				Base64.Encoder base64 = Base64.getEncoder();
-				byte[] encoded_credentials = base64.encode(credentials
-						.getBytes());
-				conn.setRequestProperty("Authorization", "Basic "
-						+ encoded_credentials);
+				byte[] encoded_credentials = base64.encode(credentials.getBytes());
+				conn.setRequestProperty("Authorization", "Basic " + encoded_credentials);
 			}
 			// change the timeout to taste, I like 1 second
 			conn.setReadTimeout(READ_TIME_OUT);
 			conn.connect();
-			urlStream = new BufferedInputStream(conn.getInputStream(), 8192);
-		} catch (IOException e) {
-			handle("Unable to connect: ", e);
-			return;
+			result = new BufferedInputStream(conn.getInputStream(), INPUT_BUFFER_SIZE);
+		} catch (MalformedURLException e) {
+			handle("Invalid URL", e);
+		} catch (IOException ioe) {
+			handle("Unable to connect: ", ioe);
 		}
+		return result;
+	}
+
+	/**
+	 * connect
+	 */
+	public void connect() {
+		if ("-".equals(urlString))
+			inputStream=new BufferedInputStream(System.in,INPUT_BUFFER_SIZE);
+		else
+			inputStream=openConnection();
 	}
 
 	/**

@@ -76,7 +76,7 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 
 		// close streams
 		try {
-			urlStream.close();
+			inputStream.close();
 		} catch (IOException ioe) {
 			handle("Failed to close the stream: ", ioe);
 		}
@@ -95,7 +95,7 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 		String header = null;
 		// build headers
 		// the DCS-930L stops it's headers
-		while ((currByte = urlStream.read()) > -1 && !haveHeader) {
+		while ((currByte = inputStream.read()) > -1 && !haveHeader) {
 			stringWriter.write(currByte);
 
 			String tempString = stringWriter.toString();
@@ -107,7 +107,7 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 		}
 
 		// 255 indicates the start of the jpeg image
-		while ((urlStream.read()) != 255) {
+		while ((inputStream.read()) != 255) {
 			// just skip extras
 		}
 
@@ -119,7 +119,7 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 		int offset = 1;
 		int numRead = 0;
 		while (offset < imageBytes.length
-				&& (numRead = urlStream.read(imageBytes, offset,
+				&& (numRead = inputStream.read(imageBytes, offset,
 						imageBytes.length - offset)) >= 0) {
 			offset += numRead;
 		}
