@@ -6,6 +6,8 @@ import java.net.URL;
 
 import org.junit.Test;
 
+import com.bitplan.executil.SystemCommandExecutor;
+
 /**
  * Test command Line of mjpegstreamer
  * @author muf
@@ -48,6 +50,14 @@ public class TestCommandLine {
 		URL movieUrl = ClassLoader.getSystemResource("testmovie/movie.mjpg");
 		String[] args = { "-u", movieUrl.toExternalForm(),"--start"};
 		testMJpegStreamer(args,0,1000);
+	}
+	
+	@Test
+	public void testStdIn() throws Exception {
+		SystemCommandExecutor exec = SystemCommandExecutor.getExecutor("ls");
+		exec.executeCommand();
+		String[] args = { "-u", "-","--start"};
+		testMJpegStreamer(args,0,5000);
 	}
 
 }
