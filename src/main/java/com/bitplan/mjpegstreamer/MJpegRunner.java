@@ -5,7 +5,7 @@ import java.io.IOException;
 /**
  * runner interface
  * @author muf
- *
+ * http://www.gdcl.co.uk/2013/05/02/Motion-JPEG.html
  */
 public interface MJpegRunner extends Runnable {
 	/**

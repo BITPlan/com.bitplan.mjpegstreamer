@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
  * 
  */
 public class MJpegRunner2 extends MJpegRunnerBase {
-	private byte[] curFrame;
+
 	private boolean frameAvailable;
 	private HttpURLConnection conn;
 	private BufferedInputStream httpIn;
@@ -50,7 +50,6 @@ public class MJpegRunner2 extends MJpegRunnerBase {
 		return frameAvailable;
 	}
 
-
 	/**
 	 * stop reading
 	 */
@@ -64,19 +63,16 @@ public class MJpegRunner2 extends MJpegRunnerBase {
 		conn.disconnect();
 	}
 
-	
-
 	/**
 	 * run me
 	 */
 	public void run() {
 		URL url;
-		Base64.Encoder base64 = Base64.getEncoder();
 
 		try {
 			url = new URL(urlString);
 		} catch (MalformedURLException e) {
-			System.err.println("Invalid URL");
+			handle("Invalid URL",e);
 			return;
 		}
 
@@ -84,6 +80,7 @@ public class MJpegRunner2 extends MJpegRunnerBase {
 			conn = (HttpURLConnection) url.openConnection();
 			if (user != null) {
 				String credentials = user + ":" + pass;
+				Base64.Encoder base64 = Base64.getEncoder();
 				byte[] encoded_credentials = base64.encode(credentials
 						.getBytes());
 				conn.setRequestProperty("Authorization", "Basic "
@@ -113,11 +110,12 @@ public class MJpegRunner2 extends MJpegRunnerBase {
 					}
 					frameAvailable = true;
 					jpgOut.close();
+					read();
 				}
 				prev = cur;
 			}
 		} catch (IOException e) {
-			System.err.println("I/O Error: " + e.getMessage());
+			handle("I/O Error: ",e);
 		}
 	}
 

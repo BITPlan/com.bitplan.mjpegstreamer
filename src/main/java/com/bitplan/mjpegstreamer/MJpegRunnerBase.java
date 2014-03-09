@@ -10,6 +10,7 @@ public abstract class MJpegRunnerBase implements MJpegRunner {
 	protected ViewPanel viewer;
 	protected String urlString, user, pass;
 
+	protected byte[] curFrame;
 	protected int frameCount;
 	private Thread streamReader;
 	public static boolean debug = true;

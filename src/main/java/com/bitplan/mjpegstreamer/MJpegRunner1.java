@@ -15,15 +15,17 @@ import javax.imageio.ImageIO;
  * Given an extended JPanel and URL read and create BufferedImages to be
  * displayed from a MJPEG stream
  * 
- * @author shrub34 
- * Copyright (c) 2012 
- * Free for reuse, just please give me a credit if it is for a redistributed package
- * see http://thistleshrub.net/Joomla/index.php?option=com_content&view=article&id=115:displaying-streamed-mjpeg-in-java&catid=43:robotics&Itemid=64
- * for the original article
+ * @author shrub34 Copyright (c) 2012 Free for reuse, just please give me a
+ *         credit if it is for a redistributed package see
+ *         http://thistleshrub.net
+ *         /Joomla/index.php?option=com_content&view=article
+ *         &id=115:displaying-streamed-mjpeg-in-java&catid=43:robotics&Itemid=64
+ *         for the original article
  * 
- * Copyright (c) 2014 Wolfgang Fahl 
- * see http://code.google.com/p/ipcapture/source/browse/IPCapture.java?r=0df4452208266f77fdc09b427682eaee09054fcb
- * for an alternative implementation
+ *         Copyright (c) 2014 Wolfgang Fahl see
+ *         http://code.google.com/p/ipcapture/source/browse/IPCapture.java?r=0d
+ *         f4452208266f77fdc09b427682eaee09054fcb for an alternative
+ *         implementation
  */
 public class MJpegRunner1 extends MJpegRunnerBase {
 	private static final String CONTENT_LENGTH = "Content-length: ";
@@ -31,19 +33,20 @@ public class MJpegRunner1 extends MJpegRunnerBase {
 	private InputStream urlStream;
 	private StringWriter stringWriter;
 	private boolean processing = true;
-	
 
 	/**
-	 * initialize 
+	 * initialize
+	 * 
 	 * @param viewer
 	 * @param url
 	 * @param user
 	 * @param pass
 	 * @throws IOException
 	 */
-	public void init(ViewPanel viewer, String urlString, String user, String pass) throws IOException {
+	public void init(ViewPanel viewer, String urlString, String user,
+			String pass) throws IOException {
 		this.viewer = viewer;
-		URL url=new URL(urlString);
+		URL url = new URL(urlString);
 		URLConnection urlConn = url.openConnection();
 		// change the timeout to taste, I like 1 second
 		urlConn.setReadTimeout(1000);
@@ -70,8 +73,8 @@ public class MJpegRunner1 extends MJpegRunnerBase {
 	public void run() {
 		while (processing) {
 			try {
-				byte[] imageBytes = retrieveNextImage();
-				ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
+				this.curFrame= retrieveNextImage();
+				ByteArrayInputStream bais = new ByteArrayInputStream(curFrame);
 
 				BufferedImage image = ImageIO.read(bais);
 				bais.close();
@@ -84,12 +87,10 @@ public class MJpegRunner1 extends MJpegRunnerBase {
 				if (debug)
 					viewer.setFailedString("" + frameCount);
 			} catch (SocketTimeoutException ste) {
-				System.err.println("failed stream read: " + ste);
-				viewer.setFailedString("Lost Camera connection: " + ste);
-				viewer.repaint();
+				handle("Lost Camera connection: " ,ste);
 				stop();
 			} catch (IOException e) {
-				System.err.println("failed stream read: " + e);
+				handle("failed stream read: ", e);
 				stop();
 			}
 		}
@@ -98,7 +99,7 @@ public class MJpegRunner1 extends MJpegRunnerBase {
 		try {
 			urlStream.close();
 		} catch (IOException ioe) {
-			System.err.println("Failed to close the stream: " + ioe);
+			handle("Failed to close the stream: ", ioe);
 		}
 	}
 
@@ -139,8 +140,8 @@ public class MJpegRunner1 extends MJpegRunnerBase {
 		int offset = 1;
 		int numRead = 0;
 		while (offset < imageBytes.length
-				&& (numRead = urlStream.read(imageBytes, offset, imageBytes.length
-						- offset)) >= 0) {
+				&& (numRead = urlStream.read(imageBytes, offset,
+						imageBytes.length - offset)) >= 0) {
 			offset += numRead;
 		}
 
@@ -155,7 +156,8 @@ public class MJpegRunner1 extends MJpegRunnerBase {
 		int valueStartPos = indexOfContentLength + CONTENT_LENGTH.length();
 		int indexOfEOL = header.indexOf('\n', indexOfContentLength);
 
-		String lengthValStr = header.substring(valueStartPos, indexOfEOL).trim();
+		String lengthValStr = header.substring(valueStartPos, indexOfEOL)
+				.trim();
 
 		int retValue = Integer.parseInt(lengthValStr);
 

@@ -9,7 +9,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -27,13 +26,13 @@ import javax.swing.JTextArea;
  */
 public class ViewPanel extends JPanel implements ActionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7976060967404295181L;
+	private String url;
+
+	// GUI elements
+	protected static JFrame frame;
 	private BufferedImage image;
 	protected JTextArea urlArea;
-	private String url;
 	private JTextArea msgArea;
 	private JPanel urlPanel;
 	private JPanel bottomPanel;
@@ -58,8 +57,6 @@ public class ViewPanel extends JPanel implements ActionListener {
 	public void setFailedString(String msg) {
 		this.msgArea.setText(msg);
 	}
-
-	protected static JFrame frame;
 
 	/**
 	 * get the given buffered Image
@@ -151,8 +148,8 @@ public class ViewPanel extends JPanel implements ActionListener {
 			runner.stop();
 		}
 		try {
-			runner = new MJpegRunner1();
-			//runner = new MJpegRunner2();
+			//runner = new MJpegRunner1();
+			runner = new MJpegRunner2();
 			runner.init(this,url,null,null);
 			runner.start();
 		} catch (Exception ex) {
