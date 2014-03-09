@@ -13,9 +13,7 @@ import java.net.URLConnection;
  * 
  * @author shrub34 Copyright (c) 2012 Free for reuse, just please give me a
  *         credit if it is for a redistributed package see
- *         http://thistleshrub.net
- *         /Joomla/index.php?option=com_content&view=article
- *         &id=115:displaying-streamed-mjpeg-in-java&catid=43:robotics&Itemid=64
+ *         http://thistleshrub.net/Joomla/index.php?option=com_content&view=article&id=115:displaying-streamed-mjpeg-in-java&catid=43:robotics&Itemid=64
  *         for the original article
  * 
  *         Copyright (c) 2014 Wolfgang Fahl 

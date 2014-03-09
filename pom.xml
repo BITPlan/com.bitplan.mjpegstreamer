@@ -1,12 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.bitplan.mjpegstreamer</groupId>
+	<parent>
+		<groupId>com.bitplan.rest</groupId>
+		<artifactId>com.bitplan.rest</artifactId>
+		<version>0.0.5-SNAPSHOT</version>
+		<relativePath>../com.bitplan.rest/pom.xml</relativePath>
+	</parent>
 	<artifactId>com.bitplan.mjpegstreamer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>mjpegstreamer</name>
 	<description>MJPeg Streamer</description>
 	<dependencies>
+		<!-- RestHelper Interface -->
+		<dependency>
+			<artifactId>com.bitplan.resthelperinterface</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- RESTful Java Architecture -->
+		<dependency>
+			<artifactId>com.bitplan.resthelper</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<version>${project.version}</version>
+		</dependency>
 		<!-- args4j command line utility -->
 		<dependency>
 			<groupId>args4j</groupId>
@@ -24,16 +40,7 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
-			<!-- compile -->
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<!--  create jar -->
+			<!-- create jar -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>

@@ -42,7 +42,8 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 	 */
 	public void stop() {
 		try {
-			jpgOut.close();
+			if (jpgOut!=null)
+				jpgOut.close();
 			inputStream.close();
 		} catch (IOException e) {
 			handle("Error closing streams: ", e);

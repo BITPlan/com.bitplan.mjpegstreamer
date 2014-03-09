@@ -30,6 +30,8 @@ public class ViewPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 7976060967404295181L;
 	private static final String ROTATE_BUTTON_ICON_PATH = "/images/paper0r.png";
 	private static final String START_BUTTON_ICON_PATH = "/images/start.png";
+	// https://www.iconfinder.com/icons/49386/settings_icon#size=64
+	private static final String SETTINGS_BUTTON_ICON_PATH = "/images/1394392895_settings.png";
 	private String url;
 
 	// GUI elements
@@ -45,6 +47,7 @@ public class ViewPanel extends JPanel implements ActionListener {
 	private JButton rotateButton;
 	private JPanel buttonPanel;
 	private int rotation;
+	private JButton settingsButton;
 
 	/**
 	 * set the Image
@@ -115,7 +118,8 @@ public class ViewPanel extends JPanel implements ActionListener {
 		this.setLayout(new BorderLayout());
 		startButton = addButton("start", START_BUTTON_ICON_PATH, KeyEvent.VK_S);
 		rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyEvent.VK_R);
-
+		// https://www.iconfinder.com/icons/49386/settings_icon#size=48
+		settingsButton =addButton("settings", SETTINGS_BUTTON_ICON_PATH, KeyEvent.VK_T);
 		JLabel label = new JLabel("", imageIcon, JLabel.CENTER);
 
 		this.bottomPanel = new JPanel(new BorderLayout());
@@ -125,6 +129,7 @@ public class ViewPanel extends JPanel implements ActionListener {
 		this.urlArea.setText(url);
 		this.url = url;
 		this.urlPanel.add(urlArea, BorderLayout.WEST);
+		this.buttonPanel.add(settingsButton);
 		this.buttonPanel.add(rotateButton);
 		this.buttonPanel.add(startButton);
 		this.urlPanel.add(buttonPanel, BorderLayout.EAST);
