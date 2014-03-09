@@ -22,17 +22,26 @@ public class MJpegViewer extends JPanel {
 	 */
 	public static final String VERSION = "0.0.1";
 
-	@Option(name = "-u", aliases = { "--url" }, usage = "url\nurl to be used")
-	String url="http://cam2/mjpeg.cgi";
+	@Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
+	boolean showHelp = false;
+
+	@Option(name = "-s", aliases = { "--start" }, usage = "auto start\nstart streaming immediately")
+	boolean autoStart=false;
+
+	@Option(name = "-t", aliases = { "--title" }, usage = "title\ntitle to be used")
+	String title = "MJpegViewer";
 	
+	@Option(name = "-u", aliases = { "--url" }, usage = "url\nurl to be used")
+	String url = "http://cam2/mjpeg.cgi";
+
 	@Option(name = "-v", aliases = { "--version" }, usage = "showVersion\nshow current version if this switch is used")
 	boolean showVersion = false;
 
-	@Option(name = "-t", aliases = { "--title" }, usage = "title\ntitle to be used")
-	String title="MJpegViewer";
-	
+	public static boolean debug = false;
+	public static boolean testMode = false;
 
-	private int exitCode;
+	private static CmdLineParser parser;
+	public static int exitCode;
 
 	/**
 	 * show the Version
@@ -58,12 +67,6 @@ public class MJpegViewer extends JPanel {
 
 	}
 
-	private static boolean testMode=false;
-
-	private static CmdLineParser parser;
-
-	
-	
 	/**
 	 * handle the given Throwable
 	 * 
@@ -79,12 +82,13 @@ public class MJpegViewer extends JPanel {
 	 * display usage
 	 * 
 	 * @param msg
-	 *          - a message to be displayed (if any)
+	 *            - a message to be displayed (if any)
 	 */
 	public void usage(String msg) {
 		System.err.println(msg);
 		showVersion();
-		System.err.println("  usage: java com.bitplan.pdfindexer.Pdfindexer");
+		System.err
+				.println("  usage: java com.bitplan.mjpegstreamer.MJpegViewer");
 		parser.printUsage(System.err);
 		exitCode = 1;
 	}
@@ -105,9 +109,15 @@ public class MJpegViewer extends JPanel {
 		parser = new CmdLineParser(this);
 		try {
 			parser.parseArgument(args);
-			ViewPanel viewPanel=new ViewPanel();
-			viewPanel.setup(title,url);
-			exitCode = 0;
+			if (this.showVersion || debug) {
+				showVersion();
+			} else if (this.showHelp) {
+				showHelp();
+			} else {
+				ViewPanel viewPanel = new ViewPanel();
+				viewPanel.setup(title, url, autoStart);
+				exitCode = 0;
+			}
 		} catch (CmdLineException e) {
 			// handling of wrong arguments
 			usage(e.getMessage());
@@ -127,7 +137,7 @@ public class MJpegViewer extends JPanel {
 	public static void main(String[] args) {
 		MJpegViewer viewer = new MJpegViewer();
 		int result = viewer.maininstance(args);
-		if (!testMode && result!=0)
+		if (!testMode && result != 0)
 			System.exit(result);
 	}
 }

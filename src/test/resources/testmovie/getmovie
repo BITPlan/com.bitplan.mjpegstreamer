@@ -1,0 +1,4 @@
+#!/bin/bash
+# WF 2014-03-09
+# capture movie/preview
+gphoto2 --capture-movie=10

@@ -37,7 +37,7 @@ public class ViewPanel extends JPanel implements ActionListener {
 	private JTextArea msgArea;
 	private JPanel urlPanel;
 	private JPanel bottomPanel;
-	private ImageIcon imageIcon=new ImageIcon();
+	private ImageIcon imageIcon = new ImageIcon();
 
 	/**
 	 * set the Image
@@ -46,7 +46,7 @@ public class ViewPanel extends JPanel implements ActionListener {
 	 */
 	public void setBufferedImage(BufferedImage pImage) {
 		image = pImage;
-	  imageIcon.setImage(pImage);
+		imageIcon.setImage(pImage);
 		setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
 	}
 
@@ -65,25 +65,33 @@ public class ViewPanel extends JPanel implements ActionListener {
 	 * get the given buffered Image
 	 * 
 	 * @param resourcePath
-	 *          - path in class path /jar
+	 *            - path in class path /jar
 	 * @return the image
 	 * @throws IOException
 	 */
-	public BufferedImage getBufferedImage(String resourcePath) throws IOException {
-		BufferedImage result = ImageIO.read(getClass().getResource(resourcePath));
+	public BufferedImage getBufferedImage(String resourcePath)
+			throws IOException {
+		BufferedImage result = ImageIO.read(getClass()
+				.getResource(resourcePath));
 		return result;
 	}
 
 	/**
+	 * setup the ViewPanel
 	 * 
+	 * @param title
 	 * @param url
+	 * @param autoStart
+	 *            -if true start the streaming
 	 * @throws IOException
 	 */
-	public void setup(String title, String url) throws IOException {
+	public void setup(String title, String url, boolean autoStart)
+			throws IOException {
 		BufferedImage bg = getBufferedImage("/images/screen640x480.png");
 		setBufferedImage(bg);
 		this.setLayout(new BorderLayout());
-		ImageIcon startIcon = new ImageIcon(getBufferedImage("/images/start.png"));
+		ImageIcon startIcon = new ImageIcon(
+				getBufferedImage("/images/start.png"));
 		JButton startButton = new JButton("start", startIcon);
 		startButton.setMnemonic(KeyEvent.VK_S);
 		startButton.addActionListener(this);
@@ -105,6 +113,9 @@ public class ViewPanel extends JPanel implements ActionListener {
 		add(label, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
 		createFrame(title);
+		if (autoStart) {
+			this.startStreaming();
+		}
 	}
 
 	/**
@@ -129,29 +140,33 @@ public class ViewPanel extends JPanel implements ActionListener {
 
 	}
 
-
 	MJpegRunner runner;
 	private Thread runnerThread;
+
+	/**
+	 * start the streaming
+	 */
+	public void startStreaming() {
+		url = this.urlArea.getText();
+		if (runner != null) {
+			runner.stop();
+		}
+		try {
+			runner = new MJpegRunner(this, new URL(url));
+			runnerThread = new Thread(runner);
+			runnerThread.start();
+		} catch (Exception ex) {
+			handle(ex);
+		}
+	}
 
 	/**
 	 * start Button hit
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if ("start".equals(e.getActionCommand())) {
-			url = this.urlArea.getText();
-			if (runner != null) {
-				runner.stop();
-			}
-			try {
-				runner = new MJpegRunner(this, new URL(url));
-				runnerThread = new Thread(runner);
-				runnerThread.start();
-			} catch (Exception ex) {
-				handle(ex);
-			}
-
+			startStreaming();
 		}
-
 	}
 
 	/**
