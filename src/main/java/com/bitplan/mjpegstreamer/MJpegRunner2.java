@@ -15,7 +15,6 @@ import java.awt.image.BufferedImage;
  * 
  */
 public class MJpegRunner2 extends MJpegRunnerBase {
-	private String urlString, user, pass;
 	private byte[] curFrame;
 	private boolean frameAvailable;
 	private HttpURLConnection conn;

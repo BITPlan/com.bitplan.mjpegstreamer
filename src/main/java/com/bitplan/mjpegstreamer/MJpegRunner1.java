@@ -31,7 +31,7 @@ public class MJpegRunner1 extends MJpegRunnerBase {
 	private InputStream urlStream;
 	private StringWriter stringWriter;
 	private boolean processing = true;
-	private boolean debug=false;
+	
 
 	/**
 	 * initialize 
