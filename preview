@@ -1,0 +1,4 @@
+#!/bin/bash
+# WF 2014-03-09
+# start Canon Preview
+gphoto2 --capture-movie --stdout | java -jar mjpegstreamer.jar -u - --start --title CamGrab
