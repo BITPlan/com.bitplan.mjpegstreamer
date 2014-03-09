@@ -7,7 +7,7 @@ import java.io.IOException;
  * @author muf
  * http://www.gdcl.co.uk/2013/05/02/Motion-JPEG.html
  */
-public interface MJpegRunner extends Runnable {
+public interface MJpegReaderRunner extends Runnable {
 	/**
 	 * initialize
 	 * @param viewer
@@ -19,6 +19,8 @@ public interface MJpegRunner extends Runnable {
 	public void init(ViewPanel viewer, String urlString, String user,
 			String pass) throws IOException;
 
+	public void connect();
+	
 	/**
 	 * start
 	 */
@@ -27,4 +29,17 @@ public interface MJpegRunner extends Runnable {
 	 * stop
 	 */
 	public void stop();
+	
+	/**
+	 * is there a new frame?
+	 * 
+	 * @return
+	 */
+	public boolean isAvailable();
+	
+	
+	/**
+	 * read
+	 */
+	public void read();
 }

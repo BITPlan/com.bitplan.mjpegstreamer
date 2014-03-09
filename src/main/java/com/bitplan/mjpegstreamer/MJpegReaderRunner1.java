@@ -1,15 +1,11 @@
 package com.bitplan.mjpegstreamer;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
-
-import javax.imageio.ImageIO;
 
 /**
  * Given an extended JPanel and URL read and create BufferedImages to be
@@ -22,15 +18,11 @@ import javax.imageio.ImageIO;
  *         &id=115:displaying-streamed-mjpeg-in-java&catid=43:robotics&Itemid=64
  *         for the original article
  * 
- *         Copyright (c) 2014 Wolfgang Fahl see
- *         http://code.google.com/p/ipcapture/source/browse/IPCapture.java?r=0d
- *         f4452208266f77fdc09b427682eaee09054fcb for an alternative
- *         implementation
+ *         Copyright (c) 2014 Wolfgang Fahl 
  */
-public class MJpegRunner1 extends MJpegRunnerBase {
+public class MJpegReaderRunner1 extends MJpegRunnerBase {
 	private static final String CONTENT_LENGTH = "Content-length: ";
 	private static final String CONTENT_TYPE = "Content-type: image/jpeg";
-	private InputStream urlStream;
 	private StringWriter stringWriter;
 	private boolean processing = true;
 
@@ -45,13 +37,10 @@ public class MJpegRunner1 extends MJpegRunnerBase {
 	 */
 	public void init(ViewPanel viewer, String urlString, String user,
 			String pass) throws IOException {
+		this.urlString=urlString;
 		this.viewer = viewer;
-		URL url = new URL(urlString);
-		URLConnection urlConn = url.openConnection();
-		// change the timeout to taste, I like 1 second
-		urlConn.setReadTimeout(1000);
-		urlConn.connect();
-		urlStream = urlConn.getInputStream();
+		this.user=user;
+		this.pass=pass;
 		stringWriter = new StringWriter(128);
 	}
 
@@ -71,21 +60,11 @@ public class MJpegRunner1 extends MJpegRunnerBase {
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
+		connect();
 		while (processing) {
 			try {
 				this.curFrame= retrieveNextImage();
-				ByteArrayInputStream bais = new ByteArrayInputStream(curFrame);
-
-				BufferedImage image = ImageIO.read(bais);
-				bais.close();
-				// debug repaint
-				// image= viewer.getBufferedImage("/images/start.png");
-				viewer.setBufferedImage(image);
-
-				viewer.repaint();
-				frameCount++;
-				if (debug)
-					viewer.setFailedString("" + frameCount);
+				read();
 			} catch (SocketTimeoutException ste) {
 				handle("Lost Camera connection: " ,ste);
 				stop();
