@@ -122,7 +122,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			viewer.renderNextImage(bufImg);
 			// viewer.repaint();
 			if (debug)
-				viewer.setFailedString("" + frameCount);
+				viewer.setFailedString("debug:frame=" + frameCount);
 
 		} catch (IOException e) {
 			handle("Error acquiring the frame: ", e);

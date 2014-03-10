@@ -77,6 +77,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 */
 	public void setFailedString(String msg) {
 		this.msgArea.setText(msg);
+		repaint();
 	}
 
 	/**
@@ -162,6 +163,16 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 		}
 	}
 
+	@Override
+	public void init() {
+		this.setFailedString("started");
+	}
+
+	@Override
+	public void stop() {
+		this.setFailedString("stopped");
+	}
+	
 	/**
 	 * create a Frame around me with the given title
 	 * 

@@ -66,14 +66,14 @@ public class TestCommandLine {
 		// Start two processes: ps ax | grep rbe
 		java.lang.Process p1 = rt.exec("ps ax");
 		// grep will wait for input on stdin
-		java.lang.Process p2 = rt.exec("grep testPiping");
+		java.lang.Process p2 = rt.exec("grep Java");
 		// Create and start Piper
 		Piper pipe = new Piper(p1.getInputStream(), p2.getOutputStream(), 512);
 		new Thread(pipe).start();
 		// Wait for second process to finish
 		p2.waitFor();
 		String s = getPipeContent(p2.getInputStream(), debug);
-		assertTrue(s.contains("grep testPiping"));
+		assertTrue(s.contains("Java"));
 	}
 
 	/**
