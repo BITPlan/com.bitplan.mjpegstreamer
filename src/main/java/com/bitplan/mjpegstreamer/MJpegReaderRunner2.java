@@ -51,6 +51,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 			HttpURLConnection httpcon=(HttpURLConnection) conn;
 			httpcon.disconnect();
 		}
+		viewer.stop();
 	}
 
 	/**
@@ -81,6 +82,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 				}
 				prev = cur;
 			}
+			stop();
 		} catch (IOException e) {
 			handle("I/O Error: ",e);
 		}

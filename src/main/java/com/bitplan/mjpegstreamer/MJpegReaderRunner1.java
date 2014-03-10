@@ -47,6 +47,7 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 	 */
 	public synchronized void stop() {
 		processing = false;
+		viewer.stop();
 	}
 
 	/**

@@ -83,6 +83,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	public void start() {
 		this.streamReader = new Thread(this, "Stream reader");
 		streamReader.start();
+		viewer.init();
 	}
 
 	/**
