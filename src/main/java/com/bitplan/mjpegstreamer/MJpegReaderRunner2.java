@@ -1,7 +1,6 @@
 package com.bitplan.mjpegstreamer;
 
 import java.net.*;
-import java.util.Base64;
 import java.io.*;
 
 
@@ -27,7 +26,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 	 * @param user
 	 * @param pass
 	 */
-	public void init(ViewPanel viewer, String urlString, String user,
+	public void init(MJpegRenderer viewer, String urlString, String user,
 			String pass) {
 		this.viewer = viewer;
 		this.urlString = urlString;

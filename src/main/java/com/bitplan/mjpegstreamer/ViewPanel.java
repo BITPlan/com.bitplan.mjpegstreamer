@@ -25,7 +25,7 @@ import javax.swing.JTextArea;
  * @author wf
  * 
  */
-public class ViewPanel extends JPanel implements ActionListener {
+public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 
 	private static final long serialVersionUID = 7976060967404295181L;
 	private static final String ROTATE_BUTTON_ICON_PATH = "/images/paper0r.png";
@@ -50,14 +50,24 @@ public class ViewPanel extends JPanel implements ActionListener {
 	private JButton settingsButton;
 
 	/**
-	 * set the Image
-	 * 
+	 * set the Buffered Image
 	 * @param pImage
 	 */
 	public void setBufferedImage(BufferedImage pImage) {
 		image = this.getRotatedImage(pImage, rotation);
 		imageIcon.setImage(image);
-		setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+	}
+	
+	/**
+	 * set the Image and render it
+	 * 
+	 * @param pImage
+	 */
+
+	public void renderNextImage(BufferedImage pImage) {
+		setBufferedImage(pImage);
+		setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));		
+		repaint();
 	}
 
 	/**
@@ -75,10 +85,16 @@ public class ViewPanel extends JPanel implements ActionListener {
 	 * @param resourcePath
 	 *          - path in class path /jar
 	 * @return the image
+	 * @throws Exception 
 	 * @throws IOException
 	 */
-	public BufferedImage getBufferedImage(String resourcePath) throws IOException {
-		BufferedImage result = ImageIO.read(getClass().getResource(resourcePath));
+	public BufferedImage getBufferedImage(String resourcePath) throws Exception  {
+		BufferedImage result;
+		try {
+			result = ImageIO.read(getClass().getResource(resourcePath));
+		} catch (Throwable th) {
+			throw new Exception("couldn't get buffered Image for "+resourcePath,th);
+		}
 		return result;
 	}
 
@@ -89,10 +105,10 @@ public class ViewPanel extends JPanel implements ActionListener {
 	 * @param iconPath
 	 * @param mnemonic
 	 * @return
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	public JButton addButton(String title, String iconPath, int mnemonic)
-			throws IOException {
+			throws Exception {
 		ImageIcon buttonIcon = new ImageIcon(getBufferedImage(iconPath));
 		JButton result = new JButton(title, buttonIcon);
 		result.setMnemonic(mnemonic);
@@ -108,10 +124,10 @@ public class ViewPanel extends JPanel implements ActionListener {
 	 * @param autoStart
 	 *          -if true start the streaming
 	 * @param debug
-	 * @throws IOException
+	 * @throws Exception TODO
 	 */
 	public void setup(String title, String url, boolean autoStart, boolean debug)
-			throws IOException {
+			throws Exception {
 		this.debug = debug;
 		BufferedImage bg = getBufferedImage("/images/screen640x480.png");
 		setBufferedImage(bg);
@@ -317,7 +333,8 @@ public class ViewPanel extends JPanel implements ActionListener {
 				rotateButtonIcon = this.getRotatedImage(rotateButtonIcon, rotation);
 				ImageIcon buttonIcon = new ImageIcon(rotateButtonIcon);
 				rotateButton.setIcon(buttonIcon);
-			} catch (IOException e1) {
+			} catch (Exception e1) {
+				handle(e1);
 			}
 			this.repaint();
 		}

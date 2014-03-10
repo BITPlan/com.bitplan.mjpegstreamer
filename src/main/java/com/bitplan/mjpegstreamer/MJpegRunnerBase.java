@@ -4,8 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -20,7 +18,7 @@ import javax.imageio.ImageIO;
  * 
  */
 public abstract class MJpegRunnerBase implements MJpegReaderRunner {
-	protected ViewPanel viewer;
+	protected MJpegRenderer viewer;
 	protected String urlString, user, pass;
 	protected boolean frameAvailable = false;
 	protected BufferedInputStream inputStream;
@@ -121,8 +119,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			frameAvailable = false;
 			// debug repaint
 			// image= viewer.getBufferedImage("/images/start.png");
-			viewer.setBufferedImage(bufImg);
-			viewer.repaint();
+			viewer.renderNextImage(bufImg);
+			// viewer.repaint();
 			if (debug)
 				viewer.setFailedString("" + frameCount);
 

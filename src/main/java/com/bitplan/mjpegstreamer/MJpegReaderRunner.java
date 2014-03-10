@@ -16,7 +16,7 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @param pass
 	 * @throws IOException 
 	 */
-	public void init(ViewPanel viewer, String urlString, String user,
+	public void init(MJpegRenderer viewer, String urlString, String user,
 			String pass) throws IOException;
 
 	/**
