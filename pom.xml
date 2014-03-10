@@ -11,18 +11,6 @@
 	<name>mjpegstreamer</name>
 	<description>MJPeg Streamer</description>
 	<dependencies>
-		<!-- RestHelper Interface -->
-		<dependency>
-			<artifactId>com.bitplan.resthelperinterface</artifactId>
-			<groupId>${project.groupId}</groupId>
-			<version>${project.version}</version>
-		</dependency>
-		<!-- RESTful Java Architecture -->
-		<dependency>
-			<artifactId>com.bitplan.resthelper</artifactId>
-			<groupId>${project.groupId}</groupId>
-			<version>${project.version}</version>
-		</dependency>
 		<!-- args4j command line utility -->
 		<dependency>
 			<groupId>args4j</groupId>
@@ -38,7 +26,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<!-- create jar -->
 			<plugin>
