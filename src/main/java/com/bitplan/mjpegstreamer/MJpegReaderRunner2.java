@@ -25,17 +25,27 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 	 * @param urlString
 	 * @param user
 	 * @param pass
+	 * @throws IOException 
 	 */
+	@Override
 	public void init(MJpegRenderer viewer, String urlString, String user,
-			String pass) {
-		this.viewer = viewer;
+			String pass) throws IOException {
 		this.urlString = urlString;
 		this.user = user;
 		this.pass = pass;
-		this.curFrame = new byte[0];
-		this.frameAvailable = false;
+		init(viewer,null);
 	}
 
+	@Override
+	public void init(MJpegRenderer viewer, InputStream inputStream)
+			throws IOException {
+		this.curFrame = new byte[0];
+		this.viewer = viewer;
+		this.frameAvailable = false;		
+		if (inputStream!=null)
+			this.inputStream=new BufferedInputStream(inputStream);
+	}
+	
 	/**
 	 * stop reading
 	 */

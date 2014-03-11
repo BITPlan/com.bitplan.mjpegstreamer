@@ -71,6 +71,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 * connect
 	 */
 	public void connect() {
+		// if inputStream has been set - keep it!
+		if (inputStream!=null)
+			return;
 		if ("-".equals(urlString))
 			inputStream=new BufferedInputStream(System.in,INPUT_BUFFER_SIZE);
 		else

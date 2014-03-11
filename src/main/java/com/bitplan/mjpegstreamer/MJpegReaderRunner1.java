@@ -1,5 +1,6 @@
 package com.bitplan.mjpegstreamer;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -36,12 +37,20 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 	public void init(MJpegRenderer viewer, String urlString, String user,
 			String pass) throws IOException {
 		this.urlString=urlString;
-		this.viewer = viewer;
 		this.user=user;
 		this.pass=pass;
-		stringWriter = new StringWriter(128);
+		init(viewer,null);
 	}
 
+	@Override
+	public void init(MJpegRenderer viewer, InputStream inputStream)
+			throws IOException {
+		if (inputStream!=null)
+			this.inputStream=new BufferedInputStream(inputStream);
+		this.viewer = viewer;
+		stringWriter = new StringWriter(128);
+	}
+	
 	/**
 	 * Stop the loop, and allow it to clean up
 	 */
@@ -141,4 +150,5 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 
 		return retValue;
 	}
+
 }
