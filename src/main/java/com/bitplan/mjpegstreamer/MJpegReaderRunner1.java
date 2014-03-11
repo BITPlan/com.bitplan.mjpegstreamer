@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLConnection;
 
 /**
  * Given an extended JPanel and URL read and create BufferedImages to be
