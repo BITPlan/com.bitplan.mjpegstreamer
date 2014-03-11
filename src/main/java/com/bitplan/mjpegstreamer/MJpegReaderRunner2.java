@@ -17,6 +17,23 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 	private ByteArrayOutputStream jpgOut;
 
 	public final static String VERSION = "0.1.0";
+	
+	/**
+	 * no args default constructor
+	 */
+	public MJpegReaderRunner2() {
+		
+	}
+	
+	/**
+	 * create and init me
+	 * @param viewer
+	 * @param inputStream
+	 * @throws IOException 
+	 */
+	public MJpegReaderRunner2(MJpegRenderer viewer, InputStream inputStream) throws IOException {
+		init(viewer,inputStream);
+	}
 
 	/**
 	 * create a MJpegRunner
