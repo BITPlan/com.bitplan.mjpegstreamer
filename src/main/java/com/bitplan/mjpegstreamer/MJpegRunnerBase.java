@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Base64;
+// JDK 8
+// import java.util.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.imageio.ImageIO;
 
@@ -41,6 +43,18 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	public static int INPUT_BUFFER_SIZE = 8192;
 
 	/**
+	 * get a Base64 Encoder
+	 * @return
+	 */
+	public Base64 getEncoder() {
+		// JDK 8
+		// Base64.Encoder base64 = Base64.getEncoder();
+		// Apache Commons codec
+		Base64 base64=new Base64();
+		return base64;
+	}
+	
+	/**
 	 * open the connection
 	 * @return
 	 */
@@ -51,7 +65,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			conn = url.openConnection();
 			if (user != null) {
 				String credentials = user + ":" + pass;
-				Base64.Encoder base64 = Base64.getEncoder();
+				Base64 base64=getEncoder();
 				byte[] encoded_credentials = base64.encode(credentials.getBytes());
 				conn.setRequestProperty("Authorization", "Basic " + encoded_credentials);
 			}

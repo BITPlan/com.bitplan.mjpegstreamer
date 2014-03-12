@@ -11,6 +11,12 @@
 	<name>mjpegstreamer</name>
 	<description>MJPeg Streamer</description>
 	<dependencies>
+		<!-- apache commons codec (e.g. Base64) -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.9</version>
+		</dependency>
 		<!-- args4j command line utility -->
 		<dependency>
 			<groupId>args4j</groupId>
