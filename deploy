@@ -1,0 +1,3 @@
+#!/bin/bash
+# WF 2014-03-13
+mvn clean -DskipTests deploy
