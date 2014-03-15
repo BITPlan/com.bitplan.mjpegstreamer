@@ -236,13 +236,13 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	public BufferedImage getRotatedImage(BufferedImage inputImage, int rotation) {
 		BufferedImage result = inputImage;
 		switch (rotation) {
-		case 1:
+		case 90:
 			result = this.rotate90ToRight(result);
 			break;
-		case 2:
+		case 180:	
 			result = this.rotate180(result);
 			break;
-		case 3:
+		case 270:
 			result = this.rotate90ToLeft(result);
 			break;
 		}
@@ -263,7 +263,6 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			// debug repaint
 			// image= viewer.getBufferedImage("/images/start.png");
 			BufferedImage rotatedImage = this.getRotatedImage(bufImg, rotation);
-
 			viewer.renderNextImage(rotatedImage);
 			// viewer.repaint();
 			if (debug)

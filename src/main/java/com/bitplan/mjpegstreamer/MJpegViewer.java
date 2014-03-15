@@ -33,6 +33,9 @@ public class MJpegViewer extends JPanel {
 	@Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
 	boolean showHelp = false;
 
+	@Option(name = "-r", aliases = { "--rotation" }, usage = "rotation e.g. 0/90/180/270 degrees")
+	int rotation;
+	
 	@Option(name = "-s", aliases = { "--start" }, usage = "auto start\nstart streaming immediately")
 	boolean autoStart=false;
 
@@ -112,7 +115,7 @@ public class MJpegViewer extends JPanel {
 				showHelp();
 			} else {
 				ViewPanel viewPanel = new ViewPanel();
-				viewPanel.setup(title, url, autoStart, debug);
+				viewPanel.setup(title, url, autoStart,rotation,debug);
 				exitCode = 0;
 			}
 		} catch (CmdLineException e) {

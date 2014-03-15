@@ -46,16 +46,16 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	private JButton startButton;
 	private JButton rotateButton;
 	private JPanel buttonPanel;
-	private int rotation;
 	private JButton settingsButton;
+	private int rotation;
 
 	/**
 	 * set the Buffered Image
 	 * @param pImage
 	 */
 	public void setBufferedImage(BufferedImage pImage) {
-		image = this.getRotatedImage(pImage, rotation);
-		imageIcon.setImage(image);
+		image=pImage;
+		imageIcon.setImage(pImage);
 	}
 	
 	/**
@@ -92,7 +92,12 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	public BufferedImage getBufferedImage(String resourcePath) throws Exception  {
 		BufferedImage result;
 		try {
-			result = ImageIO.read(getClass().getResource(resourcePath));
+			 java.net.URL imgURL = getClass().getResource(resourcePath);
+		   if (imgURL != null) {
+		  	 result = ImageIO.read(imgURL);
+		   } else {
+					throw new Exception("couldn't get buffered Image for '"+resourcePath+"' invalid resourcePath");		  	 
+		   }
 		} catch (Throwable th) {
 			throw new Exception("couldn't get buffered Image for "+resourcePath,th);
 		}
@@ -124,14 +129,17 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 * @param url
 	 * @param autoStart
 	 *          -if true start the streaming
+	 * @param rotation 
 	 * @param debug
 	 * @throws Exception TODO
 	 */
-	public void setup(String title, String url, boolean autoStart, boolean debug)
+	public void setup(String title, String url, boolean autoStart, int rotation, boolean debug)
 			throws Exception {
+		this.rotation=rotation;
 		this.debug = debug;
 		BufferedImage bg = getBufferedImage("/images/screen640x480.png");
-		setBufferedImage(bg);
+		if (bg!=null)
+			setBufferedImage(bg);
 		this.setLayout(new BorderLayout());
 		startButton = addButton("start", START_BUTTON_ICON_PATH, KeyEvent.VK_S);
 		rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyEvent.VK_R);
@@ -209,6 +217,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 			// runner = new MJpegReaderRunner1();
 			runner = new MJpegReaderRunner2();
 			runner.init(this, url, null, null);
+			runner.setRotation(rotation);
 			runner.setDebug(debug);
 			runner.start();
 		} catch (Exception ex) {
@@ -218,114 +227,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 
 	// http://forum.codecall.net/topic/69182-java-image-rotation/
 
-	/**
-	 * rotate an Image 90 Degrees to the Right
-	 * 
-	 * @param inputImage
-	 * @return
-	 */
-	public BufferedImage rotate90ToRight(BufferedImage inputImage) {
-		int width = inputImage.getWidth();
-		int height = inputImage.getHeight();
-		BufferedImage returnImage = new BufferedImage(height, width,
-				inputImage.getType());
-
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				returnImage.setRGB(height - y - 1, x, inputImage.getRGB(x, y));
-			}
-		}
-		return returnImage;
-	}
-
-	/**
-	 * rotate 90 to Left
-	 * 
-	 * @param inputImage
-	 * @return
-	 */
-	public BufferedImage rotate90ToLeft(BufferedImage inputImage) {
-		// The most of code is same as before
-		int width = inputImage.getWidth();
-		int height = inputImage.getHeight();
-		BufferedImage returnImage = new BufferedImage(height, width,
-				inputImage.getType());
-		// We have to change the width and height because when you rotate the image
-		// by 90 degree, the
-		// width is height and height is width <img
-		// src='http://forum.codecall.net/public/style_emoticons/<#EMO_DIR#>/smile.png'
-		// class='bbc_emoticon' alt=':)' />
-
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				returnImage.setRGB(y, width - x - 1, inputImage.getRGB(x, y));
-			}
-		}
-		return returnImage;
-
-	}
-
-	/**
-	 * rotate 180
-	 * @param inputImage
-	 * @return
-	 */
-	public BufferedImage rotate180(BufferedImage inputImage) {
-		// We use BufferedImage because it’s provide methods for pixel manipulation
-		int width = inputImage.getWidth(); // the Width of the original image
-		int height = inputImage.getHeight();// the Height of the original image
-
-		BufferedImage returnImage = new BufferedImage(width, height,
-				inputImage.getType());
-		// we created new BufferedImage, which we will return in the end of the
-		// program
-		// it set up it to the same width and height as in original image
-		// inputImage.getType() return the type of image ( if it is in RBG, ARGB,
-		// etc. )
-
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				returnImage.setRGB(width - x - 1, height - y - 1,
-						inputImage.getRGB(x, y));
-			}
-		}
-		// so we used two loops for getting information from the whole inputImage
-		// then we use method setRGB by whitch we sort the pixel of the return image
-		// the first two parametres is the X and Y location of the pixel in
-		// returnImage and the last one is the //source pixel on the inputImage
-		// why we put width – x – 1 and height –y – 1 is hard to explain for me, but
-		// when you rotate image by //180degree the pixel with location [0, 0] will
-		// be in [ width, height ]. The -1 is for not to go out of
-		// Array size ( remember you always start from 0 so the last index is lower
-		// by 1 in the width or height
-		// I enclose Picture for better imagination ... hope it help you
-		return returnImage;
-		// and the last return the rotated image
-
-	}
-
-	/**
-	 * get the rotated Image
-	 * 
-	 * @param inputImage
-	 * @param rotation
-	 * @return
-	 */
-	public BufferedImage getRotatedImage(BufferedImage inputImage, int rotation) {
-		BufferedImage result = inputImage;
-		switch (rotation) {
-		case 1:
-			result = this.rotate90ToRight(result);
-			break;
-		case 2:
-			result = this.rotate180(result);
-			break;
-		case 3:
-			result = this.rotate90ToLeft(result);
-			break;
-		}
-		return result;
-	}
+	
 
 	/**
 	 * start Button hit
@@ -335,13 +237,15 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 		if ("start".equals(cmd)) {
 			startStreaming();
 		} else if ("rotate".equals(cmd)) {
-			rotation++;
-			if (rotation >= 4)
+			int rotation = runner.getRotation();
+			rotation+=90;
+			if (rotation >= 360)
 				rotation = 0;
+			runner.setRotation(rotation);
 			BufferedImage rotateButtonIcon;
 			try {
 				rotateButtonIcon = getBufferedImage(ViewPanel.ROTATE_BUTTON_ICON_PATH);
-				rotateButtonIcon = this.getRotatedImage(rotateButtonIcon, rotation);
+				rotateButtonIcon = runner.getRotatedImage(rotateButtonIcon, rotation);
 				ImageIcon buttonIcon = new ImageIcon(rotateButtonIcon);
 				rotateButton.setIcon(buttonIcon);
 			} catch (Exception e1) {

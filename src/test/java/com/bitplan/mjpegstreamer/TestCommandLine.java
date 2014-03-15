@@ -59,6 +59,14 @@ public class TestCommandLine {
 		String[] args = { "-u", movieUrl.toExternalForm(), "--start" };
 		testMJpegStreamer(args, 0, 1000);
 	}
+	
+	@Test
+	public void testRotation() throws InterruptedException {
+		URL movieUrl = ClassLoader.getSystemResource("testmovie/movie.mjpg");
+		String[] args = { "-u", movieUrl.toExternalForm(), "--start", "--rotation","90"};
+		testMJpegStreamer(args, 0, 1000);
+	}
+	
 
 	@Test
 	public void testPiping() throws IOException, InterruptedException {
