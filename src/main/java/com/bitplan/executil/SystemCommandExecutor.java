@@ -54,7 +54,9 @@ public class SystemCommandExecutor {
 	 */
 	public static SystemCommandExecutor getExecutor(String cmd) throws Exception {
 		List<String> commands=new ArrayList<String>();
-		commands.add(cmd);
+		String[] parts = cmd.split(" ");
+		for (String part:parts)
+			commands.add(part);
 		SystemCommandExecutor executor=new SystemCommandExecutor(commands);
 		return executor;
 	}
@@ -92,7 +94,7 @@ public class SystemCommandExecutor {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public int executeCommand() throws IOException, InterruptedException {
+	public int executeCommand(boolean withWait) throws IOException, InterruptedException {
 		int exitValue = -99;
 
 		try {
@@ -127,14 +129,16 @@ public class SystemCommandExecutor {
 			inputStreamHandler.start();
 			errorStreamHandler.start();
 
-			// TODO a better way to do this?
-			exitValue = process.waitFor();
+			if (withWait) {
+				exitValue = process.waitFor();
+				// Thread.sleep(50);
 
-			// TODO a better way to do this?
-			inputStreamHandler.interrupt();
-			errorStreamHandler.interrupt();
-			inputStreamHandler.join();
-			errorStreamHandler.join();
+				// TODO a better way to do this?
+				inputStreamHandler.interrupt();
+				errorStreamHandler.interrupt();
+				inputStreamHandler.join();
+				errorStreamHandler.join();
+			}
 		} catch (IOException e) {
 			// TODO deal with this here, or just throw it?
 			throw e;
@@ -143,8 +147,8 @@ public class SystemCommandExecutor {
 			// TODO deal with this here, or just throw it?
 			throw e;
 		} finally {
-			return exitValue;
 		}
+		return exitValue;
 	}
 
 	/**
