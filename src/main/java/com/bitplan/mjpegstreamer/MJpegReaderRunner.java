@@ -68,15 +68,15 @@ public interface MJpegReaderRunner extends Runnable {
 
 	/**
 	 * get a rotated image
-	 * @param rotateButtonIcon
-	 * @param rotation
+	 * @param image - the image to rotate
+	 * @param rotation e.g. 0/90/180/270
 	 * @return
 	 */
-	public BufferedImage getRotatedImage(BufferedImage rotateButtonIcon,
+	public BufferedImage getRotatedImage(BufferedImage image,
 			int rotation);
 	
 	/**
-	 * read
+	 * read image from current frame buffer
 	 */
 	public void read();
 
