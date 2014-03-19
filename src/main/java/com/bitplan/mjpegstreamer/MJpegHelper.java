@@ -3,6 +3,7 @@ package com.bitplan.mjpegstreamer;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
@@ -129,6 +130,17 @@ public class MJpegHelper {
 	 */
 	public static BufferedImage getImage(byte[] imageBytes) throws IOException {
 		ByteArrayInputStream jpgIn = new ByteArrayInputStream(imageBytes);
+		BufferedImage bufImg = getImage(jpgIn);
+		return bufImg;
+	}
+
+	/**
+	 * get the Image from the given Input Stream
+	 * @param jpgIn
+	 * @return
+	 * @throws IOException
+	 */
+	public static BufferedImage getImage(InputStream jpgIn) throws IOException {
 		BufferedImage bufImg = ImageIO.read(jpgIn);
 		jpgIn.close();
 		return bufImg;
