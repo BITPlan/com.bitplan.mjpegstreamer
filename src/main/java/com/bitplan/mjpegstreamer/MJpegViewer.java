@@ -25,13 +25,16 @@ public class MJpegViewer extends JPanel {
 	/**
 	 * current Version of the tool
 	 */
-	public static final String VERSION = "0.0.1";
+	public static final String VERSION = "0.0.2";
 
 	@Option(name = "-d", aliases = { "--debug" }, usage = "debug\nadds debugging output")
 	boolean debug = false;
 
 	@Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
 	boolean showHelp = false;
+
+	@Option(name = "-o", aliases = { "--overlay" }, usage = "adds a rectangle overlay")
+	boolean overlay = false;
 
 	@Option(name = "-r", aliases = { "--rotation" }, usage = "rotation e.g. 0/90/180/270 degrees")
 	int rotation;
@@ -114,8 +117,8 @@ public class MJpegViewer extends JPanel {
 			} else if (this.showHelp) {
 				showHelp();
 			} else {
-				ViewPanel viewPanel = new ViewPanel();
-				viewPanel.setup(title, url, autoStart,rotation,debug);
+				ViewPanel viewPanel = new ViewPanel();			
+				viewPanel.setup(title, url, autoStart,rotation,overlay,debug);
 				exitCode = 0;
 			}
 		} catch (CmdLineException e) {

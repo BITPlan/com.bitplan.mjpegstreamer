@@ -67,6 +67,13 @@ public class TestCommandLine {
 		testMJpegStreamer(args, 0, 1000);
 	}
 	
+	@Test
+	public void testOverlay() throws InterruptedException {
+		URL movieUrl = ClassLoader.getSystemResource("testmovie/movie.mjpg");
+		String[] args = { "-u", movieUrl.toExternalForm(), "--start", "--overlay","--rotation","90"};
+		testMJpegStreamer(args, 0, 1000);
+		assertTrue(RectangleOverlay.counter>0);
+	}
 
 	@Test
 	public void testPiping() throws IOException, InterruptedException {

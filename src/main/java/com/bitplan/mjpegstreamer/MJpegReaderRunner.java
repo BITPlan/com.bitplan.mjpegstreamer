@@ -80,4 +80,10 @@ public interface MJpegReaderRunner extends Runnable {
 	 */
 	public void read();
 
+	/**
+	 * add an imageListener
+	 * @param listener
+	 */
+	public void addImageListener(ImageListener listener);
+
 }

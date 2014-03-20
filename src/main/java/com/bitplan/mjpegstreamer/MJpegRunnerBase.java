@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+
 
 // JDK 8
 // import java.util.Base64;
@@ -31,6 +34,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	// constants
 	public boolean debug = true;
 	private int rotation=0;
+	public List<ImageListener> imageListeners=new ArrayList<ImageListener>();
 	
 	/**
 	 * @return the rotation
@@ -152,7 +156,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	public void read() {
 		try {
 			BufferedImage bufImg=MJpegHelper.getImage(curFrame);
-			
+			for (ImageListener listener:this.imageListeners) {
+				listener.onRead(this, bufImg);
+			}
 			frameCount++;
 			frameAvailable = false;
 			// debug repaint
@@ -173,5 +179,13 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 */
 	public void dispose() {
 		stop();
+	}
+	
+	/**
+	 * add an imageListener
+	 * @param listener
+	 */
+	public void addImageListener(ImageListener listener) {
+		this.imageListeners.add(listener);
 	}
 }

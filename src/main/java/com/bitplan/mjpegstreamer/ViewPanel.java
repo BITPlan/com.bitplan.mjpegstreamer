@@ -1,6 +1,7 @@
 package com.bitplan.mjpegstreamer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -48,6 +49,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	private JPanel buttonPanel;
 	private JButton settingsButton;
 	private int rotation;
+	private boolean overlay;
 
 	/**
 	 * set the Buffered Image
@@ -130,13 +132,15 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 * @param autoStart
 	 *          -if true start the streaming
 	 * @param rotation 
+	 * @param overlay
 	 * @param debug
 	 * @throws Exception TODO
 	 */
-	public void setup(String title, String url, boolean autoStart, int rotation, boolean debug)
+	public void setup(String title, String url, boolean autoStart, int rotation, boolean overlay, boolean debug)
 			throws Exception {
 		this.rotation=rotation;
 		this.debug = debug;
+		this.overlay = overlay;
 		BufferedImage bg = getBufferedImage("/images/screen640x480.png");
 		if (bg!=null)
 			setBufferedImage(bg);
@@ -219,6 +223,8 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 			runner.init(this, url, null, null);
 			runner.setRotation(rotation);
 			runner.setDebug(debug);
+			if (overlay)
+				runner.addImageListener(new RectangleOverlay(50,50,50,50,Color.BLUE));
 			runner.start();
 		} catch (Exception ex) {
 			handle(ex);
