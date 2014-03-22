@@ -166,9 +166,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			BufferedImage rotatedImage = this.getRotatedImage(bufImg, rotation);
 			viewer.renderNextImage(rotatedImage);
 			// viewer.repaint();
-			if (debug)
+			if (debug) {
 				viewer.setFailedString("debug:frame=" + frameCount);
-
+			}
 		} catch (IOException e) {
 			handle("Error acquiring the frame: ", e);
 		}
