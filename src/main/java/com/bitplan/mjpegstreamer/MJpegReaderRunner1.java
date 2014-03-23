@@ -21,7 +21,7 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 	private static final String CONTENT_LENGTH = "Content-length: ";
 	private static final String CONTENT_TYPE = "Content-type: image/jpeg";
 	private StringWriter stringWriter;
-	private boolean processing = true;
+	
 
 	/**
 	 * initialize
@@ -53,7 +53,7 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 	 * Stop the loop, and allow it to clean up
 	 */
 	public synchronized void stop(String msg) {
-		processing = false;
+		connected = false;
 		viewer.stop(msg);
 	}
 
@@ -67,7 +67,7 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 	 */
 	public void run() {
 		connect();
-		while (processing) {
+		while (connected) {
 			try {
 				this.curFrame= retrieveNextImage();
 				read();

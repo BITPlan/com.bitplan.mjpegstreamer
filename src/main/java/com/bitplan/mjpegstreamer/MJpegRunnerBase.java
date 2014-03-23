@@ -62,6 +62,14 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	// how many milliseconds to wait for next frame to limit fps
 	private int fpsLimitMillis=1;
 	private int fpsOut;
+	protected boolean connected = false;
+
+	/**
+	 * @return the connected
+	 */
+	public boolean isConnected() {
+		return connected;
+	}
 
 	/**
 	 * @return the readTimeOut
@@ -160,6 +168,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		} catch (IOException ioe) {
 			handle("Unable to connect: ", ioe);
 		}
+		connected=true;
 		return result;
 	}
 

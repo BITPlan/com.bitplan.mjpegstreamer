@@ -86,6 +86,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 		}
 		if (debug)
 		  super.debugTrace("stop with msg: "+msg);
+		connected=false;
 		viewer.stop(msg);
 	}
 

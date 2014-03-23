@@ -61,6 +61,13 @@ public interface MJpegReaderRunner extends Runnable {
 	 */
 	public boolean isAvailable();
 	
+	
+	/**
+	 * are we connected?
+	 * @return
+	 */
+	public boolean isConnected();
+	
 	/**
 	 * @return the rotation
 	 */
