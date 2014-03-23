@@ -20,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.bitplan.mjpegstreamer.MJpegReaderRunner.DebugMode;
+
 /**
  * View Panel
  * 
@@ -77,7 +79,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 * 
 	 * @param msg
 	 */
-	public void setFailedString(String msg) {
+	public void showMessage(String msg) {
 		this.msgArea.setText(msg);
 		repaint();
 	}
@@ -177,12 +179,12 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 
 	@Override
 	public void init() {
-		this.setFailedString("started");
+		this.showMessage("started");
 	}
 
 	@Override
 	public void stop() {
-		this.setFailedString("stopped");
+		this.showMessage("stopped");
 	}
 	
 	/**
@@ -222,7 +224,8 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 			runner = new MJpegReaderRunner2();
 			runner.init(this, url, null, null);
 			runner.setRotation(rotation);
-			runner.setDebug(debug);
+			if (debug)
+				runner.setDebugMode(DebugMode.FPS);
 			if (overlay)
 				runner.addImageListener(new RectangleOverlay(50,50,50,50,Color.BLUE));
 			runner.start();
@@ -267,7 +270,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 * @param ex
 	 */
 	private void handle(Exception ex) {
-		this.setFailedString(ex.getMessage());
+		this.showMessage(ex.getMessage());
 	}
 
 }

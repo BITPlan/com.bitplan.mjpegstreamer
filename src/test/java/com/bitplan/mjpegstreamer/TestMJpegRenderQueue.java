@@ -9,13 +9,18 @@
  */
 package com.bitplan.mjpegstreamer;
 
+import static org.junit.Assert.*;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.bitplan.mjpegstreamer.MJpegReaderRunner.DebugMode;
 
 /**
  * test the MJpegRenderQueue
@@ -37,7 +42,7 @@ public class TestMJpegRenderQueue {
 		MJpegRenderQueue renderQueue = new MJpegRenderQueue(1000);
 		runner.init(renderQueue, movieUrl.toExternalForm(), null, null);
 		boolean debug = true;
-		runner.setDebug(debug);
+		runner.setDebugMode(DebugMode.FPS);
 		runner.start();
 		long timeout = System.currentTimeMillis() + 20000;
 		int count=0;
@@ -46,6 +51,7 @@ public class TestMJpegRenderQueue {
 				BufferedImage image;
 				while ((image = renderQueue.getImageBuffer().poll()) != null) {
 					count++;
+					assertNotNull(image);
 				}
 				if (renderQueue.isStopped())
 					break;

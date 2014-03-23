@@ -8,12 +8,13 @@ import java.awt.image.BufferedImage;
  *
  */
 public interface MJpegRenderer {
+
 	
 	/**
-	 * initialize the Renderer
+	 * initialize the Renderer with DebugMode None
 	 */
 	public void init();
-
+	
 	/**
 	 * render the next image
 	 * @param jpegImg
@@ -27,9 +28,9 @@ public interface MJpegRenderer {
 	
 
 	/**
-	 * set the string if something failed
+	 * show a Message e.g. if something failed
 	 * @param msg
 	 */
-	void setFailedString(String msg);
+	void showMessage(String msg);
 
 }

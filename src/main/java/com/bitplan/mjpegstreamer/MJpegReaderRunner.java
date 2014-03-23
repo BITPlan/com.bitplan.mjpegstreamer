@@ -10,7 +10,9 @@ import java.io.InputStream;
  * http://www.gdcl.co.uk/2013/05/02/Motion-JPEG.html
  */
 public interface MJpegReaderRunner extends Runnable {
-	/**
+	
+	public enum DebugMode{None,FPS,Verbose};
+	/*
 	 * initialize
 	 * @param viewer
 	 * @param urlString
@@ -30,9 +32,10 @@ public interface MJpegReaderRunner extends Runnable {
 	public void init(MJpegRenderer viewer, InputStream inputStream) throws IOException;
 	
 	/**
-	 * @param debug the debug to set
+	 * set my debug mode
+	 * @param debugMode the debug to set
 	 */
-	public void setDebug(boolean debug);
+	public void setDebugMode(DebugMode debugMode);
 		
 	/**
 	 * connect

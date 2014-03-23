@@ -72,7 +72,7 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	}
 
 	@Override
-	public void setFailedString(String msg) {
+	public void showMessage(String msg) {
 		LOGGER.log(Level.WARNING, msg);
 	}
 
@@ -99,6 +99,5 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	public void setStopped(boolean stopped) {
 		this.stopped = stopped;
 	}
-
 
 }
