@@ -323,8 +323,6 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	public synchronized void stop(String msg) {
 		connected = false;
 		viewer.stop(msg);
-		streamReader.interrupt();
-		streamReader=null;
 	}
 
 
