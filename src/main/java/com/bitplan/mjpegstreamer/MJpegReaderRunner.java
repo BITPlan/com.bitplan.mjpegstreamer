@@ -89,4 +89,11 @@ public interface MJpegReaderRunner extends Runnable {
 	 */
 	public void addImageListener(ImageListener listener);
 
+	/**
+	 * limit the number of frames per second
+	 * @param fpsLimit e.g. 10 for one frame each 100 millisecs, 0.5 for one frame each 2000 millisecs
+	 */
+	public void setFPSLimit(double fpsLimit);
+	
+
 }

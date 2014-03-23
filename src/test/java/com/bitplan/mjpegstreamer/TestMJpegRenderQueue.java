@@ -43,6 +43,7 @@ public class TestMJpegRenderQueue {
 		runner.init(renderQueue, movieUrl.toExternalForm(), null, null);
 		boolean debug = true;
 		runner.setDebugMode(DebugMode.FPS);
+		runner.setFPSLimit(15);
 		runner.start();
 		long timeout = System.currentTimeMillis() + 20000;
 		int count=0;
@@ -63,7 +64,7 @@ public class TestMJpegRenderQueue {
 		}
 		if (debug)
 			LOGGER.log(Level.INFO,"found "+count+" frames");
-		Assert.assertEquals(51,count);
+		Assert.assertEquals(16,count);
 		
 	}
 }
