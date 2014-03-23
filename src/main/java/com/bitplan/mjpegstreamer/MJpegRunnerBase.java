@@ -34,15 +34,22 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 
 	protected URL url;
 	protected byte[] curFrame;
+	// count each frame
 	protected int frameCount;
+	// count frames in last second for frame per second calculation
 	private int fpscount;
+	// nano time of last frame
 	private long fpstime;
+	// nano time of last second
+	private long fpssecond;
 	private Thread streamReader;
 	protected URLConnection conn;
 	// constants
 	public DebugMode debugMode = DebugMode.None;
 	private int rotation = 0;
 	public List<ImageListener> imageListeners = new ArrayList<ImageListener>();
+
+	private int fps;
 
 
 	/**
@@ -131,6 +138,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		viewer.init();
 		fpscount=0;
 		this.fpstime=System.nanoTime();
+		this.fpssecond=fpstime;
 	}
 
 	/**
@@ -181,17 +189,30 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			// image= viewer.getBufferedImage("/images/start.png");
 			BufferedImage rotatedImage = this.getRotatedImage(bufImg, rotation);
 			viewer.renderNextImage(rotatedImage);
-			// viewer.repaint();
+      // viewer.repaint();
+			// Frame per second calculation
+			long now = System.nanoTime(); 
+			// how many nanosecs since last frame?
+			long elapsedFrameTime = now - fpstime;
+			// how many nanosecs since last second timestamp
+			long elapsedSecondTime = now -fpssecond;
+			long framemillisecs = TimeUnit.MILLISECONDS.convert(elapsedFrameTime, TimeUnit.NANOSECONDS);
+			long secmillisecs = TimeUnit.MILLISECONDS.convert(elapsedSecondTime, TimeUnit.NANOSECONDS);
+			// is a second over?
+			if (secmillisecs>1000) {
+				fps=frameCount-fpscount;
+			  fpssecond=now;
+				fpscount=this.frameCount;
+			}
+			fpstime=now;
+
 			switch (debugMode) {
 			case Verbose:
-				LOGGER.log(Level.INFO, "frame=" + frameCount);
+				LOGGER.log(Level.INFO, "frame=" + frameCount+" after "+framemillisecs+" msecs");
 				break;
 			case FPS:
-				long now = System.nanoTime(); 
-				long elapsedTime = now - fpstime;
-				long millisecs = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
-				LOGGER.log(Level.INFO, "frame=" + frameCount+" after "+millisecs+" msecs");
-				fpstime=now;
+				if (fpssecond==now)
+					LOGGER.log(Level.INFO, "frame=" + frameCount+" ("+framemillisecs+" msecs) "+fps+" Frames per second");
 				break;
 			case None:
 				break;
