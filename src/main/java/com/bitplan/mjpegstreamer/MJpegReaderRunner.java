@@ -103,6 +103,12 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @param fpsLimit e.g. 10 for one frame each 100 millisecs, 0.5 for one frame each 2000 millisecs
 	 */
 	public void setFPSLimit(double fpsLimit);
+	
+	/**
+	 * retrieve the number of milliseconds the reader has run so far
+	 * @return
+	 */
+	public long elapsedTimeMillisecs();
 
 	/**
 	 * @return the readTimeOut

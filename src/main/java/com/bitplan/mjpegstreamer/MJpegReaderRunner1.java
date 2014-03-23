@@ -49,13 +49,6 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 		stringWriter = new StringWriter(128);
 	}
 	
-	/**
-	 * Stop the loop, and allow it to clean up
-	 */
-	public synchronized void stop(String msg) {
-		connected = false;
-		viewer.stop(msg);
-	}
 
 	/**
 	 * Keeps running while process() returns true

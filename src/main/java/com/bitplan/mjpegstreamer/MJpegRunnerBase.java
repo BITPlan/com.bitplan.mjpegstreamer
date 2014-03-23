@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 
 
+
 // JDK 8
 // import java.util.Base64;
 import org.apache.commons.codec.binary.Base64;
@@ -188,7 +189,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	/**
 	 * start reading
 	 */
-	public void start() {
+	public synchronized void start() {
 		this.streamReader = new Thread(this, "Stream reader");
 		streamReader.start();
 		viewer.init();
@@ -315,6 +316,17 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	public void dispose() {
 		stop("disposing "+this);
 	}
+	
+	/**
+	 * Stop the loop, and allow it to clean up
+	 */
+	public synchronized void stop(String msg) {
+		connected = false;
+		viewer.stop(msg);
+		streamReader.interrupt();
+		streamReader=null;
+	}
+
 
 	/**
 	 * add an imageListener
