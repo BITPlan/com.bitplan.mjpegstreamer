@@ -39,6 +39,9 @@ public class MJpegViewer extends JPanel {
 	@Option(name = "-r", aliases = { "--rotation" }, usage = "rotation e.g. 0/90/180/270 degrees")
 	int rotation;
 	
+	@Option(name = "-rto", aliases = { "--readtimeout" }, usage = "readtimeout in milliseconds\ndefault is 5000 millisecs")
+	int readTimeOut = 5000;
+	
 	@Option(name = "-s", aliases = { "--start" }, usage = "auto start\nstart streaming immediately")
 	boolean autoStart=false;
 
@@ -58,6 +61,20 @@ public class MJpegViewer extends JPanel {
 	private static CmdLineParser parser;
 	public static int exitCode;
 
+
+	/**
+	 * @return the readTimeOut
+	 */
+	public int getReadTimeOut() {
+		return readTimeOut;
+	}
+
+	/**
+	 * @param readTimeOut the readTimeOut to set
+	 */
+	public void setReadTimeOut(int readTimeOut) {
+		this.readTimeOut = readTimeOut;
+	}
 
 	/**
 	 * @return the viewPanel
@@ -209,7 +226,7 @@ public class MJpegViewer extends JPanel {
 	 */
 	public ViewPanel setupViewPanel() throws Exception {
 		viewPanel = new ViewPanel();			
-		viewPanel.setup(title, url, autoStart,rotation,overlay,debug);
+		viewPanel.setup(title, url, autoStart,readTimeOut,rotation,overlay,debug);
 		return viewPanel;
 	}
 	
@@ -254,4 +271,5 @@ public class MJpegViewer extends JPanel {
 		if (!testMode && result != 0)
 			System.exit(result);
 	}
+
 }

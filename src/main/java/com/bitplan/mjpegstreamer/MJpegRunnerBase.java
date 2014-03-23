@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+
+
 // JDK 8
 // import java.util.Base64;
 import org.apache.commons.codec.binary.Base64;
@@ -26,6 +28,7 @@ import org.apache.commons.codec.binary.Base64;
 public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	protected static Logger LOGGER = Logger
 			.getLogger("com.bitplan.mjpegstreamer");
+	protected static boolean debug=false;
 
 	protected MJpegRenderer viewer;
 	protected String urlString, user, pass;
@@ -40,7 +43,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	private int fpscountIn;
 	private int fpscountOut;
 	// nano time of last frame
-	private long fpstime;
+	private long fpsFrameNanoTime;
+	// nano time of the first frame
+	private long firstFrameNanoTime;
 	// nano time of last second
 	private long fpssecond;
 	private Thread streamReader;
@@ -48,6 +53,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	// constants
 	public DebugMode debugMode = DebugMode.None;
 	private int rotation = 0;
+	private int readTimeOut;
 	public List<ImageListener> imageListeners = new ArrayList<ImageListener>();
 
 	// current frame per second
@@ -55,9 +61,21 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 
 	// how many milliseconds to wait for next frame to limit fps
 	private int fpsLimitMillis=1;
-
 	private int fpsOut;
 
+	/**
+	 * @return the readTimeOut
+	 */
+	public int getReadTimeOut() {
+		return readTimeOut;
+	}
+
+	/**
+	 * @param readTimeOut the readTimeOut to set
+	 */
+	public void setReadTimeOut(int readTimeOut) {
+		this.readTimeOut = readTimeOut;
+	}
 
 	/**
 	 * @return the rotation
@@ -79,8 +97,22 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		this.debugMode = debugMode;
 	}
 
-	public static int READ_TIME_OUT = 4000;
-	public static int INPUT_BUFFER_SIZE = 8192;
+	// read time out
+	public static int INPUT_BUFFER_SIZE = 8192*2;
+	
+	
+	/**
+	 * show a debug Trace
+	 * @param msg
+	 */
+	public void debugTrace(String msg) {
+		try {
+			throw new Exception("force stack trace");
+		} catch (Exception e) {
+			System.err.println("debug trace for "+this+":"+msg);
+			e.printStackTrace();
+		}		
+	}
 	
 	/**
 	 * limit the number of frames per second
@@ -120,7 +152,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 				conn.setRequestProperty("Authorization", "Basic " + encoded_credentials);
 			}
 			// change the timeout to taste, I like 1 second
-			conn.setReadTimeout(READ_TIME_OUT);
+			conn.setReadTimeout(this.getReadTimeOut());
 			conn.connect();
 			result = new BufferedInputStream(conn.getInputStream(), INPUT_BUFFER_SIZE);
 		} catch (MalformedURLException e) {
@@ -153,8 +185,15 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		viewer.init();
 		fpscountIn=0;
 		fpscountOut=0;
-		this.fpstime=System.nanoTime();
-		this.fpssecond=fpstime;
+	}
+	
+	/**
+	 * wait until I am finished
+	 */
+	public void join() throws InterruptedException {
+		if (streamReader!=null) {
+			streamReader.join();
+		}
 	}
 
 	/**
@@ -191,11 +230,26 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	}
 
 	/**
+	 * get the total elapsedTime
+	 * @return
+	 */
+	public long elapsedTimeMillisecs() {
+		long elapsed = this.fpsFrameNanoTime-this.firstFrameNanoTime;
+		long result = TimeUnit.MILLISECONDS.convert(elapsed, TimeUnit.NANOSECONDS);
+		return result;
+	}
+	
+	/**
 	 * read
 	 */
 	public void read() {
 		try {
 			BufferedImage bufImg = MJpegHelper.getImage(curFrame);
+			if (frameCount==0) {
+				this.firstFrameNanoTime=System.nanoTime();
+				this.fpsFrameNanoTime=firstFrameNanoTime;
+				this.fpssecond=fpsFrameNanoTime;
+			}
 			frameCount++;
 			fpscountIn++;
 			frameAvailable = false;
@@ -206,7 +260,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			// Frame per second calculation
 			long now = System.nanoTime(); 
 			// how many nanosecs since last frame?
-			long elapsedFrameTime = now - fpstime;
+			long elapsedFrameTime = now - fpsFrameNanoTime;
 			// how many nanosecs since last second timestamp
 			long elapsedSecondTime = now -fpssecond;
 			long framemillisecs = TimeUnit.MILLISECONDS.convert(elapsedFrameTime, TimeUnit.NANOSECONDS);
@@ -226,17 +280,17 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 				}
 				BufferedImage rotatedImage = this.getRotatedImage(bufImg, rotation);
 				viewer.renderNextImage(rotatedImage);
-				fpstime=now;
+				fpsFrameNanoTime=now;
 				fpscountOut++;
 			}
 
 			switch (debugMode) {
 			case Verbose:
-				LOGGER.log(Level.INFO, "frame=" + frameCount+" after "+framemillisecs+" msecs");
+				LOGGER.log(Level.INFO, "frame=" + frameCount+" after "+framemillisecs+" msecs - total "+this.elapsedTimeMillisecs()+" msecs");
 				break;
 			case FPS:
 				if (fpssecond==now)
-					LOGGER.log(Level.INFO, "frame=" + frameCount+" ("+framemillisecs+" msecs) "+fpsIn+"/"+fpsOut+" Frames per second in/out");
+					LOGGER.log(Level.INFO, "frame=" + frameCount+" ("+framemillisecs+" msecs) "+fpsIn+"/"+fpsOut+" Frames per second in/out - total "+this.elapsedTimeMillisecs()+" msecs");
 				break;
 			case None:
 				break;

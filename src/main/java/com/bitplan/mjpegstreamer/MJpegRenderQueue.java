@@ -17,7 +17,7 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	protected static Logger LOGGER = Logger.getLogger("com.bitplan.mjpegstreamer");
 	
 	int maxSize;
-	private long timeStamp = 0;
+	//private long timeStamp = 0;
 	protected boolean started = false;
 	private boolean stopped = false;
 	private Queue<BufferedImage> imageBuffer = new ConcurrentLinkedQueue<BufferedImage>();
@@ -58,16 +58,17 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	public void setImageBuffer(Queue<BufferedImage> imageBuffer) {
 		this.imageBuffer = imageBuffer;
 	}
+	
 	@Override
 	public void renderNextImage(BufferedImage jpegImg) {
 		if (getImageBuffer().size() < maxSize)
 			getImageBuffer().add(jpegImg);
 		else {
-			long newTimeStamp = System.currentTimeMillis();
-			if (newTimeStamp - timeStamp > 2000) {
+			//long newTimeStamp = System.currentTimeMillis();
+			//if (newTimeStamp - timeStamp > 2000) {
 				LOGGER.log(Level.WARNING, "Buffer overrun for MJpegRenderQueue");
-				timeStamp = newTimeStamp;
-			}
+			//	timeStamp = newTimeStamp;
+			//}
 		}
 	}
 

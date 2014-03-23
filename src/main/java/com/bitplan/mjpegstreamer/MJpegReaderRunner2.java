@@ -19,7 +19,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 
 	private ByteArrayOutputStream jpgOut;
 
-	public final static String VERSION = "0.1.0";
+	public final static String VERSION = "0.1.1";
 	
 	/**
 	 * no args default constructor
@@ -64,6 +64,8 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 		this.frameAvailable = false;		
 		if (inputStream!=null)
 			this.inputStream=new BufferedInputStream(inputStream);
+		if (debug)
+			debugTrace("init called");
 	}
 	
 	/**
@@ -82,6 +84,8 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 			HttpURLConnection httpcon=(HttpURLConnection) conn;
 			httpcon.disconnect();
 		}
+		if (debug)
+		  super.debugTrace("stop with msg: "+msg);
 		viewer.stop(msg);
 	}
 
@@ -95,9 +99,10 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 		int cur = 0;
 
 		try {
+			// EOF is -1
 			while (inputStream != null && (cur = inputStream.read()) >= 0) {
 				if (prev == 0xFF && cur == 0xD8) {
-					jpgOut = new ByteArrayOutputStream(8192);
+					jpgOut = new ByteArrayOutputStream(INPUT_BUFFER_SIZE);
 					jpgOut.write((byte) prev);
 				}
 				if (jpgOut != null) {
@@ -109,15 +114,15 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 					}
 					frameAvailable = true;
 					jpgOut.close();
+					// the image is now available
 					read();
 				}
 				prev = cur;
 			}
-			stop("end of inputstream");
+			stop("end of inputstream at frame "+super.frameCount+" after "+this.elapsedTimeMillisecs()+" msecs "+this);
 		} catch (IOException e) {
 			handle("I/O Error: ",e);
 		}
 	}
-
 	
 }

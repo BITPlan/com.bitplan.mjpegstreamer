@@ -133,14 +133,16 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 * @param url
 	 * @param autoStart
 	 *          -if true start the streaming
+	 * @param readTimeOut
 	 * @param rotation 
 	 * @param overlay
 	 * @param debug
 	 * @throws Exception TODO
 	 */
-	public void setup(String title, String url, boolean autoStart, int rotation, boolean overlay, boolean debug)
+	public void setup(String title, String url, boolean autoStart, int readTimeOut, int rotation, boolean overlay, boolean debug)
 			throws Exception {
 		this.rotation=rotation;
+		this.readTimeOut=readTimeOut;
 		this.debug = debug;
 		this.overlay = overlay;
 		BufferedImage bg = getBufferedImage("/images/screen640x480.png");
@@ -201,20 +203,17 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 		frame.pack(); // makes the frame shrink to minimum size
 		frame.setLocation(100, 100);
 		frame.setVisible(true);
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent event) {
-				System.exit(0);
-			}
-		});
-
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	MJpegReaderRunner runner;
+	private int readTimeOut;
 
 	/**
 	 * start the streaming
+	 * @return the runner
 	 */
-	public void startStreaming() {
+	public MJpegReaderRunner startStreaming() {
 		url = this.urlArea.getText();
 		if (runner != null) {
 			runner.stop("stopping earlier runner");
@@ -224,6 +223,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 			runner = new MJpegReaderRunner2();
 			runner.init(this, url, null, null);
 			runner.setRotation(rotation);
+			runner.setReadTimeOut(readTimeOut);
 			if (debug)
 				runner.setDebugMode(DebugMode.FPS);
 			if (overlay)
@@ -232,6 +232,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 		} catch (Exception ex) {
 			handle(ex);
 		}
+		return runner;
 	}
 
 	// http://forum.codecall.net/topic/69182-java-image-rotation/
@@ -271,6 +272,13 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 */
 	private void handle(Exception ex) {
 		this.showMessage(ex.getMessage());
+	}
+
+	/**
+	 * close the frame
+	 */
+	public void close() {
+		frame.dispose();
 	}
 
 }

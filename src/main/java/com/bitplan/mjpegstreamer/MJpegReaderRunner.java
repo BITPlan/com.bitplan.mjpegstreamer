@@ -97,7 +97,20 @@ public interface MJpegReaderRunner extends Runnable {
 	 */
 	public void setFPSLimit(double fpsLimit);
 
+	/**
+	 * @return the readTimeOut
+	 */
+	public int getReadTimeOut();
+
+	/**
+	 * @param readTimeOut the readTimeOut to set
+	 */
+	public void setReadTimeOut(int readTimeOut);
 	
-	
+	/**
+	 * wait until my stream is read
+	 * @throws InterruptedException 
+	 */
+	public void join() throws InterruptedException;
 
 }
