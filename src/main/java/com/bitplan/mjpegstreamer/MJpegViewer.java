@@ -47,14 +47,115 @@ public class MJpegViewer extends JPanel {
 	
 	@Option(name = "-u", aliases = { "--url" }, usage = "url\nurl to be used")
 	String url = "http://cam2/mjpeg.cgi";
-
+	
 	@Option(name = "-v", aliases = { "--version" }, usage = "showVersion\nshow current version if this switch is used")
 	boolean showVersion = false;
+
+	private ViewPanel viewPanel;
 
 	public static boolean testMode = false;
 
 	private static CmdLineParser parser;
 	public static int exitCode;
+
+
+	/**
+	 * @return the viewPanel
+	 */
+	public ViewPanel getViewPanel() {
+		return viewPanel;
+	}
+
+	/**
+	 * @param viewPanel the viewPanel to set
+	 */
+	public void setViewPanel(ViewPanel viewPanel) {
+		this.viewPanel = viewPanel;
+	}
+
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	/**
+	 * @return the overlay
+	 */
+	public boolean isOverlay() {
+		return overlay;
+	}
+
+	/**
+	 * @param overlay the overlay to set
+	 */
+	public void setOverlay(boolean overlay) {
+		this.overlay = overlay;
+	}
+
+	/**
+	 * @return the rotation
+	 */
+	public int getRotation() {
+		return rotation;
+	}
+
+	/**
+	 * @param rotation the rotation to set
+	 */
+	public void setRotation(int rotation) {
+		this.rotation = rotation;
+	}
+
+	/**
+	 * @return the autoStart
+	 */
+	public boolean isAutoStart() {
+		return autoStart;
+	}
+
+	/**
+	 * @param autoStart the autoStart to set
+	 */
+	public void setAutoStart(boolean autoStart) {
+		this.autoStart = autoStart;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
+	 * @return the testMode
+	 */
+	public static boolean isTestMode() {
+		return testMode;
+	}
+
+	/**
+	 * @param testMode the testMode to set
+	 */
+	public static void setTestMode(boolean testMode) {
+		MJpegViewer.testMode = testMode;
+	}
 
 	/**
 	 * show the Version
@@ -102,6 +203,17 @@ public class MJpegViewer extends JPanel {
 	}
 
 	/**
+	 * setup the view panel
+	 * @return
+	 * @throws Exception
+	 */
+	public ViewPanel setupViewPanel() throws Exception {
+		viewPanel = new ViewPanel();			
+		viewPanel.setup(title, url, autoStart,rotation,overlay,debug);
+		return viewPanel;
+	}
+	
+	/**
 	 * main routine
 	 * 
 	 * @param args
@@ -117,8 +229,7 @@ public class MJpegViewer extends JPanel {
 			} else if (this.showHelp) {
 				showHelp();
 			} else {
-				ViewPanel viewPanel = new ViewPanel();			
-				viewPanel.setup(title, url, autoStart,rotation,overlay,debug);
+				setupViewPanel();
 				exitCode = 0;
 			}
 		} catch (CmdLineException e) {

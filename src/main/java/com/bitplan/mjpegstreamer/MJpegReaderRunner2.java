@@ -69,7 +69,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 	/**
 	 * stop reading
 	 */
-	public void stop() {
+	public void stop(String msg) {
 		try {
 			if (jpgOut!=null)
 				jpgOut.close();
@@ -82,7 +82,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 			HttpURLConnection httpcon=(HttpURLConnection) conn;
 			httpcon.disconnect();
 		}
-		viewer.stop();
+		viewer.stop(msg);
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 				}
 				prev = cur;
 			}
-			stop();
+			stop("end of inputstream");
 		} catch (IOException e) {
 			handle("I/O Error: ",e);
 		}

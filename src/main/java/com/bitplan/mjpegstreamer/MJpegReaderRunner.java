@@ -47,10 +47,12 @@ public interface MJpegReaderRunner extends Runnable {
 	 * start
 	 */
 	public void start();
+	
 	/**
-	 * stop
+	 * stop me with the given message
+	 * @param msg
 	 */
-	public void stop();
+	public void stop(String msg);
 	
 	/**
 	 * is there a new frame?
@@ -94,6 +96,8 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @param fpsLimit e.g. 10 for one frame each 100 millisecs, 0.5 for one frame each 2000 millisecs
 	 */
 	public void setFPSLimit(double fpsLimit);
+
+	
 	
 
 }

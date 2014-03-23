@@ -2,7 +2,6 @@ package com.bitplan.mjpegstreamer;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
@@ -24,6 +23,8 @@ public class RectangleOverlay implements ImageListener {
 	int dheight;
 	int x;
 	int y;
+
+	private boolean debug=false;
 
 	/**
 	 * create a RectangleOverlay based on the given parameters
@@ -51,7 +52,8 @@ public class RectangleOverlay implements ImageListener {
 		//g2d.drawRect(x, y, image.getWidth()-dwidth, image.getHeight()-dheight);
 		int width=image.getWidth()-dwidth-x;
 		int height=image.getHeight()-dheight-y;
-		// LOGGER.log(Level.INFO,rect.x+","+rect.y+" "+rect.width+"x"+rect.height);
+		if (debug)
+			LOGGER.log(Level.INFO,""+x+","+y+" "+width+"x"+height);
 		// http://stackoverflow.com/questions/19803276/rectangle-not-drawing-on-bufferedimage
 		g2d.draw(new Rectangle2D.Double(x,y,width,height));
 		g2d.dispose();

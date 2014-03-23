@@ -64,7 +64,7 @@ public class TestMJpegRenderQueue {
 		}
 		if (debug)
 			LOGGER.log(Level.INFO,"found "+count+" frames");
-		assertTrue(count>=16);
+		assertTrue(count>=12);
 		
 	}
 }

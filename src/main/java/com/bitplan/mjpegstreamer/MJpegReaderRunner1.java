@@ -52,9 +52,9 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 	/**
 	 * Stop the loop, and allow it to clean up
 	 */
-	public synchronized void stop() {
+	public synchronized void stop(String msg) {
 		processing = false;
-		viewer.stop();
+		viewer.stop(msg);
 	}
 
 	/**
@@ -73,10 +73,10 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 				read();
 			} catch (SocketTimeoutException ste) {
 				handle("Lost Camera connection: " ,ste);
-				stop();
+				stop("lost camera connection");
 			} catch (IOException e) {
 				handle("failed stream read: ", e);
-				stop();
+				stop("failed stream read");
 			}
 		}
 

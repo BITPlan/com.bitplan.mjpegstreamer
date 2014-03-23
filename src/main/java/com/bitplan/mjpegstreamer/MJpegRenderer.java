@@ -23,8 +23,9 @@ public interface MJpegRenderer {
 	
 	/**
 	 * stop rendering
+	 * @param msg 
 	 */
-	public void stop();
+	public void stop(String msg);
 	
 
 	/**

@@ -196,9 +196,6 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	public void read() {
 		try {
 			BufferedImage bufImg = MJpegHelper.getImage(curFrame);
-			for (ImageListener listener : this.imageListeners) {
-				listener.onRead(this, bufImg);
-			}
 			frameCount++;
 			fpscountIn++;
 			frameAvailable = false;
@@ -224,6 +221,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			}
 			// do not render images that are "too quick/too early"
 			if (framemillisecs>=this.fpsLimitMillis) {
+				for (ImageListener listener : this.imageListeners) {
+					listener.onRead(this, bufImg);
+				}
 				BufferedImage rotatedImage = this.getRotatedImage(bufImg, rotation);
 				viewer.renderNextImage(rotatedImage);
 				fpstime=now;
@@ -250,7 +250,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 * when disposing stop
 	 */
 	public void dispose() {
-		stop();
+		stop("disposing "+this);
 	}
 
 	/**

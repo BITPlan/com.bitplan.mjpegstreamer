@@ -82,7 +82,8 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	}
 
 	@Override
-	public void stop() {
+	public void stop(String msg) {
+		LOGGER.log(Level.INFO,msg);
 		setStopped(true);
 	}
 

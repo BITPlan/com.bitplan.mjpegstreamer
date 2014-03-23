@@ -183,8 +183,8 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	}
 
 	@Override
-	public void stop() {
-		this.showMessage("stopped");
+	public void stop(String msg) {
+		this.showMessage("stopped:"+msg);
 	}
 	
 	/**
@@ -217,7 +217,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	public void startStreaming() {
 		url = this.urlArea.getText();
 		if (runner != null) {
-			runner.stop();
+			runner.stop("stopping earlier runner");
 		}
 		try {
 			// runner = new MJpegReaderRunner1();
