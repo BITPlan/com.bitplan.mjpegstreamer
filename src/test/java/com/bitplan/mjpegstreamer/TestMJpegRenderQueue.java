@@ -9,7 +9,8 @@
  */
 package com.bitplan.mjpegstreamer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -17,7 +18,6 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.bitplan.mjpegstreamer.MJpegReaderRunner.DebugMode;
@@ -64,7 +64,7 @@ public class TestMJpegRenderQueue {
 		}
 		if (debug)
 			LOGGER.log(Level.INFO,"found "+count+" frames");
-		Assert.assertEquals(16,count);
+		assertTrue(count>=16);
 		
 	}
 }
