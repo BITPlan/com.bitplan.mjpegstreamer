@@ -22,6 +22,8 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	private boolean stopped = false;
 	private Queue<BufferedImage> imageBuffer = new ConcurrentLinkedQueue<BufferedImage>();
 
+	private long timeStamp;
+
 	/**
 	 * set the maximum size of the Queue
 	 * 
@@ -64,11 +66,11 @@ public class MJpegRenderQueue implements MJpegRenderer {
 		if (getImageBuffer().size() < maxSize)
 			getImageBuffer().add(jpegImg);
 		else {
-			//long newTimeStamp = System.currentTimeMillis();
-			//if (newTimeStamp - timeStamp > 2000) {
+			long newTimeStamp = System.currentTimeMillis();
+			if (newTimeStamp - timeStamp > 2000) {
 				LOGGER.log(Level.WARNING, "Buffer overrun for MJpegRenderQueue");
-			//	timeStamp = newTimeStamp;
-			//}
+				timeStamp = newTimeStamp;
+			}
 		}
 	}
 
