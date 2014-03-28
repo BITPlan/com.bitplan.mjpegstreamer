@@ -227,6 +227,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		case FPS:
 		case Verbose:
 			LOGGER.log(Level.WARNING, msg);
+			this.debugTrace(msg);
 			break;
 		default:
 		}
@@ -322,7 +323,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 */
 	public synchronized void stop(String msg) {
 		connected = false;
-		viewer.stop(msg);
+		if (viewer!=null)
+			viewer.stop(msg);
 	}
 
 

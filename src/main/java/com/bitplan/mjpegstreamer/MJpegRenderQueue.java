@@ -24,6 +24,8 @@ public class MJpegRenderQueue implements MJpegRenderer {
 
 	private long timeStamp;
 
+	private MJpegReaderRunner runner;
+
 	/**
 	 * set the maximum size of the Queue
 	 * 
@@ -86,9 +88,20 @@ public class MJpegRenderQueue implements MJpegRenderer {
 
 	@Override
 	public void stop(String msg) {
-		LOGGER.log(Level.INFO,msg);
-		setStarted(false);
-		setStopped(true);
+		// idempotent - will not stop twice (would end in an endless loop)
+		if (!stopped) {
+			msg="stopped by renderqueue: "+msg+" queue size is "+this.imageBuffer.size();
+			LOGGER.log(Level.INFO,msg);
+			setStarted(false);
+			setStopped(true);
+			if (runner!=null)
+				runner.stop(msg);
+			/*try {
+				runner.join();
+			} catch (InterruptedException e) {
+				LOGGER.log(Level.WARNING,e.getMessage());
+			}*/
+		}
 	}
 
 	/**
@@ -103,6 +116,14 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	 */
 	public void setStopped(boolean stopped) {
 		this.stopped = stopped;
+	}
+
+	/**
+	 * remember my runner 
+	 * @param runner
+	 */
+	public void setRunner(MJpegReaderRunner runner) {
+		this.runner=runner;
 	}
 
 }
