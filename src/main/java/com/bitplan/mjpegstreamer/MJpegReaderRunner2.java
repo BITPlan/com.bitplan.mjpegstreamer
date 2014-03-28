@@ -120,7 +120,8 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 				}
 				prev = cur;
 			}
-			stop("end of inputstream at frame "+super.frameCount+" after "+this.elapsedTimeMillisecs()+" msecs "+this);
+			// end of input stream reached
+			stop("end of inputstream "+inputStream.getClass().getSimpleName()+" at frame "+super.frameCount+" after "+this.elapsedTimeMillisecs()+" msecs "+this);
 		} catch (IOException e) {
 			handle("I/O Error: ",e);
 		}

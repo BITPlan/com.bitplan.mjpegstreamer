@@ -94,8 +94,8 @@ public class MJpegRenderQueue implements MJpegRenderer {
 			LOGGER.log(Level.INFO,msg);
 			setStarted(false);
 			setStopped(true);
-			if (runner!=null)
-				runner.stop(msg);
+			//if (runner!=null)
+			//	runner.stop(msg);
 			/*try {
 				runner.join();
 			} catch (InterruptedException e) {
