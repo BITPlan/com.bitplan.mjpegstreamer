@@ -25,7 +25,7 @@ public class MJpegViewer extends JPanel {
 	/**
 	 * current Version of the tool
 	 */
-	public static final String VERSION = "0.0.2";
+	public static final String VERSION = "0.0.3";
 
 	@Option(name = "-d", aliases = { "--debug" }, usage = "debug\nadds debugging output")
 	boolean debug = false;
@@ -45,6 +45,9 @@ public class MJpegViewer extends JPanel {
 	@Option(name = "-s", aliases = { "--start" }, usage = "auto start\nstart streaming immediately")
 	boolean autoStart=false;
 
+	@Option(name = "-ac", aliases = { "--autoclose" }, usage = "auto close\nclose when stream is finished")
+	boolean autoClose=false;
+
 	@Option(name = "-t", aliases = { "--title" }, usage = "title\ntitle to be used")
 	String title = "MJpegViewer";
 	
@@ -61,6 +64,22 @@ public class MJpegViewer extends JPanel {
 	private static CmdLineParser parser;
 	public static int exitCode;
 
+	private static MJpegViewer viewer;
+
+
+	/**
+	 * @return the autoClose
+	 */
+	public boolean isAutoClose() {
+		return autoClose;
+	}
+
+	/**
+	 * @param autoClose the autoClose to set
+	 */
+	public void setAutoClose(boolean autoClose) {
+		this.autoClose = autoClose;
+	}
 
 	/**
 	 * @return the readTimeOut
@@ -226,7 +245,7 @@ public class MJpegViewer extends JPanel {
 	 */
 	public ViewPanel setupViewPanel() throws Exception {
 		viewPanel = new ViewPanel();			
-		viewPanel.setup(title, url, autoStart,readTimeOut,rotation,overlay,debug);
+		viewPanel.setup(title, url, autoStart,readTimeOut,rotation,overlay,debug,autoClose);
 		return viewPanel;
 	}
 	
@@ -266,7 +285,7 @@ public class MJpegViewer extends JPanel {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		MJpegViewer viewer = new MJpegViewer();
+		viewer = new MJpegViewer();
 		int result = viewer.maininstance(args);
 		if (!testMode && result != 0)
 			System.exit(result);

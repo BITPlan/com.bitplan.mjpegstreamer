@@ -49,28 +49,28 @@ public class TestCommandLine {
 
 	@Test
 	public void testCameraUrl() throws InterruptedException {
-		String[] args = { "-u", "http://cam2/mjpeg.cgi", "--start" };
+		String[] args = { "-u", "http://cam2/mjpeg.cgi", "--start", "--autoclose" };
 		testMJpegStreamer(args, 0, 1250);
 	}
 
 	@Test
 	public void testFileUrl() throws InterruptedException {
 		URL movieUrl = ClassLoader.getSystemResource("testmovie/movie.mjpg");
-		String[] args = { "-u", movieUrl.toExternalForm(), "--start" };
+		String[] args = { "-u", movieUrl.toExternalForm(), "--start", "--autoclose" };
 		testMJpegStreamer(args, 0, 1000);
 	}
 	
 	@Test
 	public void testRotation() throws InterruptedException {
 		URL movieUrl = ClassLoader.getSystemResource("testmovie/movie.mjpg");
-		String[] args = { "-u", movieUrl.toExternalForm(), "--start", "--rotation","90"};
+		String[] args = { "-u", movieUrl.toExternalForm(), "--start", "--autoclose", "--rotation","90"};
 		testMJpegStreamer(args, 0, 1000);
 	}
 	
 	@Test
 	public void testOverlay() throws InterruptedException {
 		URL movieUrl = ClassLoader.getSystemResource("testmovie/movie.mjpg");
-		String[] args = { "-u", movieUrl.toExternalForm(), "--start", "--overlay","--rotation","90"};
+		String[] args = { "-u", movieUrl.toExternalForm(), "--start", "--autoclose", "--overlay","--rotation","90"};
 		testMJpegStreamer(args, 0, 1000);
 		assertTrue(RectangleOverlay.counter>0);
 	}
@@ -125,7 +125,7 @@ public class TestCommandLine {
 		java.lang.Process p1 = rt.exec("/opt/local/bin/gphoto2 --capture-movie=10 --stdout");
 		System.setIn(p1.getInputStream());
 		// getPipeContent(System.in,debug);
-		String[] args = { "-u", "-", "--start" };
+		String[] args = { "-u", "-", "--start", "--autoclose" };
 		testMJpegStreamer(args, 0, 5000);
 	}
 

@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 
 
+
 // JDK 8
 // import java.util.Base64;
 import org.apache.commons.codec.binary.Base64;
@@ -61,15 +62,29 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	private int fpsIn;
 
 	// how many milliseconds to wait for next frame to limit fps
-	private int fpsLimitMillis=1;
+	private int fpsLimitMillis=0;
 	private int fpsOut;
 	protected boolean connected = false;
+	private int maxFrames=Integer.MAX_VALUE;
 
 	/**
 	 * @return the connected
 	 */
 	public boolean isConnected() {
 		return connected;
+	}
+	
+	/**
+	 * @return the maxFrames
+	 */
+	@Override
+	public int getMaxFrames() {
+		return maxFrames;
+	}
+	
+	@Override
+	public void setMaxFrames(int maxFrames) {
+		this.maxFrames=maxFrames;
 	}
 
 	/**
@@ -106,9 +121,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		this.debugMode = debugMode;
 	}
 
-	// read time out
+	// input buffers size (14 msecs at 568 x 768)
 	public static int INPUT_BUFFER_SIZE = 8192*2;
-	
 	
 	/**
 	 * show a debug Trace
@@ -169,7 +183,6 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		} catch (IOException ioe) {
 			handle("Unable to connect: ", ioe);
 		}
-		connected=true;
 		return result;
 	}
 
@@ -177,6 +190,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 * connect
 	 */
 	public void connect() {
+		connected=true;
 		// if inputStream has been set - keep it!
 		if (inputStream != null)
 			return;
@@ -253,7 +267,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	/**
 	 * read
 	 */
-	public void read() {
+	public boolean read() {
 		try {
 			BufferedImage bufImg = MJpegHelper.getImage(curFrame);
 			if (frameCount==0) {
@@ -297,11 +311,11 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 
 			switch (debugMode) {
 			case Verbose:
-				LOGGER.log(Level.INFO, "frame=" + frameCount+" after "+framemillisecs+" msecs - total "+this.elapsedTimeMillisecs()+" msecs");
+				LOGGER.log(Level.INFO, "frame " + frameCount+"/"+maxFrames+" after "+framemillisecs+" msecs - total "+this.elapsedTimeMillisecs()+" msecs");
 				break;
 			case FPS:
 				if (fpssecond==now)
-					LOGGER.log(Level.INFO, "frame=" + frameCount+" ("+framemillisecs+" msecs) "+fpsIn+"/"+fpsOut+" Frames per second in/out - total "+this.elapsedTimeMillisecs()+" msecs");
+					LOGGER.log(Level.INFO, "frame=" + frameCount+"/"+maxFrames+" ("+framemillisecs+" msecs) "+fpsIn+"/"+fpsOut+" Frames per second in/out - total "+this.elapsedTimeMillisecs()+" msecs");
 				break;
 			case None:
 				break;
@@ -309,6 +323,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		} catch (IOException e) {
 			handle("Error acquiring the frame: ", e);
 		}
+		return fpscountOut<this.maxFrames;
 	}
 
 	/**
@@ -326,7 +341,6 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		if (viewer!=null)
 			viewer.stop(msg);
 	}
-
 
 	/**
 	 * add an imageListener

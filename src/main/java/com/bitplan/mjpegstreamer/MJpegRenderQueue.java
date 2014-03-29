@@ -1,13 +1,10 @@
 package com.bitplan.mjpegstreamer;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.bitplan.mjpegstreamer.MJpegReaderRunner.DebugMode;
 
 
 /**

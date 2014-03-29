@@ -89,8 +89,9 @@ public interface MJpegReaderRunner extends Runnable {
 	
 	/**
 	 * read image from current frame buffer
+	 * @return true if reading may continue
 	 */
-	public void read();
+	public boolean read();
 
 	/**
 	 * add an imageListener
@@ -119,6 +120,18 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @param readTimeOut the readTimeOut to set
 	 */
 	public void setReadTimeOut(int readTimeOut);
+	
+	/**
+	 * maximum number of Frames to render
+	 * @param maxFrames
+	 */
+	public void setMaxFrames(int maxFrames);
+	
+	/**
+	 * get the number of Frames to read
+	 * @return
+	 */
+	public int getMaxFrames();
 	
 	/**
 	 * wait until my stream is read

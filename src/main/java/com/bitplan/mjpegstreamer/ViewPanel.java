@@ -7,8 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -52,6 +50,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	private JButton settingsButton;
 	private int rotation;
 	private boolean overlay;
+	private boolean autoClose;
 
 	/**
 	 * set the Buffered Image
@@ -137,13 +136,15 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 * @param rotation 
 	 * @param overlay
 	 * @param debug
+	 * @param autoClose 
 	 * @throws Exception TODO
 	 */
-	public void setup(String title, String url, boolean autoStart, int readTimeOut, int rotation, boolean overlay, boolean debug)
+	public void setup(String title, String url, boolean autoStart, int readTimeOut, int rotation, boolean overlay, boolean debug, boolean autoClose)
 			throws Exception {
 		this.rotation=rotation;
 		this.readTimeOut=readTimeOut;
 		this.debug = debug;
+		this.autoClose=autoClose;
 		this.overlay = overlay;
 		BufferedImage bg = getBufferedImage("/images/screen640x480.png");
 		if (bg!=null)
@@ -187,6 +188,8 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	@Override
 	public void stop(String msg) {
 		this.showMessage("stopped:"+msg);
+		if (autoClose)
+			this.close();
 	}
 	
 	/**

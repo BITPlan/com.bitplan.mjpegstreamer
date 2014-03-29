@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-
+import java.util.logging.Level;
 
 /**
  * Alternative MJpegRunner implementation
@@ -27,15 +27,23 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 	public MJpegReaderRunner2() {
 		
 	}
-	
+
 	/**
-	 * create and init me
-	 * @param viewer
-	 * @param inputStream
-	 * @throws IOException 
+	 * create a reader runner with the given parameters
+	 * @param rotation
+	 * @param readTimeOut
+	 * @param readTimeOut 
+	 * @param debugMode
+	 * @param imageListener
 	 */
-	public MJpegReaderRunner2(MJpegRenderer viewer, InputStream inputStream) throws IOException {
-		init(viewer,inputStream);
+	public void init(int rotation, int pictureCount, int readTimeOut, DebugMode debugMode,
+			ImageListener imageListener) {
+		setRotation(rotation);
+		setReadTimeOut(readTimeOut);
+		this.setMaxFrames(pictureCount);
+		setDebugMode(debugMode);
+		if (imageListener!=null)
+			addImageListener(imageListener);
 	}
 
 	/**
@@ -71,7 +79,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 	/**
 	 * stop reading
 	 */
-	public void stop(String msg) {
+	public synchronized void stop(String msg) {
 		try {
 			if (jpgOut!=null)
 				jpgOut.close();
@@ -89,19 +97,30 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 		  super.debugTrace("stop with msg: "+msg);
 		super.stop(msg);
 	}
+	
+	/**
+	 * get a debug message with current time
+	 * @return
+	 */
+	public String getTimeMsg() {
+		String timeMsg=inputStream.getClass().getSimpleName()+" at frame "+super.frameCount+" after "+this.elapsedTimeMillisecs()+" msecs "+this;
+		return timeMsg;
+	}
 
 	/**
 	 * run me
 	 */
 	public void run() {
 		connect();
-		
+		if (!connected)
+			throw new IllegalStateException("connection lost immediately after connect");
 		int prev = 0;
 		int cur = 0;
 
 		try {
 			// EOF is -1
-			while (inputStream != null && (cur = inputStream.read()) >= 0) {
+			readloop:
+			while (connected && (inputStream != null) && ((cur = inputStream.read()) >= 0)) {
 				if (prev == 0xFF && cur == 0xD8) {
 					jpgOut = new ByteArrayOutputStream(INPUT_BUFFER_SIZE);
 					jpgOut.write((byte) prev);
@@ -115,15 +134,23 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 					}
 					frameAvailable = true;
 					jpgOut.close();
-					// the image is now available
-					read();
+					// the image is now available - read it and check if we reached the limit
+					// e.g. maxFrameCount
+					synchronized(curFrame) {
+						connected=read();
+					}
+					LOGGER.log(Level.INFO,this.getTimeMsg());
+					if (!connected) {
+						break readloop;
+					}
 				}
 				prev = cur;
 			}
 			// end of input stream reached
-			stop("end of inputstream "+inputStream.getClass().getSimpleName()+" at frame "+super.frameCount+" after "+this.elapsedTimeMillisecs()+" msecs "+this);
+			String msg="end of inputstream "+this.getTimeMsg();
+			stop(msg);
 		} catch (IOException e) {
-			handle("I/O Error: ",e);
+			handle("I/O Error "+this.getTimeMsg()+":",e);
 		}
 	}
 	
