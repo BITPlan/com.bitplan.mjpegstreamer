@@ -210,6 +210,22 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	private int readTimeOut;
 
 	/**
+	 * start Streaming with the given runner
+	 * @param runner
+	 * @return
+	 */
+	public MJpegReaderRunner startStreaming(MJpegReaderRunner runner) {
+		runner.setRotation(rotation);
+		runner.setReadTimeOut(readTimeOut);
+		if (debug)
+			runner.setDebugMode(DebugMode.FPS);
+		if (overlay)
+			runner.addImageListener(new RectangleOverlay(50,50,50,50,Color.BLUE));
+		runner.start();
+		return runner;		
+	}
+	
+	/**
 	 * start the streaming
 	 * @return the runner
 	 */
@@ -222,13 +238,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 			// runner = new MJpegReaderRunner1();
 			runner = new MJpegReaderRunner2();
 			runner.init(this, url, null, null);
-			runner.setRotation(rotation);
-			runner.setReadTimeOut(readTimeOut);
-			if (debug)
-				runner.setDebugMode(DebugMode.FPS);
-			if (overlay)
-				runner.addImageListener(new RectangleOverlay(50,50,50,50,Color.BLUE));
-			runner.start();
+			this.startStreaming(runner);
 		} catch (Exception ex) {
 			handle(ex);
 		}

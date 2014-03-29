@@ -1,10 +1,13 @@
 package com.bitplan.mjpegstreamer;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.bitplan.mjpegstreamer.MJpegReaderRunner.DebugMode;
 
 
 /**
@@ -21,9 +24,7 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	protected boolean started = false;
 	private boolean stopped = false;
 	private Queue<BufferedImage> imageBuffer = new ConcurrentLinkedQueue<BufferedImage>();
-
 	private long timeStamp;
-
 	private MJpegReaderRunner runner;
 
 	/**
@@ -117,13 +118,16 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	public void setStopped(boolean stopped) {
 		this.stopped = stopped;
 	}
-
+	
 	/**
-	 * remember my runner 
+	 * start Streaming with the given runner
 	 * @param runner
+	 * @return
 	 */
-	public void setRunner(MJpegReaderRunner runner) {
+	public MJpegReaderRunner startStreaming(MJpegReaderRunner runner) {
 		this.runner=runner;
+		runner.start();
+		return runner;		
 	}
 
 }

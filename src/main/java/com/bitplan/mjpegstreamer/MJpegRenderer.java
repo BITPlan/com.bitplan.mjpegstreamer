@@ -33,5 +33,12 @@ public interface MJpegRenderer {
 	 * @param msg
 	 */
 	void showMessage(String msg);
+	
+	/**
+	 * start Streaming with the given runner
+	 * @param runner
+	 * @return
+	 */
+	public MJpegReaderRunner startStreaming(MJpegReaderRunner runner);
 
 }
