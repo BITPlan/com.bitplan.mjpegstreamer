@@ -38,7 +38,9 @@ public class TestMJpegRenderQueue {
 		URL movieUrl = ClassLoader.getSystemResource("testmovie/movie.mjpg");
 		MJpegReaderRunner runner = new MJpegReaderRunner2();
 		MJpegRenderQueue renderQueue = new MJpegRenderQueue(1000);
-		runner.init(renderQueue, movieUrl.toExternalForm(), null, null);
+		runner.init(movieUrl.toExternalForm(), null, null);
+		renderQueue.getViewerSetting().pictureCount=51;
+		runner.setViewer(renderQueue);
 		boolean debug = true;
 		runner.start();
 		long timeout = System.currentTimeMillis() + 20000;

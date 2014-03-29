@@ -243,7 +243,8 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 		try {
 			// runner = new MJpegReaderRunner1();
 			runner = new MJpegReaderRunner2();
-			runner.init(this, url, null, null);
+			runner.init(url, null, null);
+			runner.setViewer(this);
 			this.startStreaming(runner);
 		} catch (Exception ex) {
 			handle(ex);

@@ -32,20 +32,19 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 	 * @param pass
 	 * @throws IOException
 	 */
-	public void init(MJpegRenderer viewer, String urlString, String user,
+	public void init(String urlString, String user,
 			String pass) throws IOException {
 		this.urlString=urlString;
 		this.user=user;
 		this.pass=pass;
-		init(viewer,null);
+		init(null);
 	}
 
 	@Override
-	public void init(MJpegRenderer viewer, InputStream inputStream)
+	public void init(InputStream inputStream)
 			throws IOException {
 		if (inputStream!=null)
 			this.inputStream=new BufferedInputStream(inputStream);
-		this.viewer = viewer;
 		stringWriter = new StringWriter(128);
 	}
 	

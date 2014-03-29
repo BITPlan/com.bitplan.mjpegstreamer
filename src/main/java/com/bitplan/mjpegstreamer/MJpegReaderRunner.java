@@ -10,16 +10,15 @@ import java.io.InputStream;
  * http://www.gdcl.co.uk/2013/05/02/Motion-JPEG.html
  */
 public interface MJpegReaderRunner extends Runnable {
-	
+		
 	/**
 	 * initialize
-	 * @param viewer
 	 * @param urlString
 	 * @param user
 	 * @param pass
 	 * @throws IOException 
 	 */
-	public void init(MJpegRenderer viewer, String urlString, String user,
+	public void init(String urlString, String user,
 			String pass) throws IOException;
 
 	/**
@@ -28,8 +27,20 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @param inputStream
 	 * @throws IOException 
 	 */
-	public void init(MJpegRenderer viewer, InputStream inputStream) throws IOException;
-		
+	public void init(InputStream inputStream) throws IOException;
+	
+	/**
+	 * set the viewer
+	 * @param viewer
+	 */
+	public void setViewer(MJpegRenderer viewer);
+	
+	/**
+	 * get teh viewer
+	 * @return
+	 */
+	public MJpegRenderer getViewer();
+
 	/**
 	 * connect
 	 * set the inputStream (only if it has not been set via init)
