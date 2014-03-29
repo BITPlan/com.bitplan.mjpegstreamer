@@ -236,7 +236,10 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 * @return
 	 */
 	public String getTimeMsg(String msg) {
-		String timeMsg=inputStream.getClass().getSimpleName()+" at frame "+frameCount+"/"+viewer.getViewerSetting().pictureCount+msg+" total="+this.elapsedTimeMillisecs()+" msecs "+this;
+		String streamName="?";
+		if (inputStream!=null)
+			streamName=inputStream.getClass().getSimpleName();
+		String timeMsg=streamName+" at frame "+frameCount+"/"+viewer.getViewerSetting().pictureCount+msg+" total="+this.elapsedTimeMillisecs()+" msecs "+this;
 		return timeMsg;
 	}
 	

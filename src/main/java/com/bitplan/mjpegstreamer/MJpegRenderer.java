@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
  */
 public interface MJpegRenderer {
 
-	
 	/**
 	 * initialize the Renderer with DebugMode None
 	 */

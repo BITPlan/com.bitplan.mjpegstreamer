@@ -102,12 +102,10 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 				if (prev == 0xFF && cur == 0xD9) {
 					synchronized (curFrame) {
 						curFrame = jpgOut.toByteArray();
-					}
-					frameAvailable = true;
-					jpgOut.close();
-					// the image is now available - read it and check if we reached the limit
-					// e.g. maxFrameCount
-					synchronized(curFrame) {
+						frameAvailable = true;
+						jpgOut.close();
+						// the image is now available - read it and check if we reached the limit
+						// e.g. maxFrameCount
 						connected=read();
 					}
 					LOGGER.log(Level.INFO,this.getTimeMsg());
