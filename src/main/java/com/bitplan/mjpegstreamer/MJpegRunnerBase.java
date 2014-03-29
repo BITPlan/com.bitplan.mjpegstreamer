@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 
 
+
 // JDK 8
 // import java.util.Base64;
 import org.apache.commons.codec.binary.Base64;
@@ -265,6 +266,24 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	}
 	
 	/**
+	 * get a debug message with current time
+	 * @return
+	 */
+	public String getTimeMsg(String msg) {
+		String timeMsg=inputStream.getClass().getSimpleName()+" at frame "+frameCount+"/"+maxFrames+msg+" total="+this.elapsedTimeMillisecs()+" msecs "+this;
+		return timeMsg;
+	}
+	
+	/**
+	 * get a time debugging message
+	 * @return
+	 */
+	public String getTimeMsg() {
+		return getTimeMsg("");
+	}
+
+	
+	/**
 	 * read
 	 */
 	public boolean read() {
@@ -311,11 +330,11 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 
 			switch (debugMode) {
 			case Verbose:
-				LOGGER.log(Level.INFO, "frame " + frameCount+"/"+maxFrames+" after "+framemillisecs+" msecs - total "+this.elapsedTimeMillisecs()+" msecs");
+				LOGGER.log(Level.INFO, this.getTimeMsg("after "+framemillisecs+" msecs"));
 				break;
 			case FPS:
 				if (fpssecond==now)
-					LOGGER.log(Level.INFO, "frame=" + frameCount+"/"+maxFrames+" ("+framemillisecs+" msecs) "+fpsIn+"/"+fpsOut+" Frames per second in/out - total "+this.elapsedTimeMillisecs()+" msecs");
+					LOGGER.log(Level.INFO, this.getTimeMsg("after "+framemillisecs+" msecs "+fpsIn+"/"+fpsOut+" Frames per second in/out "));
 				break;
 			case None:
 				break;

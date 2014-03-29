@@ -99,15 +99,6 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 	}
 	
 	/**
-	 * get a debug message with current time
-	 * @return
-	 */
-	public String getTimeMsg() {
-		String timeMsg=inputStream.getClass().getSimpleName()+" at frame "+super.frameCount+" after "+this.elapsedTimeMillisecs()+" msecs "+this;
-		return timeMsg;
-	}
-
-	/**
 	 * run me
 	 */
 	public void run() {
