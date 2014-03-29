@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import com.bitplan.mjpegstreamer.MJpegReaderRunner.DebugMode;
+import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 
 /**
  * View Panel
@@ -43,14 +43,25 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	private JPanel urlPanel;
 	private JPanel bottomPanel;
 	private ImageIcon imageIcon = new ImageIcon();
-	private boolean debug = false;
 	private JButton startButton;
 	private JButton rotateButton;
 	private JPanel buttonPanel;
 	private JButton settingsButton;
-	private int rotation;
-	private boolean overlay;
-	private boolean autoClose;
+	private ViewerSetting viewerSetting=new ViewerSetting();
+
+	/**
+	 * @return the viewerSetting
+	 */
+	public ViewerSetting getViewerSetting() {
+		return viewerSetting;
+	}
+
+	/**
+	 * @param viewerSetting the viewerSetting to set
+	 */
+	public void setViewerSetting(ViewerSetting viewerSetting) {
+		this.viewerSetting = viewerSetting;
+	}
 
 	/**
 	 * set the Buffered Image
@@ -129,7 +140,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 * setup the ViewPanel
 	 * 
 	 * @param title
-	 * @param url
+	 * @param overlay
 	 * @param autoStart
 	 *          -if true start the streaming
 	 * @param readTimeOut
@@ -139,13 +150,12 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 * @param autoClose 
 	 * @throws Exception TODO
 	 */
-	public void setup(String title, String url, boolean autoStart, int readTimeOut, int rotation, boolean overlay, boolean debug, boolean autoClose)
+	public void setup(String url, boolean overlay, boolean debug)
 			throws Exception {
-		this.rotation=rotation;
-		this.readTimeOut=readTimeOut;
-		this.debug = debug;
-		this.autoClose=autoClose;
-		this.overlay = overlay;
+		if (overlay)
+			viewerSetting.imageListener=new RectangleOverlay(50,50,50,50,Color.BLUE);
+		if (debug)
+			viewerSetting.debugMode=DebugMode.Verbose;
 		BufferedImage bg = getBufferedImage("/images/screen640x480.png");
 		if (bg!=null)
 			setBufferedImage(bg);
@@ -174,8 +184,8 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 
 		add(label, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
-		createFrame(title);
-		if (autoStart) {
+		createFrame(viewerSetting.title);
+		if (viewerSetting.autoStart) {
 			this.startStreaming();
 		}
 	}
@@ -188,7 +198,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	@Override
 	public void stop(String msg) {
 		this.showMessage("stopped:"+msg);
-		if (autoClose)
+		if (viewerSetting.autoClose)
 			this.close();
 	}
 	
@@ -210,7 +220,6 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	}
 
 	MJpegReaderRunner runner;
-	private int readTimeOut;
 
 	/**
 	 * start Streaming with the given runner
@@ -218,12 +227,6 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 * @return
 	 */
 	public MJpegReaderRunner startStreaming(MJpegReaderRunner runner) {
-		runner.setRotation(rotation);
-		runner.setReadTimeOut(readTimeOut);
-		if (debug)
-			runner.setDebugMode(DebugMode.FPS);
-		if (overlay)
-			runner.addImageListener(new RectangleOverlay(50,50,50,50,Color.BLUE));
 		runner.start();
 		return runner;		
 	}
@@ -260,11 +263,11 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 		if ("start".equals(cmd)) {
 			startStreaming();
 		} else if ("rotate".equals(cmd)) {
-			int rotation = runner.getRotation();
+			int rotation = this.getViewerSetting().rotation;
 			rotation+=90;
 			if (rotation >= 360)
 				rotation = 0;
-			runner.setRotation(rotation);
+			this.getViewerSetting().rotation=rotation;
 			BufferedImage rotateButtonIcon;
 			try {
 				rotateButtonIcon = getBufferedImage(ViewPanel.ROTATE_BUTTON_ICON_PATH);

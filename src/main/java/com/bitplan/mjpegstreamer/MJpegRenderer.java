@@ -40,5 +40,15 @@ public interface MJpegRenderer {
 	 * @return
 	 */
 	public MJpegReaderRunner startStreaming(MJpegReaderRunner runner);
+	
+	/**
+	 * @return the viewerSetting
+	 */
+	public ViewerSetting getViewerSetting();
+
+	/**
+	 * @param viewerSetting the viewerSetting to set
+	 */
+	public void setViewerSetting(ViewerSetting viewerSetting);
 
 }

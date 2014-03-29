@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
-import com.bitplan.mjpegstreamer.MJpegReaderRunner.DebugMode;
-
 /**
  * test the MJpegRenderQueue
  * 
@@ -42,8 +40,6 @@ public class TestMJpegRenderQueue {
 		MJpegRenderQueue renderQueue = new MJpegRenderQueue(1000);
 		runner.init(renderQueue, movieUrl.toExternalForm(), null, null);
 		boolean debug = true;
-		runner.setDebugMode(DebugMode.FPS);
-		runner.setFPSLimit(15);
 		runner.start();
 		long timeout = System.currentTimeMillis() + 20000;
 		int count=0;
@@ -65,6 +61,5 @@ public class TestMJpegRenderQueue {
 		if (debug)
 			LOGGER.log(Level.INFO,"found "+count+" frames");
 		assertTrue(count>=11);
-		
 	}
 }

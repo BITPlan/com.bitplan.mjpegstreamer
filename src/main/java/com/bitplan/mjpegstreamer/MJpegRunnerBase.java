@@ -31,7 +31,7 @@ import org.apache.commons.codec.binary.Base64;
 public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	protected static Logger LOGGER = Logger
 			.getLogger("com.bitplan.mjpegstreamer");
-	protected static boolean debug=false;
+	protected static boolean debug=true;
 
 	protected MJpegRenderer viewer;
 	protected String urlString, user, pass;
@@ -54,9 +54,6 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	private Thread streamReader;
 	protected URLConnection conn;
 	// constants
-	public DebugMode debugMode = DebugMode.None;
-	private int rotation = 0;
-	private int readTimeOut;
 	public List<ImageListener> imageListeners = new ArrayList<ImageListener>();
 
 	// current frame per second
@@ -66,7 +63,6 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	private int fpsLimitMillis=0;
 	private int fpsOut;
 	protected boolean connected = false;
-	private int maxFrames=Integer.MAX_VALUE;
 
 	/**
 	 * @return the connected
@@ -75,65 +71,19 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		return connected;
 	}
 	
-	/**
-	 * @return the maxFrames
-	 */
-	@Override
-	public int getMaxFrames() {
-		return maxFrames;
-	}
-	
-	@Override
-	public void setMaxFrames(int maxFrames) {
-		this.maxFrames=maxFrames;
-	}
-
-	/**
-	 * @return the readTimeOut
-	 */
-	public int getReadTimeOut() {
-		return readTimeOut;
-	}
-
-	/**
-	 * @param readTimeOut the readTimeOut to set
-	 */
-	public void setReadTimeOut(int readTimeOut) {
-		this.readTimeOut = readTimeOut;
-	}
-
-	/**
-	 * @return the rotation
-	 */
-	public int getRotation() {
-		return rotation;
-	}
-
-	/**
-	 * @param rotation
-	 *          the rotation to set
-	 */
-	public void setRotation(int rotation) {
-		this.rotation = rotation;
-	}
-
-	@Override
-	public void setDebugMode(DebugMode debugMode) {
-		this.debugMode = debugMode;
-	}
-
 	// input buffers size (14 msecs at 568 x 768)
 	public static int INPUT_BUFFER_SIZE = 8192*2;
 	
 	/**
 	 * show a debug Trace
 	 * @param msg
+	 * @param source -the source Object
 	 */
-	public void debugTrace(String msg) {
+	public static void debugTrace(String msg, Object source) {
 		try {
 			throw new Exception("force stack trace");
 		} catch (Exception e) {
-			System.err.println("debug trace for "+this+":"+msg);
+			System.err.println("debug trace for "+source+":"+msg);
 			e.printStackTrace();
 		}		
 	}
@@ -176,7 +126,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 				conn.setRequestProperty("Authorization", "Basic " + encoded_credentials);
 			}
 			// change the timeout to taste, I like 1 second
-			conn.setReadTimeout(this.getReadTimeOut());
+			conn.setReadTimeout(viewer.getViewerSetting().readTimeOut);
 			conn.connect();
 			result = new BufferedInputStream(conn.getInputStream(), INPUT_BUFFER_SIZE);
 		} catch (MalformedURLException e) {
@@ -205,9 +155,11 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 * start reading
 	 */
 	public synchronized void start() {
+		viewer.init();
+		if ((viewer.getViewerSetting().imageListener)!=null)
+			this.addImageListener(viewer.getViewerSetting().imageListener);
 		this.streamReader = new Thread(this, "Stream reader");
 		streamReader.start();
-		viewer.init();
 		fpscountIn=0;
 		fpscountOut=0;
 	}
@@ -238,11 +190,11 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 */
 	public void handle(String title, Exception e) {
 		String msg = title + e.getMessage();
-		switch (debugMode) {
+		switch (viewer.getViewerSetting().debugMode) {
 		case FPS:
 		case Verbose:
 			LOGGER.log(Level.WARNING, msg);
-			this.debugTrace(msg);
+			debugTrace(msg,this);
 			break;
 		default:
 		}
@@ -270,7 +222,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 * @return
 	 */
 	public String getTimeMsg(String msg) {
-		String timeMsg=inputStream.getClass().getSimpleName()+" at frame "+frameCount+"/"+maxFrames+msg+" total="+this.elapsedTimeMillisecs()+" msecs "+this;
+		String timeMsg=inputStream.getClass().getSimpleName()+" at frame "+frameCount+"/"+viewer.getViewerSetting().pictureCount+msg+" total="+this.elapsedTimeMillisecs()+" msecs "+this;
 		return timeMsg;
 	}
 	
@@ -322,13 +274,13 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 				for (ImageListener listener : this.imageListeners) {
 					listener.onRead(this, bufImg);
 				}
-				BufferedImage rotatedImage = this.getRotatedImage(bufImg, rotation);
+				BufferedImage rotatedImage = this.getRotatedImage(bufImg, viewer.getViewerSetting().rotation);
 				viewer.renderNextImage(rotatedImage);
 				fpsFrameNanoTime=now;
 				fpscountOut++;
 			}
 
-			switch (debugMode) {
+			switch (viewer.getViewerSetting().debugMode) {
 			case Verbose:
 				LOGGER.log(Level.INFO, this.getTimeMsg("after "+framemillisecs+" msecs"));
 				break;
@@ -342,7 +294,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		} catch (IOException e) {
 			handle("Error acquiring the frame: ", e);
 		}
-		return fpscountOut<this.maxFrames;
+		return fpscountOut<viewer.getViewerSetting().pictureCount;
 	}
 
 	/**

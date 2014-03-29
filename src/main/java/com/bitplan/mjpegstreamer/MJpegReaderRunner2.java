@@ -29,24 +29,6 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 	}
 
 	/**
-	 * create a reader runner with the given parameters
-	 * @param rotation
-	 * @param readTimeOut
-	 * @param readTimeOut 
-	 * @param debugMode
-	 * @param imageListener
-	 */
-	public void init(int rotation, int pictureCount, int readTimeOut, DebugMode debugMode,
-			ImageListener imageListener) {
-		setRotation(rotation);
-		setReadTimeOut(readTimeOut);
-		this.setMaxFrames(pictureCount);
-		setDebugMode(debugMode);
-		if (imageListener!=null)
-			addImageListener(imageListener);
-	}
-
-	/**
 	 * create a MJpegRunner
 	 * 
 	 * @param parent
@@ -72,8 +54,8 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 		this.frameAvailable = false;		
 		if (inputStream!=null)
 			this.inputStream=new BufferedInputStream(inputStream);
-		if (debug)
-			debugTrace("init called");
+		//if (debug)
+		//	debugTrace("init called");
 	}
 	
 	/**
@@ -94,7 +76,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 			httpcon.disconnect();
 		}
 		if (debug)
-		  super.debugTrace("stop with msg: "+msg);
+		  debugTrace("stop with msg: "+msg,this);
 		super.stop(msg);
 	}
 	

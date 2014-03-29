@@ -244,8 +244,14 @@ public class MJpegViewer extends JPanel {
 	 * @throws Exception
 	 */
 	public ViewPanel setupViewPanel() throws Exception {
-		viewPanel = new ViewPanel();			
-		viewPanel.setup(title, url, autoStart,readTimeOut,rotation,overlay,debug,autoClose);
+		viewPanel = new ViewPanel();		
+		ViewerSetting s = viewPanel.getViewerSetting();
+		s.title=title;
+		s.autoStart=autoStart;
+		s.readTimeOut=readTimeOut;
+		s.rotation=rotation;
+		s.autoClose=autoClose;
+		viewPanel.setup(url, overlay,debug);
 		return viewPanel;
 	}
 	

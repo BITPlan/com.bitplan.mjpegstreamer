@@ -24,6 +24,8 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	private long timeStamp;
 	private MJpegReaderRunner runner;
 
+	private ViewerSetting viewerSetting=new ViewerSetting();
+
 	/**
 	 * set the maximum size of the Queue
 	 * 
@@ -88,8 +90,9 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	public void stop(String msg) {
 		// idempotent - will not stop twice (would end in an endless loop)
 		if (!stopped) {
-			msg="stopped by renderqueue: "+msg+" queue size is "+this.imageBuffer.size();
+			msg="stop of renderqueue: "+msg+" queue size is "+this.imageBuffer.size();
 			LOGGER.log(Level.INFO,msg);
+			MJpegRunnerBase.debugTrace(msg, this);
 			setStarted(false);
 			setStopped(true);
 			//if (runner!=null)
@@ -123,8 +126,19 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	 */
 	public MJpegReaderRunner startStreaming(MJpegReaderRunner runner) {
 		this.runner=runner;
+		LOGGER.log(Level.INFO,"streaming started");
 		runner.start();
 		return runner;		
+	}
+
+	@Override
+	public ViewerSetting getViewerSetting() {
+		return viewerSetting;
+	}
+
+	@Override
+	public void setViewerSetting(ViewerSetting viewerSetting) {
+		this.viewerSetting=viewerSetting;
 	}
 
 }

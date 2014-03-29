@@ -11,8 +11,7 @@ import java.io.InputStream;
  */
 public interface MJpegReaderRunner extends Runnable {
 	
-	public enum DebugMode{None,FPS,Verbose};
-	/*
+	/**
 	 * initialize
 	 * @param viewer
 	 * @param urlString
@@ -30,12 +29,6 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @throws IOException 
 	 */
 	public void init(MJpegRenderer viewer, InputStream inputStream) throws IOException;
-	
-	/**
-	 * set my debug mode
-	 * @param debugMode the debug to set
-	 */
-	public void setDebugMode(DebugMode debugMode);
 		
 	/**
 	 * connect
@@ -67,16 +60,6 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @return
 	 */
 	public boolean isConnected();
-	
-	/**
-	 * @return the rotation
-	 */
-	public int getRotation();
-
-	/**
-	 * @param rotation the rotation to set
-	 */
-	public void setRotation(int rotation);
 
 	/**
 	 * get a rotated image
@@ -98,12 +81,6 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @param listener
 	 */
 	public void addImageListener(ImageListener listener);
-
-	/**
-	 * limit the number of frames per second
-	 * @param fpsLimit e.g. 10 for one frame each 100 millisecs, 0.5 for one frame each 2000 millisecs
-	 */
-	public void setFPSLimit(double fpsLimit);
 	
 	/**
 	 * retrieve the number of milliseconds the reader has run so far
@@ -111,28 +88,6 @@ public interface MJpegReaderRunner extends Runnable {
 	 */
 	public long elapsedTimeMillisecs();
 
-	/**
-	 * @return the readTimeOut
-	 */
-	public int getReadTimeOut();
-
-	/**
-	 * @param readTimeOut the readTimeOut to set
-	 */
-	public void setReadTimeOut(int readTimeOut);
-	
-	/**
-	 * maximum number of Frames to render
-	 * @param maxFrames
-	 */
-	public void setMaxFrames(int maxFrames);
-	
-	/**
-	 * get the number of Frames to read
-	 * @return
-	 */
-	public int getMaxFrames();
-	
 	/**
 	 * wait until my stream is read
 	 * @throws InterruptedException 
