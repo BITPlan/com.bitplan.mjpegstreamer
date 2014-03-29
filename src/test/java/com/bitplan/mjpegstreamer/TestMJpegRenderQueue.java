@@ -9,8 +9,7 @@
  */
 package com.bitplan.mjpegstreamer;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -43,7 +42,7 @@ public class TestMJpegRenderQueue {
 		runner.setViewer(renderQueue);
 		boolean debug = true;
 		runner.start();
-		long timeout = System.currentTimeMillis() + 20000;
+		long timeout = System.currentTimeMillis() + 2000;
 		int count=0;
 		while (System.currentTimeMillis() < timeout) {
 			if (renderQueue.isStarted()) {
@@ -62,6 +61,6 @@ public class TestMJpegRenderQueue {
 		}
 		if (debug)
 			LOGGER.log(Level.INFO,"found "+count+" frames");
-		assertTrue(count>=11);
+		assertEquals(renderQueue.getViewerSetting().pictureCount,count);
 	}
 }
