@@ -22,7 +22,6 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	private boolean stopped = false;
 	private Queue<BufferedImage> imageBuffer = new ConcurrentLinkedQueue<BufferedImage>();
 	private long timeStamp;
-	private MJpegReaderRunner runner;
 
 	private ViewerSetting viewerSetting=new ViewerSetting();
 
@@ -117,18 +116,6 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	 */
 	public void setStopped(boolean stopped) {
 		this.stopped = stopped;
-	}
-	
-	/**
-	 * start Streaming with the given runner
-	 * @param runner
-	 * @return
-	 */
-	public MJpegReaderRunner startStreaming(MJpegReaderRunner runner) {
-		this.runner=runner;
-		LOGGER.log(Level.INFO,"streaming started");
-		runner.start();
-		return runner;		
 	}
 
 	@Override
