@@ -24,6 +24,22 @@ public class MJpegRenderQueue implements MJpegRenderer {
 
 	private ViewerSetting viewerSetting = new ViewerSetting();
 
+	private boolean active=true;
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	/**
 	 * set the maximum size of the Queue
 	 * 
@@ -65,6 +81,8 @@ public class MJpegRenderQueue implements MJpegRenderer {
 
 	@Override
 	public void renderNextImage(BufferedImage jpegImg) {
+		if (!active)
+			return;
 		if (getImageBuffer().size() < maxSize)
 			getImageBuffer().add(jpegImg);
 		else {
