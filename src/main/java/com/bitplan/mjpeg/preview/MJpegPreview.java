@@ -20,4 +20,12 @@ public class MJpegPreview extends PreviewBase {
 		viewer = new MJpegRenderQueue(QUEUE_SIZE);
 		runner.setViewer(viewer);
 	}
+
+	/**
+	 * get the render queue
+	 * @return
+	 */
+	public MJpegRenderQueue getRenderQueue() {
+		return (MJpegRenderQueue) viewer;
+	}
 }
