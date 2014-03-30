@@ -14,7 +14,7 @@ public class ViewerSetting {
 		int pictureCount=Integer.MAX_VALUE; // when to stop - pictureCount*fpsLimit gives the number of seconds to run
 		int fpsLimit=50;                    // maximum number of Frames per seconds
 		int previewTime;
-		int readTimeOut=100;
+		int readTimeOut=3000;
 		DebugMode debugMode=DebugMode.None;
 		ImageListener imageListener=null;
 		boolean autoClose=false;

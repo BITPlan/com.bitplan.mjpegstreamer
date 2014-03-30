@@ -5,7 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.util.logging.Level;
+
+import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 
 /**
  * Alternative MJpegRunner implementation
@@ -73,7 +74,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 			HttpURLConnection httpcon=(HttpURLConnection) conn;
 			httpcon.disconnect();
 		}
-		if (debug)
+		if (viewer!=null &viewer.getViewerSetting().debugMode==DebugMode.Verbose)
 		  debugTrace("stop with msg: "+msg,this);
 		super.stop(msg);
 	}
@@ -108,7 +109,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 					// the image is now available - read it and check if we reached the limit
 					// e.g. maxFrameCount
 					connected=read();
-					LOGGER.log(Level.INFO,this.getTimeMsg());
+					// LOGGER.log(Level.INFO,this.getTimeMsg());
 					if (!connected) {
 						break readloop;
 					}

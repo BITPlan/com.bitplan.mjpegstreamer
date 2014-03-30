@@ -6,6 +6,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
+
 
 /**
  * 
@@ -89,9 +91,17 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	public void stop(String msg) {
 		// idempotent - will not stop twice (would end in an endless loop)
 		if (!stopped) {
-			msg="stop of renderqueue: "+msg+" queue size is "+this.imageBuffer.size();
-			LOGGER.log(Level.INFO,msg);
-			MJpegRunnerBase.debugTrace(msg, this);
+			switch (viewerSetting.getDebugMode()) {
+			case Verbose:
+				MJpegRunnerBase.debugTrace(msg, this);
+			break;
+			case FPS:
+				msg="stop of renderqueue: "+msg+" queue size is "+this.imageBuffer.size();
+				LOGGER.log(Level.INFO,msg);
+				break;
+			default:
+				break;
+		}
 			setStarted(false);
 			setStopped(true);
 			//if (runner!=null)

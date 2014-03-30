@@ -18,9 +18,15 @@ import java.util.logging.Logger;
 
 
 
+
+
+
 // JDK 8
 // import java.util.Base64;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.exception.ExceptionUtils;
+
+import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 
 /**
  * base class for MJPegRunners
@@ -31,7 +37,6 @@ import org.apache.commons.codec.binary.Base64;
 public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	protected static Logger LOGGER = Logger
 			.getLogger("com.bitplan.mjpegstreamer");
-	protected static boolean debug=true;
 
 	protected MJpegRenderer viewer;
 	protected String urlString, user, pass;
@@ -170,15 +175,15 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 * start reading
 	 */
 	public synchronized void start() {
-		viewer.init();
-		if ((viewer.getViewerSetting().imageListener)!=null)
-			this.addImageListener(viewer.getViewerSetting().imageListener);
-		this.streamReader = new Thread(this, "Stream reader");
-		streamReader.start();
 		framesReadCount=0;
 		framesRenderedCount=0;
 		fpscountIn=0;
 		fpscountOut=0;
+		if ((viewer.getViewerSetting().imageListener)!=null)
+			this.addImageListener(viewer.getViewerSetting().imageListener);
+		viewer.init();
+		this.streamReader = new Thread(this, "Stream reader");
+		streamReader.start();
 	}
 	
 	/**
@@ -203,15 +208,18 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 * handle the given exception with the given title
 	 * 
 	 * @param title
-	 * @param e
+	 * @param th
 	 */
-	public void handle(String title, Exception e) {
-		String msg = title + e.getMessage();
-		switch (viewer.getViewerSetting().debugMode) {
+	public void handle(String title, Throwable th) {
+		String msg = title + th.getMessage();
+		DebugMode debugMode = viewer.getViewerSetting().debugMode;
+		switch (debugMode) {
 		case FPS:
 		case Verbose:
 			LOGGER.log(Level.WARNING, msg);
-			debugTrace(msg,this);
+			LOGGER.log(Level.WARNING,ExceptionUtils.getStackTrace(th));
+			if (debugMode==DebugMode.Verbose)
+				debugTrace(msg,this);
 			break;
 		default:
 		}
@@ -260,8 +268,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 */
 	public boolean read() {
 		try {
-			BufferedImage bufImg = MJpegHelper.getImage(curFrame);
-			if (bufImg==null) {
+		  BufferedImage bufImg = MJpegHelper.getImage(curFrame);
+  		if (bufImg==null) {
 				throw new IOException("image is null");
 			}
 			if (framesReadCount==0) {
@@ -316,8 +324,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			case None:
 				break;
 			}
-		} catch (IOException e) {
-			handle("Error acquiring the frame: ", e);
+		} catch (Throwable th) {
+			handle("Error acquiring the frame: ", th);
 		}
 		return framesRenderedCount<viewer.getViewerSetting().pictureCount;
 	}

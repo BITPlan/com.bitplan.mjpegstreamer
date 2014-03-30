@@ -9,15 +9,17 @@
  */
 package com.bitplan.mjpegstreamer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.Test;
+
+import com.bitplan.mjpeg.preview.MJpegPreview;
+import com.bitplan.mjpeg.preview.Preview;
+import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 
 /**
  * test the MJpegRenderQueue
@@ -26,41 +28,89 @@ import org.junit.Test;
  * 
  */
 public class TestMJpegRenderQueue {
-	protected static Logger LOGGER = Logger.getLogger("com.bitplan.mjpegstreamer");
+	protected static Logger LOGGER = Logger
+			.getLogger("com.bitplan.mjpegstreamer");
+	public static int count;
+
 	/**
-	 * test the Render Queue
-	 * 
-	 * @throws IOException
+	 * check the preview
+	 * @param url
+	 * @param frames
+	 * @throws Exception 
+	 */
+	private void checkPreview(String url, int frames) throws Exception {
+		checkPreview(url,null,null,frames);
+	}
+	
+	/**
+	 * check the preview
+	 * @param url
+	 * @param user
+	 * @param pass
+	 * @param frames
+	 * @throws Exception 
+	 */
+	public void checkPreview(String url,String user,String pass, int frames) throws Exception {
+		LOGGER.log(Level.INFO, "reading from url " + url);
+		Preview preview = new MJpegPreview();
+		preview.getRunner().init(url, user, pass);
+		ViewerSetting settings = preview.getViewer().getViewerSetting();
+		settings.setPictureCount(frames);
+		// settings.setDebugMode(DebugMode.Verbose);
+		settings.setDebugMode(DebugMode.FPS);
+		ImageListener listener = new ImageListener() {
+
+			@Override
+			public void onRead(Object context, BufferedImage image) {
+				count++;
+			}
+
+		};
+		preview.getRunner().addImageListener(listener);
+		count = 0;
+		preview.start();
+		preview.getRunner().join();
+		boolean debug = true;
+		/*
+		 * long timeout = System.currentTimeMillis() + 2000; int count=0; while
+		 * (System.currentTimeMillis() < timeout) { if (renderQueue.isStarted()) {
+		 * BufferedImage image; while ((image =
+		 * renderQueue.getImageBuffer().poll()) != null) { count++;
+		 * assertNotNull(image); } if (renderQueue.isStopped()) break; try {
+		 * Thread.sleep(1); } catch (InterruptedException e) { } } }
+		 */
+		if (debug)
+			LOGGER.log(Level.INFO, "found " + count + " frames");
+		assertEquals(settings.pictureCount, count);
+	}
+	/**
+	 * authorized access
+	 * @throws Exception 
 	 */
 	@Test
-	public void testMJPegRenderQueue() throws IOException {
-		URL movieUrl = ClassLoader.getSystemResource("testmovie/movie.mjpg");
-		MJpegReaderRunner runner = new MJpegReaderRunner2();
-		MJpegRenderQueue renderQueue = new MJpegRenderQueue(1000);
-		runner.init(movieUrl.toExternalForm(), null, null);
-		renderQueue.getViewerSetting().pictureCount=51;
-		runner.setViewer(renderQueue);
-		boolean debug = true;
-		runner.start();
-		long timeout = System.currentTimeMillis() + 2000;
-		int count=0;
-		while (System.currentTimeMillis() < timeout) {
-			if (renderQueue.isStarted()) {
-				BufferedImage image;
-				while ((image = renderQueue.getImageBuffer().poll()) != null) {
-					count++;
-					assertNotNull(image);
-				}
-				if (renderQueue.isStopped())
-					break;
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-				}
-			}
-		}
-		if (debug)
-			LOGGER.log(Level.INFO,"found "+count+" frames");
-		assertEquals(renderQueue.getViewerSetting().pictureCount,count);
+	public void testAuthorization() throws Exception {
+		String user="test";
+		String pass="test-2014-03-30";
+		// String url="http://cam1/videostream.cgi";
+		String url="http://cam2/mjpeg.cgi";
+		checkPreview(url,user,pass,10);
 	}
+	
+	
+	/**
+	 * test the Preview
+	 * @throws Exception
+	 */
+	@Test
+	public void testPreview() throws Exception {
+		String urls[] = {
+				ClassLoader.getSystemResource("testmovie/movie.mjpg").toExternalForm(),
+				"http://cam2/mjpeg.cgi", "http://2.0.0.75:8080/video" };
+		int frames[] = { 51, 11, 11 };
+		int index = 0;
+		for (String url : urls) {
+			checkPreview(url,frames[index++]);
+		}
+	}
+	
 }
