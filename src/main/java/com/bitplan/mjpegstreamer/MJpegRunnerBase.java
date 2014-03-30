@@ -315,10 +315,15 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			// do not render images that are "too quick/too early"
 			if (framemillisecs>=this.fpsLimitMillis) {
 				for (ImageListener listener : this.imageListeners) {
-					listener.onRead(this, bufImg);
+					if (!listener.isPostListener())
+						listener.onRead(this, bufImg);
 				}
 				BufferedImage rotatedImage = this.getRotatedImage(bufImg, viewer.getViewerSetting().rotation);
 				viewer.renderNextImage(rotatedImage);
+				for (ImageListener listener : this.imageListeners) {
+					if (listener.isPostListener())
+						listener.onRead(this, rotatedImage);
+				}
 				// how many frames we acutally displayed
 				framesRenderedCount++;
 				fpsFrameNanoTime=now;

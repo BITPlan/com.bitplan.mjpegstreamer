@@ -60,4 +60,9 @@ public class RectangleOverlay implements ImageListener {
 		counter++;
 	}
 
+	@Override
+	public boolean isPostListener() {
+		return false;
+	}
+
 }

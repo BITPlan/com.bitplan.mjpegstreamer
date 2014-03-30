@@ -9,5 +9,5 @@ import java.awt.image.BufferedImage;
  */
 public interface ImageListener {
 	public void onRead(Object context,BufferedImage image);
-
+  public boolean isPostListener();
 }

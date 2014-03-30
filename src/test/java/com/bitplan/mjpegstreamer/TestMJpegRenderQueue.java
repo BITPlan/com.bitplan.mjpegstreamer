@@ -69,6 +69,12 @@ public class TestMJpegRenderQueue {
 				count++;
 			}
 
+			@Override
+			public boolean isPostListener() {
+				return true;
+			}
+			
+
 		};
 		preview.getRunner().addImageListener(listener);
 		count = 0;
