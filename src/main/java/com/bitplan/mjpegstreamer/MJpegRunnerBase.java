@@ -258,6 +258,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	public boolean read() {
 		try {
 			BufferedImage bufImg = MJpegHelper.getImage(curFrame);
+			if (bufImg==null) {
+				throw new IOException("image is null");
+			}
 			if (frameCount==0) {
 				this.firstFrameNanoTime=System.nanoTime();
 				this.fpsFrameNanoTime=firstFrameNanoTime;
@@ -299,11 +302,11 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 
 			switch (viewer.getViewerSetting().debugMode) {
 			case Verbose:
-				LOGGER.log(Level.INFO, this.getTimeMsg("after "+framemillisecs+" msecs"));
+				LOGGER.log(Level.INFO, this.getTimeMsg(" after "+framemillisecs+" msecs"));
 				break;
 			case FPS:
 				if (fpssecond==now)
-					LOGGER.log(Level.INFO, this.getTimeMsg("after "+framemillisecs+" msecs "+fpsIn+"/"+fpsOut+" Frames per second in/out "));
+					LOGGER.log(Level.INFO, this.getTimeMsg(" after "+framemillisecs+" msecs "+fpsIn+"/"+fpsOut+" Frames per second in/out "));
 				break;
 			case None:
 				break;
