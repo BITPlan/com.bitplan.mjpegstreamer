@@ -19,6 +19,7 @@ public class ViewerSetting {
 		ImageListener imageListener=null;
 		boolean autoClose=false;
 		boolean autoStart=false;
+		
 		/**
 		 * @return the title
 		 */

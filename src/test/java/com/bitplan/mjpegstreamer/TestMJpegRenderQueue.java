@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import org.junit.Test;
 
 import com.bitplan.mjpeg.preview.MJpegPreview;
+import com.bitplan.mjpeg.preview.MJpegSwingPreview;
 import com.bitplan.mjpeg.preview.Preview;
 import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 
@@ -31,28 +32,31 @@ public class TestMJpegRenderQueue {
 	protected static Logger LOGGER = Logger
 			.getLogger("com.bitplan.mjpegstreamer");
 	public static int count;
+	Preview preview;
 
 	/**
 	 * check the preview
+	 * 
 	 * @param url
 	 * @param frames
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void checkPreview(String url, int frames) throws Exception {
-		checkPreview(url,null,null,frames);
+		checkPreview(url, null, null, frames);
 	}
-	
+
 	/**
 	 * check the preview
+	 * 
 	 * @param url
 	 * @param user
 	 * @param pass
 	 * @param frames
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void checkPreview(String url,String user,String pass, int frames) throws Exception {
+	public void checkPreview(String url, String user, String pass, int frames)
+			throws Exception {
 		LOGGER.log(Level.INFO, "reading from url " + url);
-		Preview preview = new MJpegPreview();
 		preview.getRunner().init(url, user, pass);
 		ViewerSetting settings = preview.getViewer().getViewerSetting();
 		settings.setPictureCount(frames);
@@ -74,31 +78,33 @@ public class TestMJpegRenderQueue {
 		/*
 		 * long timeout = System.currentTimeMillis() + 2000; int count=0; while
 		 * (System.currentTimeMillis() < timeout) { if (renderQueue.isStarted()) {
-		 * BufferedImage image; while ((image =
-		 * renderQueue.getImageBuffer().poll()) != null) { count++;
-		 * assertNotNull(image); } if (renderQueue.isStopped()) break; try {
-		 * Thread.sleep(1); } catch (InterruptedException e) { } } }
+		 * BufferedImage image; while ((image = renderQueue.getImageBuffer().poll())
+		 * != null) { count++; assertNotNull(image); } if (renderQueue.isStopped())
+		 * break; try { Thread.sleep(1); } catch (InterruptedException e) { } } }
 		 */
 		if (debug)
 			LOGGER.log(Level.INFO, "found " + count + " frames");
 		assertEquals(settings.pictureCount, count);
 	}
+
 	/**
 	 * authorized access
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	public void testAuthorization() throws Exception {
-		String user="test";
-		String pass="test-2014-03-30";
+		String user = "test";
+		String pass = "test-2014-03-30";
 		// String url="http://cam1/videostream.cgi";
-		String url="http://cam2/mjpeg.cgi";
-		checkPreview(url,user,pass,10);
+		String url = "http://cam2/mjpeg.cgi";
+		preview = new MJpegPreview();
+		checkPreview(url, user, pass, 10);
 	}
-	
-	
+
 	/**
 	 * test the Preview
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -109,8 +115,12 @@ public class TestMJpegRenderQueue {
 		int frames[] = { 51, 11, 11 };
 		int index = 0;
 		for (String url : urls) {
-			checkPreview(url,frames[index++]);
+			Preview[] previews = {  new MJpegSwingPreview(),new MJpegPreview() };
+			for (Preview lpreview : previews) {
+				preview = lpreview;
+				checkPreview(url, frames[index]);
+			}
+			index++;
 		}
-	}
-	
+	} // testPreview
 }

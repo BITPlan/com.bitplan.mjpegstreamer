@@ -31,6 +31,7 @@ public interface Preview {
 	
 	/**
 	 * start the preview
+	 * @throws Exception 
 	 */
-	public void start();
+	public void start() throws Exception;
 }

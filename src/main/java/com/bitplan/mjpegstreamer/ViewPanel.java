@@ -1,7 +1,6 @@
 package com.bitplan.mjpegstreamer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -17,8 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
-import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 
 /**
  * View Panel
@@ -137,25 +134,12 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	}
 
 	/**
-	 * setup the ViewPanel
-	 * 
-	 * @param title
-	 * @param overlay
-	 * @param autoStart
-	 *          -if true start the streaming
-	 * @param readTimeOut
-	 * @param rotation 
-	 * @param overlay
-	 * @param debug
-	 * @param autoClose 
-	 * @throws Exception TODO
+	 * setup the viewPanel
+	 * @param url
+	 * @throws Exception
 	 */
-	public void setup(String url, boolean overlay, boolean debug)
+	public void setup(String url)
 			throws Exception {
-		if (overlay)
-			viewerSetting.imageListener=new RectangleOverlay(50,50,50,50,Color.BLUE);
-		if (debug)
-			viewerSetting.debugMode=DebugMode.Verbose;
 		BufferedImage bg = getBufferedImage("/images/screen640x480.png");
 		if (bg!=null)
 			setBufferedImage(bg);

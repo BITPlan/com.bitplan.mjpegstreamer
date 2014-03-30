@@ -4,7 +4,7 @@ import com.bitplan.mjpegstreamer.MJpegReaderRunner2;
 import com.bitplan.mjpegstreamer.MJpegRenderQueue;
 
 /**
- * a preview
+ * a preview that uses a Render Queue
  * @author wf
  *
  */

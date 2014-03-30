@@ -22,6 +22,12 @@ public interface MJpegReaderRunner extends Runnable {
 			String pass) throws IOException;
 
 	/**
+	 * get the urlString that was set by init (if any)
+	 * @return
+	 */
+	public String getUrlString();
+	
+	/**
 	 * initialize
 	 * @param viewer
 	 * @param inputStream

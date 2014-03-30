@@ -1,5 +1,7 @@
 package com.bitplan.mjpeg.preview;
 
+import java.util.logging.Logger;
+
 import com.bitplan.mjpegstreamer.MJpegReaderRunner;
 import com.bitplan.mjpegstreamer.MJpegRenderer;
 
@@ -9,6 +11,7 @@ import com.bitplan.mjpegstreamer.MJpegRenderer;
  *
  */
 public class PreviewBase  implements Preview {
+	protected Logger LOGGER=Logger.getLogger("com.bitplan.mjpeg.preview");
 	protected MJpegRenderer viewer;
 	protected MJpegReaderRunner runner;
 
@@ -40,7 +43,7 @@ public class PreviewBase  implements Preview {
 	}
 
 	@Override
-	public void start() {
+	public void start() throws Exception {
 		runner.start();
 	}
 }

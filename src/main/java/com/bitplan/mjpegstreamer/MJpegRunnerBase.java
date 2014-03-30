@@ -85,6 +85,13 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	}
 
 	/**
+	 * @return the urlString
+	 */
+	public String getUrlString() {
+		return urlString;
+	}
+
+	/**
 	 * @return the connected
 	 */
 	public boolean isConnected() {

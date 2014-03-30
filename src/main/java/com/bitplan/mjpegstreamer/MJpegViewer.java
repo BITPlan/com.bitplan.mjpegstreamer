@@ -3,11 +3,15 @@
  */
 package com.bitplan.mjpegstreamer;
 
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+
+import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 
 /**
  * Viewer for MJPeg
@@ -57,7 +61,7 @@ public class MJpegViewer extends JPanel {
 	@Option(name = "-v", aliases = { "--version" }, usage = "showVersion\nshow current version if this switch is used")
 	boolean showVersion = false;
 
-	private ViewPanel viewPanel;
+	private ViewPanel viewPanel = new ViewPanel();
 
 	public static boolean testMode = false;
 
@@ -244,14 +248,17 @@ public class MJpegViewer extends JPanel {
 	 * @throws Exception
 	 */
 	public ViewPanel setupViewPanel() throws Exception {
-		viewPanel = new ViewPanel();		
 		ViewerSetting s = viewPanel.getViewerSetting();
 		s.title=title;
 		s.autoStart=autoStart;
 		s.readTimeOut=readTimeOut;
 		s.rotation=rotation;
 		s.autoClose=autoClose;
-		viewPanel.setup(url, overlay,debug);
+		if (overlay)
+			s.imageListener=new RectangleOverlay(50,50,50,50,Color.BLUE);
+		if (debug)
+			s.debugMode=DebugMode.Verbose;
+		viewPanel.setup(url);
 		return viewPanel;
 	}
 	
