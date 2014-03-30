@@ -119,6 +119,8 @@ public class TestMJpegRenderQueue {
 			for (Preview lpreview : previews) {
 				preview = lpreview;
 				checkPreview(url, frames[index]);
+				// Wait a bit before next test
+				Thread.sleep(150);
 			}
 			index++;
 		}

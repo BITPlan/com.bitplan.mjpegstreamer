@@ -9,6 +9,9 @@ import java.net.URL;
 import org.junit.Test;
 
 import com.bitplan.executil.Piper;
+import com.bitplan.grabdevice.cmd.CmdLine.StreamResult;
+import com.bitplan.grabdevice.cmd.GPhoto2;
+import com.bitplan.grabdevice.cmd.GPhoto2.CameraMode;
 
 
 /**
@@ -118,12 +121,10 @@ public class TestCommandLine {
 
 	@Test
 	public void testStdIn() throws Exception {
-		//SystemCommandExecutor exec = SystemCommandExecutor.getExecutor("ls");
-		//exec.executeCommand();
-		java.lang.Runtime rt = java.lang.Runtime.getRuntime();
-		// Start two processes: ps ax | grep rbe
-		java.lang.Process p1 = rt.exec("/opt/local/bin/gphoto2 --capture-movie=10 --stdout");
-		System.setIn(p1.getInputStream());
+		int pictureCount=10;
+		StreamResult cameraStream = GPhoto2.getCameraStream(CameraMode.preview, pictureCount);
+		assertEquals(0,cameraStream.exitCode);
+		System.setIn(cameraStream.stream);
 		// getPipeContent(System.in,debug);
 		String[] args = { "-u", "-", "--start", "--autoclose" };
 		testMJpegStreamer(args, 0, 5000);

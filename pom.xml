@@ -11,6 +11,12 @@
 	<name>mjpegstreamer</name>
 	<description>MJPeg Streamer</description>
 	<dependencies>
+		<!-- GrabDevices -->
+		<dependency>
+			<groupId>com.bitplan.grabdevice</groupId>
+			<artifactId>com.bitplan.grabdevice</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<!-- apache commons codec (e.g. Base64) -->
 		<dependency>
 			<groupId>commons-codec</groupId>

@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.logging.Level;
 
 import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 
@@ -70,11 +71,18 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 		} catch (IOException e) {
 			handle("Error closing streams: ", e);
 		}
+		DebugMode debugMode=DebugMode.None;
+		if (viewer!=null)
+			debugMode=viewer.getViewerSetting().debugMode;
+		if (debugMode==DebugMode.Verbose)
+			LOGGER.log(Level.INFO,"stopping connection "+conn.getClass().getName());
 		if (conn instanceof HttpURLConnection) {
 			HttpURLConnection httpcon=(HttpURLConnection) conn;
+			if (debugMode==DebugMode.Verbose)
+				LOGGER.log(Level.INFO,"disconnecting "+this.getUrlString());
 			httpcon.disconnect();
 		}
-		if (viewer!=null &viewer.getViewerSetting().debugMode==DebugMode.Verbose)
+		if (debugMode==DebugMode.Verbose)
 		  debugTrace("stop with msg: "+msg,this);
 		super.stop(msg);
 	}
