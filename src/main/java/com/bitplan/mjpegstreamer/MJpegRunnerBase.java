@@ -70,6 +70,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	private int fpsOut;
 	protected boolean connected = false;
 
+	private long now;
+
 	/**
 	 * @return the viewer
 	 */
@@ -144,7 +146,10 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	public BufferedInputStream openConnection() {
 		BufferedInputStream result = null;
 		try {
+			ViewerSetting s = viewer.getViewerSetting();
 			url = new URL(urlString);
+			if (s.debugMode!=DebugMode.None)
+				LOGGER.log(Level.INFO,"url: "+urlString+" readTimeOut: "+s.readTimeOut+" msecs");
 			conn = url.openConnection();
 			if (user != null) {
 				String credentials = user + ":" + pass;
@@ -153,7 +158,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 				conn.setRequestProperty("Authorization", "Basic " + encoded_credentials);
 			}
 			// change the timeout to taste, I like 1 second
-			conn.setReadTimeout(viewer.getViewerSetting().readTimeOut);
+			conn.setReadTimeout(s.readTimeOut);
 			conn.connect();
 			result = new BufferedInputStream(conn.getInputStream(), INPUT_BUFFER_SIZE);
 		} catch (MalformedURLException e) {
@@ -244,7 +249,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 * @return
 	 */
 	public long elapsedTimeMillisecs() {
-		long elapsed = this.fpsFrameNanoTime-this.firstFrameNanoTime;
+		long elapsed = this.now-this.firstFrameNanoTime;
 		long result = TimeUnit.MILLISECONDS.convert(elapsed, TimeUnit.NANOSECONDS);
 		return result;
 	}
@@ -292,7 +297,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			// image= viewer.getBufferedImage("/images/start.png");
       // viewer.repaint();
 			// Frame per second calculation
-			long now = System.nanoTime(); 
+			now = System.nanoTime(); 
 			// how many nanosecs since last frame?
 			long elapsedFrameTime = now - fpsFrameNanoTime;
 			// how many nanosecs since last second timestamp

@@ -6,26 +6,23 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
-
-
 /**
  * 
- * @author wf inspired by
- *         http://stackoverflow.com/questions/12669368/java-how-
+ * @author wf inspired by http://stackoverflow.com/questions/12669368/java-how-
  *         to-extend-inputstream-to-read-from-a-jtextfield
  */
 public class MJpegRenderQueue implements MJpegRenderer {
-	protected static Logger LOGGER = Logger.getLogger("com.bitplan.mjpegstreamer");
-	
+	protected static Logger LOGGER = Logger
+			.getLogger("com.bitplan.mjpegstreamer");
+
 	int maxSize;
-	//private long timeStamp = 0;
+	// private long timeStamp = 0;
 	protected boolean started = false;
 	private boolean stopped = false;
 	private Queue<BufferedImage> imageBuffer = new ConcurrentLinkedQueue<BufferedImage>();
 	private long timeStamp;
 
-	private ViewerSetting viewerSetting=new ViewerSetting();
+	private ViewerSetting viewerSetting = new ViewerSetting();
 
 	/**
 	 * set the maximum size of the Queue
@@ -44,12 +41,13 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	}
 
 	/**
-	 * @param started the started to set
+	 * @param started
+	 *          the started to set
 	 */
 	public void setStarted(boolean started) {
 		this.started = started;
 	}
-	
+
 	/**
 	 * @return the imageBuffer
 	 */
@@ -58,12 +56,13 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	}
 
 	/**
-	 * @param imageBuffer the imageBuffer to set
+	 * @param imageBuffer
+	 *          the imageBuffer to set
 	 */
 	public void setImageBuffer(Queue<BufferedImage> imageBuffer) {
 		this.imageBuffer = imageBuffer;
 	}
-	
+
 	@Override
 	public void renderNextImage(BufferedImage jpegImg) {
 		if (getImageBuffer().size() < maxSize)
@@ -94,23 +93,16 @@ public class MJpegRenderQueue implements MJpegRenderer {
 			switch (viewerSetting.getDebugMode()) {
 			case Verbose:
 				MJpegRunnerBase.debugTrace(msg, this);
-			break;
 			case FPS:
-				msg="stop of renderqueue: "+msg+" queue size is "+this.imageBuffer.size();
-				LOGGER.log(Level.INFO,msg);
+				msg = "stop of renderqueue: " + msg + " queue size is "
+						+ this.imageBuffer.size();
+				LOGGER.log(Level.INFO, msg);
 				break;
 			default:
 				break;
-		}
+			}
 			setStarted(false);
 			setStopped(true);
-			//if (runner!=null)
-			//	runner.stop(msg);
-			/*try {
-				runner.join();
-			} catch (InterruptedException e) {
-				LOGGER.log(Level.WARNING,e.getMessage());
-			}*/
 		}
 	}
 
@@ -122,7 +114,8 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	}
 
 	/**
-	 * @param stopped the stopped to set
+	 * @param stopped
+	 *          the stopped to set
 	 */
 	public void setStopped(boolean stopped) {
 		this.stopped = stopped;
@@ -135,7 +128,7 @@ public class MJpegRenderQueue implements MJpegRenderer {
 
 	@Override
 	public void setViewerSetting(ViewerSetting viewerSetting) {
-		this.viewerSetting=viewerSetting;
+		this.viewerSetting = viewerSetting;
 	}
 
 }

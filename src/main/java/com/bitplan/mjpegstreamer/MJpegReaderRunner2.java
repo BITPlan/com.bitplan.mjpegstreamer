@@ -72,7 +72,7 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 		DebugMode debugMode = DebugMode.None;
 		if (viewer != null)
 			debugMode = viewer.getViewerSetting().debugMode;
-		if (debugMode == DebugMode.Verbose)
+		if ((debugMode == DebugMode.Verbose) && (conn!=null))
 			LOGGER
 					.log(Level.INFO, "stopping connection " + conn.getClass().getName());
 		if (conn instanceof HttpURLConnection) {
