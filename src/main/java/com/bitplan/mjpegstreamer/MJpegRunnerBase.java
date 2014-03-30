@@ -41,7 +41,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	protected URL url;
 	protected byte[] curFrame;
 	// count each frame
-	protected int frameCount;
+	protected int framesReadCount;
+	protected int framesRenderedCount;
 	// count frames in last second for frame per second calculation
 	private int fpscountIn;
 	private int fpscountOut;
@@ -174,6 +175,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			this.addImageListener(viewer.getViewerSetting().imageListener);
 		this.streamReader = new Thread(this, "Stream reader");
 		streamReader.start();
+		framesReadCount=0;
+		framesRenderedCount=0;
 		fpscountIn=0;
 		fpscountOut=0;
 	}
@@ -239,7 +242,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		String streamName="?";
 		if (inputStream!=null)
 			streamName=inputStream.getClass().getSimpleName();
-		String timeMsg=streamName+" at frame "+frameCount+"/"+viewer.getViewerSetting().pictureCount+msg+" total="+this.elapsedTimeMillisecs()+" msecs "+this;
+		String timeMsg=streamName+" at frame "+framesReadCount+"->"+framesRenderedCount+"/"+viewer.getViewerSetting().pictureCount+msg+" total="+this.elapsedTimeMillisecs()+" msecs "+this;
 		return timeMsg;
 	}
 	
@@ -261,12 +264,12 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 			if (bufImg==null) {
 				throw new IOException("image is null");
 			}
-			if (frameCount==0) {
+			if (framesReadCount==0) {
 				this.firstFrameNanoTime=System.nanoTime();
 				this.fpsFrameNanoTime=firstFrameNanoTime;
 				this.fpssecond=fpsFrameNanoTime;
 			}
-			frameCount++;
+			framesReadCount++;
 			fpscountIn++;
 			frameAvailable = false;
 			
@@ -296,6 +299,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 				}
 				BufferedImage rotatedImage = this.getRotatedImage(bufImg, viewer.getViewerSetting().rotation);
 				viewer.renderNextImage(rotatedImage);
+				// how many frames we acutally displayed
+				framesRenderedCount++;
 				fpsFrameNanoTime=now;
 				fpscountOut++;
 			}
@@ -314,7 +319,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 		} catch (IOException e) {
 			handle("Error acquiring the frame: ", e);
 		}
-		return fpscountOut<viewer.getViewerSetting().pictureCount;
+		return framesRenderedCount<viewer.getViewerSetting().pictureCount;
 	}
 
 	/**
