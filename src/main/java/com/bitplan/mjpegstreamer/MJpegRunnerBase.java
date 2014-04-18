@@ -155,7 +155,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 				String credentials = user + ":" + pass;
 				Base64 base64 = getEncoder();
 				byte[] encoded_credentials = base64.encode(credentials.getBytes());
-				conn.setRequestProperty("Authorization", "Basic " + encoded_credentials);
+				String authStringEnc = new String(encoded_credentials);
+				// System.out.println("Base64 encoded auth string: " + authStringEnc);
+				conn.setRequestProperty("Authorization", "Basic " + authStringEnc);
 			}
 			// change the timeout to taste, I like 1 second
 			conn.setReadTimeout(s.readTimeOut);

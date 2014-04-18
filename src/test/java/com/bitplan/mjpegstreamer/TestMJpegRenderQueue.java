@@ -101,9 +101,9 @@ public class TestMJpegRenderQueue {
 	@Test
 	public void testAuthorization() throws Exception {
 		String user = "test";
-		String pass = "test-2014-03-30";
-		// String url="http://cam1/videostream.cgi";
-		String url = "http://cam2/mjpeg.cgi";
+		String pass = "tst20140330";
+		String url="http://cam1/videostream.cgi";
+		// String url = "http://cam2/mjpeg.cgi";
 		preview = new MJpegPreview();
 		checkPreview(url, user, pass, 10);
 	}
