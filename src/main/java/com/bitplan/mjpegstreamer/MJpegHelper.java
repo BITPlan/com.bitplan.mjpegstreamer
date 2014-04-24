@@ -66,6 +66,8 @@ public class MJpegHelper {
 	 * @return
 	 */
 	public static BufferedImage rotate180(BufferedImage inputImage) {
+		if (inputImage==null)
+		  return inputImage;
 		// We use BufferedImage because it’s provide methods for pixel manipulation
 		int width = inputImage.getWidth(); // the Width of the original image
 		int height = inputImage.getHeight();// the Height of the original image
