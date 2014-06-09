@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 
 
+
 // JDK 8
 // import java.util.Base64;
 import org.apache.commons.codec.binary.Base64;
@@ -47,6 +48,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	protected byte[] curFrame;
 	// count each frame
 	protected int framesReadCount;
+	
 	protected int framesRenderedCount;
 	// count frames in last second for frame per second calculation
 	private int fpscountIn;
@@ -91,6 +93,11 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	 */
 	public String getUrlString() {
 		return urlString;
+	}
+	
+	@Override
+	public int getFramesRead() {
+		return this.framesReadCount;
 	}
 
 	/**

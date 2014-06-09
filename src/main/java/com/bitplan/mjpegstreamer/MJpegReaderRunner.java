@@ -104,6 +104,12 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @return
 	 */
 	public long elapsedTimeMillisecs();
+	
+	/**
+	 * how many frames where read?
+	 * @return
+	 */
+	public int getFramesRead();
 
 	/**
 	 * wait until my stream is read
