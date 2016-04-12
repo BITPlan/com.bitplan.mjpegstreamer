@@ -19,7 +19,7 @@ import com.bitplan.executil.Piper;
  */
 public class TestCommandLine {
 
-  private boolean debug = true;
+  private boolean debug = false;
 
   /**
    * test the MJPegStreamer
