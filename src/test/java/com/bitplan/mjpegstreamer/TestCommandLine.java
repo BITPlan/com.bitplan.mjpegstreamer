@@ -34,7 +34,7 @@ public class TestCommandLine {
 	public void testMJpegStreamer(String args[], int expectedExit, int sleepTime) {
 		MJpegViewer.testMode = true;
 		MJpegViewer.main(args);
-		assertEquals("exitCode should be "+expectedExit, MJpegViewer.exitCode);
+		assertEquals("exitCode should be "+expectedExit,expectedExit, MJpegViewer.exitCode);
 		try {
 			Thread.sleep(sleepTime);
 		} catch (InterruptedException e) {
