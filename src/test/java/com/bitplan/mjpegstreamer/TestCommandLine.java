@@ -90,6 +90,7 @@ public class TestCommandLine {
     new Thread(pipe).start();
     // Wait for second process to finish
     p2.waitFor();
+    Thread.sleep(100);
     String sErr1 = getStreamContent(p1.getErrorStream(), debug);
     String sErr2 = getStreamContent(p2.getErrorStream(), debug);
     String sOut = getStreamContent(p2.getInputStream(), debug);
