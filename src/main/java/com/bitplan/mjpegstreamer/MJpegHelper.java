@@ -17,7 +17,7 @@ public class MJpegHelper {
 	 * rotate an Image 90 Degrees to the Right
 	 * 
 	 * @param inputImage
-	 * @return
+	 * @return the rotated  image
 	 */
 	public static BufferedImage rotate90ToRight(BufferedImage inputImage) {
 		int width = inputImage.getWidth();
@@ -37,7 +37,7 @@ public class MJpegHelper {
 	 * rotate 90 to Left
 	 * 
 	 * @param inputImage
-	 * @return
+	 * @return the rotated image
 	 */
 	public static BufferedImage rotate90ToLeft(BufferedImage inputImage) {
 		// The most of code is same as before
@@ -63,7 +63,7 @@ public class MJpegHelper {
 	/**
 	 * rotate 180
 	 * @param inputImage
-	 * @return
+	 * @return the rotated image
 	 */
 	public static BufferedImage rotate180(BufferedImage inputImage) {
 		if (inputImage==null)
@@ -106,7 +106,7 @@ public class MJpegHelper {
 	 * 
 	 * @param inputImage
 	 * @param rotation
-	 * @return
+	 * @return the rotated image
 	 */
 	public static BufferedImage getRotatedImage(BufferedImage inputImage, int rotation) {
 		BufferedImage result = inputImage;
