@@ -215,7 +215,10 @@ public class MJpegViewer extends JPanel {
 	 */
 	public void handle(Throwable t) {
 		System.out.flush();
-		System.err.println(t.getClass().getSimpleName()+":"+t.getMessage());
+		String msg="";
+		if (t.getMessage()!=null)
+		  msg+=":"+t.getMessage();
+		System.err.println(t.getClass().getSimpleName()+msg);
 		if (debug)
 			t.printStackTrace();
 	}
