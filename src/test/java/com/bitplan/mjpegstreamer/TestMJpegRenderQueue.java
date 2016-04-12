@@ -117,7 +117,9 @@ public class TestMJpegRenderQueue {
 	public void testPreview() throws Exception {
 		String urls[] = {
 				ClassLoader.getSystemResource("testmovie/movie.mjpg").toExternalForm(),
-				"http://cam2/mjpeg.cgi", "http://2.0.0.75:8080/video" };
+				// "http://cam2/mjpeg.cgi",      // external camera
+				// "http://2.0.0.75:8080/video"  // smartPhone camera
+			};
 		int frames[] = { 51, 11, 11 };
 		int index = 0;
 		for (String url : urls) {

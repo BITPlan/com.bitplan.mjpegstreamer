@@ -89,7 +89,7 @@ public class TestCommandLine {
 		// Wait for second process to finish
 		p2.waitFor();
 		String s = getPipeContent(p2.getInputStream(), debug);
-		assertTrue(s.contains("Java"));
+		assertTrue("'"+s+"' should contain Java",s.contains("Java"));
 	}
 
 	/**
