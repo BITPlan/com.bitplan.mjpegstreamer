@@ -77,6 +77,18 @@ public class TestCommandLine {
     testMJpegStreamer(args, 0, 1000);
     assertTrue(RectangleOverlay.counter > 0);
   }
+  
+  @Test
+  public void testRun() throws IOException, InterruptedException {
+    java.lang.Runtime rt = java.lang.Runtime.getRuntime();
+    // Start two processes: ps ax | grep rbe
+    java.lang.Process p1 = rt.exec("ps ax");
+    p1.waitFor();
+    String sErr1 = getStreamContent(p1.getErrorStream(), debug);
+    String sOut = getStreamContent(p1.getInputStream(), debug);
+    assertNotNull(sErr1);
+    assertNotNull(sOut);
+  }
 
   @Test
   public void testPiping() throws IOException, InterruptedException {
