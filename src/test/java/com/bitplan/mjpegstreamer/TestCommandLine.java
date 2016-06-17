@@ -19,7 +19,7 @@ import com.bitplan.executil.Piper;
  */
 public class TestCommandLine {
 
-  private boolean debug = true;
+  private boolean debug = false;
 
   /**
    * test the MJPegStreamer
@@ -102,7 +102,7 @@ public class TestCommandLine {
     new Thread(pipe).start();
     // Wait for second process to finish
     p2.waitFor();
-    Thread.sleep(500);
+    Thread.sleep(300);
     String sErr1 = getStreamContent(p1.getErrorStream(), debug);
     String sErr2 = getStreamContent(p2.getErrorStream(), debug);
     String sOut = getStreamContent(p2.getInputStream(), debug);
@@ -113,7 +113,7 @@ public class TestCommandLine {
       System.out.println(err2);
       System.out.println("stdout is: '"+sOut+"'");
     }
-    assertTrue("'" + sOut + "' should contain Java ", sOut.contains("Java"));
+    assertTrue("'" + sOut + "' should contain java ", sOut.contains("java"));
   }
 
   /**
