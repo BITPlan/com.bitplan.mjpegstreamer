@@ -96,7 +96,7 @@ public class TestCommandLine {
     // Start two processes: ps ax | grep rbe
     java.lang.Process p1 = rt.exec("ps ax");
     // grep will wait for input on stdin
-    java.lang.Process p2 = rt.exec("grep Java");
+    java.lang.Process p2 = rt.exec("grep java");
     // Create and start Piper
     Piper pipe = new Piper(p1.getInputStream(), p2.getOutputStream(), 512);
     new Thread(pipe).start();
@@ -107,7 +107,7 @@ public class TestCommandLine {
     String sErr2 = getStreamContent(p2.getErrorStream(), debug);
     String sOut = getStreamContent(p2.getInputStream(), debug);
     String err1 = "stdErr of ps ax   is : '" + sErr1 + "'";
-    String err2 = "stdErr of grep Java is: '" + sErr2 + "'";
+    String err2 = "stdErr of grep java is: '" + sErr2 + "'";
     if (debug) {
       System.out.println(err1);
       System.out.println(err2);
