@@ -135,7 +135,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	/**
 	 * get a Base64 Encoder
 	 * 
-	 * @return
+	 * @return the base 64 encoder
 	 */
 	public Base64 getEncoder() {
 		// JDK 8
@@ -148,7 +148,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	/**
 	 * open the connection
 	 * 
-	 * @return
+	 * @return the connection stream
 	 */
 	public BufferedInputStream openConnection() {
 		BufferedInputStream result = null;
@@ -219,7 +219,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	/**
 	 * is there a new frame?
 	 * 
-	 * @return
+	 * @return if a new frame is available
 	 */
 	public boolean isAvailable() {
 		return frameAvailable;
@@ -255,7 +255,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 
 	/**
 	 * get the total elapsedTime
-	 * @return
+	 * @return the total elapsed time in milliseconds
 	 */
 	public long elapsedTimeMillisecs() {
 		long elapsed = this.now-this.firstFrameNanoTime;
@@ -265,7 +265,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	
 	/**
 	 * get a debug message with current time
-	 * @return
+	 * @return a debug message containing the number of frames read with the elapsed time
 	 */
 	public String getTimeMsg(String msg) {
 		String streamName="?";
@@ -277,7 +277,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	
 	/**
 	 * get a time debugging message
-	 * @return
+	 * @return a debug message with the given time and no title
 	 */
 	public String getTimeMsg() {
 		return getTimeMsg("");

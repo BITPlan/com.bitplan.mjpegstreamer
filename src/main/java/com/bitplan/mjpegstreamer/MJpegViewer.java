@@ -247,7 +247,7 @@ public class MJpegViewer extends JPanel {
 
 	/**
 	 * setup the view panel
-	 * @return
+	 * @return the view panel for setup
 	 * @throws Exception
 	 */
 	public ViewPanel setupViewPanel() throws Exception {

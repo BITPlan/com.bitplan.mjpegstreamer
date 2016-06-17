@@ -127,7 +127,7 @@ public class MJpegHelper {
 	/**
 	 * get the image from the given bytes
 	 * @param imageBytes
-	 * @return
+	 * @return the image
 	 * @throws IOException
 	 */
 	public static BufferedImage getImage(byte[] imageBytes) throws IOException {
@@ -139,7 +139,7 @@ public class MJpegHelper {
 	/**
 	 * get the Image from the given Input Stream
 	 * @param jpgIn
-	 * @return
+	 * @return the image
 	 * @throws IOException
 	 */
 	public static BufferedImage getImage(InputStream jpgIn) throws IOException {

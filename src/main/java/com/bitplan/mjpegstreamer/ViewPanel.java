@@ -121,7 +121,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	 * @param title
 	 * @param iconPath
 	 * @param mnemonic
-	 * @return
+	 * @return the newly added button
 	 * @throws Exception
 	 */
 	public JButton addButton(String title, String iconPath, int mnemonic)
@@ -208,7 +208,7 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	/**
 	 * start Streaming with the given runner
 	 * @param runner
-	 * @return
+	 * @return the MJpegReaderRunner
 	 */
 	public MJpegReaderRunner startStreaming(MJpegReaderRunner runner) {
 		runner.start();

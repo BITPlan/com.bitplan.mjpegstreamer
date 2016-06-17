@@ -49,7 +49,7 @@ public class SystemCommandExecutor {
 	/**
 	 * execute the given command
 	 * @param cmd
-	 * @return
+	 * @return the executor
 	 * @throws Exception
 	 */
 	public static SystemCommandExecutor getExecutor(String cmd) throws Exception {
@@ -90,7 +90,7 @@ public class SystemCommandExecutor {
 
 	/**
 	 * execute the command
-	 * @return
+	 * @return the exit code
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */

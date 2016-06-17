@@ -23,7 +23,7 @@ public interface MJpegReaderRunner extends Runnable {
 
 	/**
 	 * get the urlString that was set by init (if any)
-	 * @return
+	 * @return the url
 	 */
 	public String getUrlString();
 	
@@ -43,7 +43,7 @@ public interface MJpegReaderRunner extends Runnable {
 	
 	/**
 	 * get teh viewer
-	 * @return
+	 * @return the viewer
 	 */
 	public MJpegRenderer getViewer();
 
@@ -67,14 +67,14 @@ public interface MJpegReaderRunner extends Runnable {
 	/**
 	 * is there a new frame?
 	 * 
-	 * @return
+	 * @return whether a frame is available
 	 */
 	public boolean isAvailable();
 	
 	
 	/**
 	 * are we connected?
-	 * @return
+	 * @return whether we are connected
 	 */
 	public boolean isConnected();
 
@@ -82,7 +82,7 @@ public interface MJpegReaderRunner extends Runnable {
 	 * get a rotated image
 	 * @param image - the image to rotate
 	 * @param rotation e.g. 0/90/180/270
-	 * @return
+	 * @return the rotated image
 	 */
 	public BufferedImage getRotatedImage(BufferedImage image,
 			int rotation);
@@ -101,13 +101,13 @@ public interface MJpegReaderRunner extends Runnable {
 	
 	/**
 	 * retrieve the number of milliseconds the reader has run so far
-	 * @return
+	 * @return the elapsed time in milliseconds
 	 */
 	public long elapsedTimeMillisecs();
 	
 	/**
 	 * how many frames where read?
-	 * @return
+	 * @return the number of frames read so far
 	 */
 	public int getFramesRead();
 

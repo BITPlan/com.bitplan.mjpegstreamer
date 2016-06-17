@@ -23,7 +23,7 @@ public class MJpegPreview extends PreviewBase {
 
 	/**
 	 * get the render queue
-	 * @return
+	 * @return the render queue
 	 */
 	public MJpegRenderQueue getRenderQueue() {
 		return (MJpegRenderQueue) viewer;

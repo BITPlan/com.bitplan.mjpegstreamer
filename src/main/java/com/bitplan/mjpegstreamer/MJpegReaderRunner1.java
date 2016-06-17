@@ -24,10 +24,9 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 	
 
 	/**
-	 * initialize
+	 * initialize with the given parameters
 	 * 
-	 * @param viewer
-	 * @param url
+	 * @param urlString
 	 * @param user
 	 * @param pass
 	 * @throws IOException
