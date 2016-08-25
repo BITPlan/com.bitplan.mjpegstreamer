@@ -2,6 +2,11 @@
 Java library for handing MJPEG streams - can e.g. display stream as a preview
 
 # Project
+[![Build Status](https://travis-ci.org/BITPlan/com.bitplan.mjpegstreamer.svg?branch=master)](https://travis-ci.org/BITPlan/com.bitplan.mjpegstreamer)
+* Issues via https://github.com/BITPlan/com.bitplan.mjpegstreamer/issues
+* Apache License
+* Open Source hosted at https://github.com/BITPlan/com.bitplan.mjpegstreamer
+* Maven based Java project including JUnit 4 tests.
 
 ### Distribution
 Available at Maven Central see 
@@ -18,7 +23,8 @@ Maven dependency:
 </dependency>
 
 ## Usage
-```jar --help
+```
+java -jar mjpegstreamer.jar --help
 Help
 MJpegViewer Version: 0.0.3
 
