@@ -1,5 +1,8 @@
 # com.bitplan.mjpegstreamer
-Java library for handing MJPEG streams - can e.g. display stream as a preview
+Java library for handing MJPEG streams - can e.g. display stream from a Webcam as a preview
+
+## Screenshot
+![Screenshot](Screenshot.png)
 
 # Project
 [![Build Status](https://travis-ci.org/BITPlan/com.bitplan.mjpegstreamer.svg?branch=master)](https://travis-ci.org/BITPlan/com.bitplan.mjpegstreamer)
