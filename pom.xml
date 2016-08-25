@@ -1,15 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.bitplan.rest</groupId>
-		<artifactId>com.bitplan.rest</artifactId>
-		<version>0.0.5-SNAPSHOT</version>
-		<relativePath>../com.bitplan.rest/pom.xml</relativePath>
-	</parent>
-	<artifactId>com.bitplan.mjpegstreamer</artifactId>
+	<groupId>com.bitplan.rest</groupId>
+	<artifactId>com.bitplan</artifactId>
 	<name>mjpegstreamer</name>
+	<version>0.0.1</version>
 	<description>MJPeg Streamer</description>
+	<packaging>jar</packaging>
+	<developers>
+		<developer>
+			<id>wf</id>
+			<name>Wolfgang Fahl</name>
+			<organization>BITPlan GmbH</organization>
+			<organizationUrl>http://www.bitplan.com</organizationUrl>
+		</developer>
+	</developers>
 	<dependencies>
 		<!-- apache commons codec (e.g. Base64) -->
 		<dependency>
@@ -38,7 +43,18 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+
 		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
 			<!-- create jar -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
