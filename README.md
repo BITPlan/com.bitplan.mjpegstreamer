@@ -21,6 +21,7 @@ Maven dependency:
   <artifactId>com.bitplan.mjpegstreamer</artifactId>
   <version>0.0.1</version>
 </dependency>
+```
 
 ## Usage
 ```
