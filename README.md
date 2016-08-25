@@ -50,7 +50,7 @@ MJpegViewer Version: 0.0.3
                           url to be used
  -v (--version)         : showVersion
                           show current version if this switch is used
-``
+```
 
 ## Installation
 ```
