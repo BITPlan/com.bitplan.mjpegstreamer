@@ -3,6 +3,48 @@ Java library for handing MJPEG streams - can e.g. display stream as a preview
 
 # Project
 
+### Distribution
+Available at Maven Central see 
+
+http://search.maven.org/#artifactdetails|com.bitplan|com.bitplan.mjpegstreamer|0.0.1|jar
+
+Maven dependency:
+
+```xml
+<dependency>
+  <groupId>com.bitplan</groupId>
+  <artifactId>com.bitplan.mjpegstreamer</artifactId>
+  <version>0.0.1</version>
+</dependency>
+
+## Usage
+```jar --help
+Help
+MJpegViewer Version: 0.0.3
+
+ github: https://github.com/BITPlan/com.bitplan.mjpegstreamer
+
+  usage: java com.bitplan.mjpegstreamer.MJpegViewer
+ -ac (--autoclose)      : auto close
+                          close when stream is finished
+ -d (--debug)           : debug
+                          adds debugging output
+ -h (--help)            : help
+                          show this usage
+ -o (--overlay)         : adds a rectangle overlay
+ -r (--rotation) N      : rotation e.g. 0/90/180/270 degrees
+ -rto (--readtimeout) N : readtimeout in milliseconds
+                          default is 5000 millisecs
+ -s (--start)           : auto start
+                          start streaming immediately
+ -t (--title) VAL       : title
+                          title to be used
+ -u (--url) VAL         : url
+                          url to be used
+ -v (--version)         : showVersion
+                          show current version if this switch is used
+``
+
 ## Installation
 ```
 git clone https://github.com/BITPlan/com.bitplan.mjpegstreamer
@@ -15,5 +57,12 @@ mvn clean compile assembly:single
 ```
 to create a standalone jar
 
-# History
+## Test
+```
+mvn test
+...
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
 
+## Version history
+* 0.0.1: 2013       Internal Project at BITPlan
+* 0.0.3: 2016-08-25 Released as Open Source Project

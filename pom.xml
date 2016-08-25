@@ -1,12 +1,17 @@
-<!-- Copyright (c) 2013-2016 BITPlan GmbH Project details and license at: 
-	https://github.com/BITPlan/com.bitplan.mjpegstreamer -->
+<!-- 
+  Copyright (c) 2013-2016 BITPlan GmbH 
+  
+  Project details and license at: 
+	
+	https://github.com/BITPlan/com.bitplan.mjpegstreamer 
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bitplan</groupId>
-	<artifactId>com.bitplan</artifactId>
+	<artifactId>com.bitplan.mjpegstreamer</artifactId>
 	<name>mjpegstreamer</name>
-	<version>0.0.1</version>
+	<version>0.0.3</version>
 	<description>MJPeg Streamer</description>
 	<packaging>jar</packaging>
 	<url>https://github.com/BITPlan/com.bitplan.mjpegstreamer</url>
@@ -257,27 +262,27 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<profiles>
-			<!-- Work around Oracle's (IMHO silly) decision to make doclint default. 
-				http://blog.joda.org/2014/02/turning-off-doclint-in-jdk-8-javadoc.html http://stackoverflow.com/questions/15886209/maven-is-not-working-in-java-8-when-javadoc-tags-are-incomplete -->
-			<profile>
-				<id>doclint-java8-disable</id>
-				<activation>
-					<jdk>[1.8,)</jdk>
-				</activation>
-				<build>
-					<plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-javadoc-plugin</artifactId>
-							<configuration>
-								<additionalparam>-Xdoclint:none</additionalparam>
-							</configuration>
-						</plugin>
-					</plugins>
-				</build>
-			</profile>
-		</profiles>
 	</build>
+	<profiles>
+		<!-- Work around Oracle's (IMHO silly) decision to make doclint default. 
+			http://blog.joda.org/2014/02/turning-off-doclint-in-jdk-8-javadoc.html http://stackoverflow.com/questions/15886209/maven-is-not-working-in-java-8-when-javadoc-tags-are-incomplete -->
+		<profile>
+			<id>doclint-java8-disable</id>
+			<activation>
+				<jdk>[1.8,)</jdk>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
 	

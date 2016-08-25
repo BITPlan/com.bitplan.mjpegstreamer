@@ -224,7 +224,7 @@ public class MJpegViewer extends JPanel {
 		System.err.println("MJpegViewer Version: " + VERSION);
 		System.err.println();
 		System.err
-				.println(" github: https://github.com/WolfgangFahl/mjpegviewer.git");
+				.println(" github: https://github.com/BITPlan/com.bitplan.mjpegstreamer");
 		System.err.println("");
 	}
 
