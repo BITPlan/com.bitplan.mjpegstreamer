@@ -14,7 +14,7 @@ Java library for handing MJPEG streams - can e.g. display stream from a Webcam a
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|com.bitplan.mjpegstreamer|0.0.1|jar
+http://search.maven.org/#artifactdetails|com.bitplan|com.bitplan.mjpegstreamer|0.0.3|jar
 
 Maven dependency:
 
@@ -22,7 +22,7 @@ Maven dependency:
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>com.bitplan.mjpegstreamer</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.3</version>
 </dependency>
 ```
 
