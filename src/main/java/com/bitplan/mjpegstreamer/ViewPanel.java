@@ -257,11 +257,8 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 	}
 
 	// http://forum.codecall.net/topic/69182-java-image-rotation/
-
-	
-
 	/**
-	 * start Button hit
+	 * react on actions e.g. a button hit
 	 */
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();

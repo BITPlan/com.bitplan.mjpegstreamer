@@ -26,12 +26,14 @@ import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bitplan.mjpeg.preview.MJpegPreview;
 import com.bitplan.mjpeg.preview.MJpegSwingPreview;
 import com.bitplan.mjpeg.preview.Preview;
 import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
+import com.bitplan.user.User;
 
 /**
  * test the MJpegRenderQueue
@@ -109,14 +111,27 @@ public class TestMJpegRenderQueue {
 	 * 
 	 * @throws Exception
 	 */
-	@Test
+	@Ignore
+	//@Test
 	public void testAuthorization() throws Exception {
-		String user = "test";
-		String pass = "tst20140330";
-		String url="http://cam1/videostream.cgi";
-		// String url = "http://cam2/mjpeg.cgi";
+	  // to activate this test case you might want to create an ini file with the encrypted username/password
+	  // and the url of the webcam you'd like to test the authorization for
+	  // there is a main routine in User.java to create the basic ini file. When done add the url line to get a 
+	  // result like:  
+	  /** 
+	  #Credentials for mjpegstreamer
+	  #Fri Aug 26 08:43:43 CEST 2016
+	  secret=...
+	  cypher=...	
+	  salt=...  
+	  username=...
+	  url=http://cam1/videostream.cgi
+	  **/
+
+	  User user=User.getUser("mjpegstreamer");
+		String url=user.getProps().getProperty("url");
 		preview = new MJpegPreview();
-		checkPreview(url, user, pass, 10);
+		checkPreview(url, user.getUsername(), user.getPassword(), 10);
 	}
 
 	/**

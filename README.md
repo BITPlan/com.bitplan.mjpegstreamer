@@ -54,6 +54,16 @@ MJpegViewer Version: 0.0.3
  -v (--version)         : showVersion
                           show current version if this switch is used
 ```
+## Examples
+java -jar mjpegstreamer.jar --url http://iris.not.iac.es/axis-cgi/mjpg/video.cgi?resolution=640x480 --start --title "NORDIC Telescope on Observatorio del Roque de Los Muchachos - La Palma"
+
+![Screenshot](nordictelescope.png)
+
+java -jar mjpegstreamer.jar --url http://87.139.217.70/mjpg/video.mjpg?resolution=640x480 --start --title "Dollnstein/Germany"
+
+![Screenshot](dollnstein.png)
+
+see http://www.insecam.org for more publicly accessible test cameras
 
 ## Installation
 ```
