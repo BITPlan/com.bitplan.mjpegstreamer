@@ -3,5 +3,12 @@ language: java
 # do not install anything
 install: 
 -
-# switch off gpg handling and tests
-script: mvn install -DskipTests=true -Dgpg.skip=true
+# setup an GUI to allow running GUI based tests
+# see https://docs.travis-ci.com/user/gui-and-headless-browsers/
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+# switch off gpg handling 
+# switch off tests would also need -DskipTests=true
+script: mvn install -Dgpg.skip=true
