@@ -7,7 +7,7 @@ Java library for handing MJPEG streams - can e.g. display stream from a Webcam a
 # Project
 [![Build Status](https://travis-ci.org/BITPlan/com.bitplan.mjpegstreamer.svg?branch=master)](https://travis-ci.org/BITPlan/com.bitplan.mjpegstreamer)
 * Issues via https://github.com/BITPlan/com.bitplan.mjpegstreamer/issues
-* Apache License
+* Apache License http://www.apache.org/licenses/LICENSE-2.0
 * Open Source hosted at https://github.com/BITPlan/com.bitplan.mjpegstreamer
 * Maven based Java project including JUnit 4 tests.
 
