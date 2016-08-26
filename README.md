@@ -72,6 +72,7 @@ to create a standalone jar
 mvn test
 ...
 Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
+```
 
 ## Version history
 * 0.0.1: 2013       Internal Project at BITPlan
