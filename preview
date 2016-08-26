@@ -1,4 +1,27 @@
 #!/bin/bash
 # WF 2014-03-09
+
+# If on Mac OS make sure USB port is available to avoid
+#Ein Fehler trat in der IO-Bibliothek auf (»Konnte das USB-Gerät nicht beanspruchen«): Konnte Schnittstelle 0 nicht reservieren (No such file or directory). Stellen Sie sicher, dass kein
+#anderes Programm (MacOS PTPCamera Dienst) oder Kernelmodul (z.B. sdc2xx, stv680, spca50x) das Gerät verwendet und Sie 
+#Lese- und Schreibrechte für das Gerät haben.
+os=`uname`
+case $os in
+    Darwin)
+			pgrep -fl PTPCamera
+			if [ $? -eq 0 ]
+			then
+        pkill -f PTPCamera
+			fi
+			;;
+esac
 # start Canon Preview
-gphoto2 --capture-movie --stdout | java -jar mjpegstreamer.jar -u - --start --title CamGrab
+gphoto2 --capture-movie --stdout | java -jar mjpegstreamer.jar -u - --start --title "Canon EOS preview"
+case $os in
+    Darwin)
+			read -p "shall I restart PTPCamera: y/n/cancel?" RESTART;
+			if [ "$CONDITION" == "y" ]; then
+				/System/Library/Image Capture/Devices/PTPCamera.app
+			fi
+		;;
+esac

@@ -2,7 +2,7 @@
 Java library for handing MJPEG streams - can e.g. display stream from a Webcam as a preview
 
 ## Screenshot
-![Screenshot](Screenshot.png)
+![Screenshot](examples/Screenshot.png)
 
 # Project
 [![Build Status](https://travis-ci.org/BITPlan/com.bitplan.mjpegstreamer.svg?branch=master)](https://travis-ci.org/BITPlan/com.bitplan.mjpegstreamer)
@@ -57,13 +57,20 @@ MJpegViewer Version: 0.0.3
 ## Examples
 java -jar mjpegstreamer.jar --url http://iris.not.iac.es/axis-cgi/mjpg/video.cgi?resolution=640x480 --start --title "NORDIC Telescope on Observatorio del Roque de Los Muchachos - La Palma"
 
-![Screenshot](nordictelescope.png)
+![Screenshot](examples/nordictelescope.png)
 
 java -jar mjpegstreamer.jar --url http://87.139.217.70/mjpg/video.mjpg?resolution=640x480 --start --title "Dollnstein/Germany"
 
-![Screenshot](dollnstein.png)
+![Screenshot](examples/dollnstein.png)
 
 see http://www.insecam.org for more publicly accessible test cameras
+
+### gphoto2 stream e.g. for Canon EOS Preview
+gphoto2 --capture-movie --stdout | java -jar mjpegstreamer.jar -u - --start --title "Canon EOS preview"
+![Screenshot](examples/canonpreview.png)
+
+
+see preview script for more details on how to handle the release of the USB port which might be blocked by the PTPCamera process on MacOSX
 
 ## Installation
 ```
