@@ -14,7 +14,7 @@ Java library for handing MJPEG streams - can e.g. display stream from a Webcam a
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|com.bitplan.mjpegstreamer|0.0.3|jar
+http://search.maven.org/#artifactdetails|com.bitplan|com.bitplan.mjpegstreamer|0.0.6|jar
 
 Maven dependency:
 
@@ -22,7 +22,7 @@ Maven dependency:
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>com.bitplan.mjpegstreamer</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.6</version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@ Maven dependency:
 ```
 java -jar mjpegstreamer.jar --help
 Help
-MJpegViewer Version: 0.0.3
+MJpegViewer Version: 0.0.6
 
  github: https://github.com/BITPlan/com.bitplan.mjpegstreamer
 
@@ -94,3 +94,4 @@ Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
 ## Version history
 * 0.0.1: 2013       Internal Project at BITPlan
 * 0.0.3: 2016-08-25 Released as Open Source Project
+* 0.0.6: 2018-08-03 version number upgrade
