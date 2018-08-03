@@ -11,7 +11,7 @@
 	<groupId>com.bitplan</groupId>
 	<artifactId>com.bitplan.mjpegstreamer</artifactId>
 	<name>mjpegstreamer</name>
-	<version>0.0.3</version>
+	<version>0.0.6</version>
 	<description>MJPeg Streamer</description>
 	<packaging>jar</packaging>
 	<url>https://github.com/BITPlan/com.bitplan.mjpegstreamer</url>
