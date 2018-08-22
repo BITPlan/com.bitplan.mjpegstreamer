@@ -10,10 +10,6 @@
 
 ### Documentation
 * [Wiki](http://www.bitplan.com/MJpegStreamer)
-* [com.bitplan.mjpegstreamer Project pages](https://BITPlan.github.io/com.bitplan.mjpegstreamer)
-* [Javadoc](https://BITPlan.github.io/com.bitplan.mjpegstreamer/apidocs/index.html)
-* [Test-Report](https://BITPlan.github.io/com.bitplan.mjpegstreamer/surefire-report.html)
-
 ### Maven dependency
 
 Maven dependency

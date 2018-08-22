@@ -17,7 +17,7 @@
 	<groupId>com.bitplan</groupId>
 	<artifactId>com.bitplan.mjpegstreamer</artifactId>
 	<name>mjpegstreamer</name>
-	<version>0.0.7</version>
+	<version>0.0.8</version>
 	<description>Java library for handing MJPEG streams - can e.g. display stream from a Webcam as a preview</description>
 	<properties>
 		<!-- for parent pom to work -->
