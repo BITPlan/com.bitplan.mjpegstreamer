@@ -38,6 +38,12 @@ import com.bitplan.executil.Piper;
  * 
  */
 public class TestCommandLine {
+  
+  // checked on 2018-08-22
+  public static final String TEST_URL1="http://posta.mukolin.cz/axis-cgi/mjpg/video.cgi";
+  // you could use your own Camera here e.g.
+  // "http://cam2/mjpeg.cgi", 
+  
 
   private boolean debug = false;
 
@@ -72,9 +78,7 @@ public class TestCommandLine {
   public void testCameraUrl() throws InterruptedException {
     // ad your own camera url here
     String[] args = { "-u", 
-        // Pilsen
-        "http://posta.mukolin.cz/axis-cgi/mjpg/video.cgi",
-        // "http://cam2/mjpeg.cgi", 
+        TEST_URL1,
         "--start", "--autoclose" };
     testMJpegStreamer(args, 0, 1250);
   }
