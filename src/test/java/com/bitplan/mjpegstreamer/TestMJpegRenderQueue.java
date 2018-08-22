@@ -86,8 +86,6 @@ public class TestMJpegRenderQueue {
 			public boolean isPostListener() {
 				return true;
 			}
-			
-
 		};
 		preview.getRunner().addImageListener(listener);
 		count = 0;
@@ -143,7 +141,8 @@ public class TestMJpegRenderQueue {
 	public void testPreview() throws Exception {
 		String urls[] = {
 				ClassLoader.getSystemResource("testmovie/movie.mjpg").toExternalForm(),
-				"http://iris.not.iac.es/axis-cgi/mjpg/video.cgi?resolution=320x240",
+				"http://157.157.215.231/axis-cgi/mjpg/video.cgi",
+				// "http://iris.not.iac.es/axis-cgi/mjpg/video.cgi?resolution=320x240",
 				// "http://cam2/mjpeg.cgi",      // external camera
 				// "http://2.0.0.75:8080/video"  // smartPhone camera
 			};

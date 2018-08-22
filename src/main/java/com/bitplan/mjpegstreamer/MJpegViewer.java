@@ -49,7 +49,7 @@ public class MJpegViewer extends JPanel {
 	/**
 	 * current Version of the tool
 	 */
-	public static final String VERSION = "0.0.3";
+	public static final String VERSION = "0.0.7";
 
 	@Option(name = "-d", aliases = { "--debug" }, usage = "debug\nadds debugging output")
 	boolean debug = false;

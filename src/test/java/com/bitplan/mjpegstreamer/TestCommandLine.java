@@ -70,7 +70,12 @@ public class TestCommandLine {
 
   @Test
   public void testCameraUrl() throws InterruptedException {
-    String[] args = { "-u", "http://cam2/mjpeg.cgi", "--start", "--autoclose" };
+    // ad your own camera url here
+    String[] args = { "-u", 
+        // Pilsen
+        "http://posta.mukolin.cz/axis-cgi/mjpg/video.cgi",
+        // "http://cam2/mjpeg.cgi", 
+        "--start", "--autoclose" };
     testMJpegStreamer(args, 0, 1250);
   }
 

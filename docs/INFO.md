@@ -1,38 +1,3 @@
-### com.bitplan.mjpegstreamer
-[Java library for handing MJPEG streams - can e.g. display stream from a Webcam as a preview](http://www.bitplan.com/MJpegStreamer) 
-
-[![Travis (.org)](https://img.shields.io/travis/BITPlan/com.bitplan.mjpegstreamer.svg)](https://travis-ci.org/BITPlan/com.bitplan.mjpegstreamer)
-[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan/com.bitplan.mjpegstreamer.svg)](https://search.maven.org/artifact/com.bitplan/com.bitplan.mjpegstreamer/0.0.6/jar)
-[![GitHub issues](https://img.shields.io/github/issues/BITPlan/com.bitplan.mjpegstreamer.svg)](https://github.com/BITPlan/com.bitplan.mjpegstreamer/issues)
-[![GitHub issues](https://img.shields.io/github/issues-closed/BITPlan/com.bitplan.mjpegstreamer.svg)](https://github.com/BITPlan/com.bitplan.mjpegstreamer/issues/?q=is%3Aissue+is%3Aclosed)
-[![GitHub](https://img.shields.io/github/license/BITPlan/com.bitplan.mjpegstreamer.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![BITPlan](http://wiki.bitplan.com/images/wiki/thumb/3/38/BITPlanLogoFontLessTransparent.png/198px-BITPlanLogoFontLessTransparent.png)](http://www.bitplan.com)
-
-### Documentation
-* [Wiki](http://www.bitplan.com/MJpegStreamer)
-* [com.bitplan.mjpegstreamer Project pages](https://BITPlan.github.io/com.bitplan.mjpegstreamer)
-* [Javadoc](https://BITPlan.github.io/com.bitplan.mjpegstreamer/apidocs/index.html)
-* [Test-Report](https://BITPlan.github.io/com.bitplan.mjpegstreamer/surefire-report.html)
-
-### Maven dependency
-
-Maven dependency
-```xml
-<dependency>
-  <groupId>com.bitplan</groupId>
-  <artifactId>com.bitplan.mjpegstreamer</artifactId>
-  <version>0.0.6</version>
-</dependency>
-```
-
-[Current release at repo1.maven.org](http://repo1.maven.org/maven2/com/bitplan/com.bitplan.mjpegstreamer/0.0.6/)
-
-### How to build
-```
-git clone https://github.com/BITPlan/com.bitplan.mjpegstreamer
-cd com.bitplan.mjpegstreamer
-mvn install
-```
 ## Links
 * https://en.wikipedia.org/wiki/Motion_JPEG
 
@@ -96,7 +61,3 @@ mvn clean compile assembly:single
 ```
 to create a stand alone jar
 
-## Version history
-* 0.0.1: 2013       Internal Project at BITPlan
-* 0.0.3: 2016-08-25 Released as Open Source Project
-* 0.0.6: 2018-08-03 version number upgrade
