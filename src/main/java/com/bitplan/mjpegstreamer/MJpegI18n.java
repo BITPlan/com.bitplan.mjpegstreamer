@@ -1,10 +1,10 @@
 /**
- * Copyright (c) 2018 BITPlan GmbH
+ * Copyright (c) 2013-2018 BITPlan GmbH
  *
  * http://www.bitplan.com
  *
  * This file is part of the Opensource project at:
- * https://github.com/BITPlan/com.bitplan.radolan
+ * https://github.com/BITPlan/com.bitplan.mjpegstreamer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Parts which are derived from https://gitlab.cs.fau.de/since/radolan are also
- * under MIT license.
  */
 package com.bitplan.mjpegstreamer;
 

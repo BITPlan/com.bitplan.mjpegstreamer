@@ -99,7 +99,7 @@ public class MJpegViewer extends JPanel  {
       "--version" }, usage = "showVersion\nshow current version if this switch is used")
   boolean showVersion = false;
 
-  private ViewPanel viewPanel = new ViewPanel();
+  private SwingViewPanel viewPanel = new SwingViewPanel();
 
   private MJpegApp mJpegApp;
 
@@ -143,7 +143,7 @@ public class MJpegViewer extends JPanel  {
   /**
    * @return the viewPanel
    */
-  public ViewPanel getViewPanel() {
+  public SwingViewPanel getViewPanel() {
     return viewPanel;
   }
 
@@ -151,7 +151,7 @@ public class MJpegViewer extends JPanel  {
    * @param viewPanel
    *          the viewPanel to set
    */
-  public void setViewPanel(ViewPanel viewPanel) {
+  public void setViewPanel(SwingViewPanel viewPanel) {
     this.viewPanel = viewPanel;
   }
 
@@ -326,7 +326,7 @@ public class MJpegViewer extends JPanel  {
    * @return the view panel for setup
    * @throws Exception
    */
-  public ViewPanel setupViewPanel() throws Exception {
+  public SwingViewPanel setupViewPanel() throws Exception {
     ViewerSetting s = viewPanel.getViewerSetting();
     s.title = title;
     s.autoStart = autoStart;
@@ -354,7 +354,7 @@ public class MJpegViewer extends JPanel  {
     } else {
       viewPanel.createFrame(s.title);
     }
-    viewPanel.start();
+    viewPanel.start(url);
     return viewPanel;
   }
 

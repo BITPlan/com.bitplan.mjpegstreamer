@@ -1,3 +1,23 @@
+/**
+ * Copyright (c) 2013-2018 BITPlan GmbH
+ *
+ * http://www.bitplan.com
+ *
+ * This file is part of the Opensource project at:
+ * https://github.com/BITPlan/com.bitplan.mjpegstreamer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.bitplan.mjpegstreamer;
 
 import java.io.File;
@@ -31,13 +51,13 @@ public class MJpegApp extends GenericApp {
   public static final String RESOURCE_PATH = "com/bitplan/mjpeg/gui";
   public static final String MJPEG_APP_PATH = RESOURCE_PATH + "/mjpeg.json";
   private static MJpegApp instance;
-  private ViewPanel viewPanel;
+  private SwingViewPanel viewPanel;
 
-  public ViewPanel getViewPanel() {
+  public SwingViewPanel getViewPanel() {
     return viewPanel;
   }
 
-  public void setViewPanel(ViewPanel viewPanel) {
+  public void setViewPanel(SwingViewPanel viewPanel) {
     this.viewPanel = viewPanel;
   }
 
@@ -102,7 +122,7 @@ public class MJpegApp extends GenericApp {
   private void setupContent() {
     Tab videoTab = xyTabPane.getTab(MJpegI18n.VIDEO_FORM);
     final SwingNode swingNode = new SwingNode();
-    swingNode.setContent(this.viewPanel);
+    swingNode.setContent(this.viewPanel.getPanel());
     videoTab.setContent(swingNode);
   }
 
