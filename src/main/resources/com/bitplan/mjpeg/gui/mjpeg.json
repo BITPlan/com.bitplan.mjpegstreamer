@@ -1,71 +1,73 @@
 {
-  "name": "MJpegStreamer",
-  "home": "http://www.bitplan.com/MJpegStreamer",
-  "feedback": "https://github.com/BITPlan/com.bitplan.mjpegstreamer/issues",
-  "help": "http://www.bitplan.com/MJpegStreamer",
-  "groups": [
-    {
-      "title": "Preview",
-      "icon": "eye",
-      "forms": [
-        {
-          "title": "Video",
-          "icon": "file_movie_alt",
-          "readOnly": "true",
-          "fields": [
-          ]
-        },
-        {
-          "title": "Picture",
-          "icon": "file_picture_alt",
-          "readOnly": "true",
-          "fields": [
-          ]
-        }
-      ]
-    }
-  ],
-  "mainMenu": {
-    "subMenus": [
-      {
-        "title": "File",
-        "shortCut": "F",
-        "menuItems": [
-          {
-            "title": "Quit",
-            "shortCut": "Q"
-          }
-        ]
-      },
-      {
-        "title": "Help",
-        "shortCut": "H",
-        "menuItems": [
-          {
-            "title": "About",
-            "shortCut": "A"
-          },
-          {
-            "title": "Help",
-            "shortCut": "H"
-          },
-          {
-            "title": "Feedback",
-            "shortCut": "F"
-          },
-          {
-            "title": "BugReport",
-            "shortCut": "B"
-          }
-        ]
-      }
-    ]
-  },
-  "exceptionHelps": [
-    {
-      "exception": "java.net.SocketException:Network is unreachable (connect failed)",
-      "url": "http://can4eve.bitplan.com/index.php/Help#java.net.SocketException:_Network_is_unreachable_.28connect_failed.29",
-      "i18nHint": "networkIsUnreachable"
-    }
-  ]
+	"name": "MJpegStreamer",
+	"home": "http://www.bitplan.com/MJpegStreamer",
+	"feedback": "https://github.com/BITPlan/com.bitplan.mjpegstreamer/issues",
+	"help": "http://www.bitplan.com/MJpegStreamer",
+	"groups": [
+		{
+			"title": "Preview",
+			"icon": "eye",
+			"forms": [
+				{
+					"title": "Video",
+					"icon": "file_movie_alt",
+					"readOnly": "true",
+					"fields": []
+				},
+				{
+					"title": "Picture",
+					"icon": "file_picture_alt",
+					"readOnly": "true",
+					"fields": []
+				}
+			]
+		}
+	],
+	"mainMenu": {
+		"subMenus": [
+			{
+				"title": "File",
+				"shortCut": "F",
+				"menuItems": [
+					{
+						"title": "Open",
+						"shortCut": "O"
+					},
+					{
+						"title": "Quit",
+						"shortCut": "Q"
+					}
+				]
+			},
+			{
+				"title": "Help",
+				"shortCut": "H",
+				"menuItems": [
+					{
+						"title": "About",
+						"shortCut": "A"
+					},
+					{
+						"title": "Help",
+						"shortCut": "H"
+					},
+					{
+						"title": "Feedback",
+						"shortCut": "F"
+					},
+					{
+						"title": "BugReport",
+						"shortCut": "B"
+					}
+				]
+			}
+		]
+	},
+	"exceptionHelps": [
+		{
+			"exception": "java.net.SocketException:Network is unreachable (connect failed)",
+			"url": "http://can4eve.bitplan.com/index.php/Help#java.net.SocketException:_Network_is_unreachable_.28connect_failed.29",
+			"i18nHint": "networkIsUnreachable"
+		}
+	]
 }

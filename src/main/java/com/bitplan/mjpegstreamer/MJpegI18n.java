@@ -31,6 +31,7 @@ package com.bitplan.mjpegstreamer;
  */
 public class MJpegI18n {
   public static final String FILE_MENU = "FileMenu"; // File
+  public static final String FILE_MENU__OPEN_MENU_ITEM="FileMenu.OpenMenuItem"; //Open
   public static final String FILE_MENU__QUIT_MENU_ITEM = "FileMenu.QuitMenuItem"; // Quit
   
   public static final String HELP_MENU="HelpMenu"; //Help

@@ -1,5 +1,5 @@
 #!/bin/bash
 # WF 2019-02-19
-version=0.0.7
+version=0.0.8
 mvn clean compile assembly:single
 mv target/com.bitplan.mjpegstreamer-${version}-jar-with-dependencies.jar mjpeg.jar

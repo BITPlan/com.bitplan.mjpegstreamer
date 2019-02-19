@@ -24,6 +24,7 @@
 package com.bitplan.mjpegstreamer;
 
 import java.awt.Color;
+import java.io.File;
 
 import javax.swing.JPanel;
 
@@ -51,7 +52,7 @@ public class MJpegViewer extends JPanel  {
   /**
    * current Version of the tool
    */
-  public static final String VERSION = "0.0.7";
+  public static final String VERSION = "0.0.8";
 
   @Option(name = "-d", aliases = {
       "--debug" }, usage = "debug\nadds debugging output")
@@ -89,6 +90,10 @@ public class MJpegViewer extends JPanel  {
 
   @Option(name = "-u", aliases = { "--url" }, usage = "url\nurl to be used")
   String url = "http://cam2/mjpeg.cgi";
+  
+  @Option(name = "-f", aliases = { "--file" }, usage = "file\nfile to open")
+  String fileName = null;
+
 
   @Option(name = "-v", aliases = {
       "--version" }, usage = "showVersion\nshow current version if this switch is used")
@@ -332,6 +337,14 @@ public class MJpegViewer extends JPanel  {
       s.imageListener = new RectangleOverlay(50, 50, 50, 50, Color.BLUE);
     if (debug)
       s.debugMode = DebugMode.Verbose;
+    if (fileName!=null) {
+      File file=new File(fileName);
+      if (!file.canRead()) {
+        throw new Exception("Can't read "+file.getPath());
+      }
+      url=file.toURI().toString();
+    }
+      
     viewPanel.setup(url);
     if (javaFx) {
       mJpegApp = MJpegApp.getInstance(new MJpegVersion(),debug);

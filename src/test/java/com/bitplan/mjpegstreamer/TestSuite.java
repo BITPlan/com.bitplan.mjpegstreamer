@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ TestCommandLine.class, TestMJpegRenderQueue.class})
+@Suite.SuiteClasses({ TestI18n.class,TestCommandLine.class, TestMJpegRenderQueue.class})
 /**
  * TestSuite
  * @author wf

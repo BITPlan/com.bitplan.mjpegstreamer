@@ -1,5 +1,6 @@
 package com.bitplan.mjpegstreamer;
 
+import java.io.File;
 import java.util.logging.Level;
 
 import com.bitplan.error.SoftwareVersion;
@@ -8,6 +9,7 @@ import com.bitplan.javafx.GenericApp;
 import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.TaskLaunch;
 
+import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
@@ -15,10 +17,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 /**
  * JavaFX application
+ * 
  * @author wf
  *
  */
@@ -27,7 +32,7 @@ public class MJpegApp extends GenericApp {
   public static final String MJPEG_APP_PATH = RESOURCE_PATH + "/mjpeg.json";
   private static MJpegApp instance;
   private ViewPanel viewPanel;
-  
+
   public ViewPanel getViewPanel() {
     return viewPanel;
   }
@@ -38,14 +43,17 @@ public class MJpegApp extends GenericApp {
 
   /**
    * get the title
+   * 
    * @return the title including the version
    */
   String getTitle() {
-    return  this.softwareVersion.getName()+" "+this.softwareVersion.getVersion();
+    return this.softwareVersion.getName() + " "
+        + this.softwareVersion.getVersion();
   }
 
   /**
    * construct this app
+   * 
    * @param app
    * @param softwareVersion
    * @param resourcePath
@@ -54,7 +62,7 @@ public class MJpegApp extends GenericApp {
       String resourcePath) {
     super(app, softwareVersion, resourcePath);
   }
-  
+
   @Override
   public void start(Stage stage) {
     super.start(stage);
@@ -87,7 +95,7 @@ public class MJpegApp extends GenericApp {
     stage.sizeToScene();
     stage.show();
   }
-  
+
   /**
    * setup the Content of the xyTabPanes
    */
@@ -108,6 +116,9 @@ public class MJpegApp extends GenericApp {
         case MJpegI18n.FILE_MENU__QUIT_MENU_ITEM:
           close();
           break;
+        case MJpegI18n.FILE_MENU__OPEN_MENU_ITEM:
+          openFileDialog();
+          break;
         case MJpegI18n.HELP_MENU__ABOUT_MENU_ITEM:
           TaskLaunch.start(() -> showLink(app.getHome()));
           showAbout();
@@ -122,7 +133,7 @@ public class MJpegApp extends GenericApp {
         case MJpegI18n.HELP_MENU__BUG_REPORT_MENU_ITEM:
           TaskLaunch.start(() -> showLink(app.getFeedback()));
           break;
-       case MJpegI18n.PREVIEW_MENU__FILM_MENU_ITEM:
+        case MJpegI18n.PREVIEW_MENU__FILM_MENU_ITEM:
           this.selectTab(MJpegI18n.VIDEO_FORM);
           break;
         case MJpegI18n.PREVIEW_MENU__PICTURE_MENU_ITEM:
@@ -140,23 +151,39 @@ public class MJpegApp extends GenericApp {
       handleException(e);
     }
   }
-  
+
+  /**
+   * potentially open a new file with a dialog
+   */
+  private void openFileDialog() {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Open mjpeg file");
+    fileChooser.getExtensionFilters().addAll(
+        new ExtensionFilter("MJpeg Video Files", "*.mjpg"),
+        new ExtensionFilter("All Files", "*.*"));
+    File selectedFile = fileChooser.showOpenDialog(this.getStage());
+    if (selectedFile != null) {
+      Platform.runLater(() -> viewPanel.setUrl(selectedFile.toURI().toString()));
+    }
+
+  }
+
   /**
    * get an Instance of the Application
+   * 
    * @param softwareVersion
    * @param debug
    * @return the instance
    * @throws Exception
    */
-  public static MJpegApp getInstance(SoftwareVersion softwareVersion,boolean debug) throws Exception {
-    if (instance==null) {
-      App app=App.getInstance(MJPEG_APP_PATH);
-      GenericApp.debug=debug;
-      instance=new MJpegApp(app,softwareVersion,RESOURCE_PATH);
+  public static MJpegApp getInstance(SoftwareVersion softwareVersion,
+      boolean debug) throws Exception {
+    if (instance == null) {
+      App app = App.getInstance(MJPEG_APP_PATH);
+      GenericApp.debug = debug;
+      instance = new MJpegApp(app, softwareVersion, RESOURCE_PATH);
     }
     return instance;
   }
-
-  
 
 }
