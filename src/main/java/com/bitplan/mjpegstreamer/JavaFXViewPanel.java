@@ -44,6 +44,7 @@ import javafx.scene.layout.VBox;
 
 /**
  * Java FX Version of View panel
+ * 
  * @author wf
  *
  */
@@ -71,7 +72,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
    * 
    * @param title
    * @param iconPath
-   * @param kc 
+   * @param kc
    * @return
    */
   protected Button addButton(String title, String iconPath, KeyCode kk) {
@@ -84,31 +85,31 @@ public class JavaFXViewPanel extends ViewPanelImpl
     // TODO - fix later
     // KeyCombination kc = new KeyCodeCombination(kk,KeyCombination.ALT_ANY);
     // Mnemonic mn = new Mnemonic(button, kc);
-    //  scene.addMnemonic(mn);
+    // scene.addMnemonic(mn);
     ButtonBar.setButtonData(button, ButtonData.LEFT);
     buttonBar.getButtons().add(button);
     return button;
   };
-  
+
   @Override
   public void setup() throws Exception {
     imageView = new ImageView();
     imageView.setFitHeight(480);
     imageView.setFitWidth(640);
     setEmptyImage();
-    
-    slider=new Slider();
+
+    slider = new Slider();
     slider.setMin(0);
     slider.setMax(60);
     buttonBar = new ButtonBar();
-    startButton = addButton("start", START_BUTTON_ICON_PATH,KeyCode.S);
+    startButton = addButton("start", START_BUTTON_ICON_PATH, KeyCode.S);
     rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyCode.R);
     // https://www.iconfinder.com/icons/49386/settings_icon#size=48
     settingsButton = addButton("settings", SETTINGS_BUTTON_ICON_PATH,
         KeyCode.P);
-    urlArea=new TextArea();
+    urlArea = new TextArea();
     statusBar = new StatusBar();
-    
+
     pane = new VBox();
     pane.getChildren().add(imageView);
     pane.getChildren().add(slider);
@@ -119,9 +120,12 @@ public class JavaFXViewPanel extends ViewPanelImpl
 
   @Override
   public void showMessage(String msg) {
-    Platform.runLater(()->statusBar.setText(msg));
+    Platform.runLater(() -> {
+      statusBar.setText(msg);
+      pane.requestLayout();
+    });
   }
-  
+
   /**
    * set the url to the given value
    * 
@@ -129,10 +133,10 @@ public class JavaFXViewPanel extends ViewPanelImpl
    */
   @Override
   public void setUrl(String url) {
-    Platform.runLater(()->this.urlArea.setText(url));
+    Platform.runLater(() -> this.urlArea.setText(url));
     super.setUrl(url);
   }
-  
+
   /**
    * set the Buffered Image
    * 
@@ -141,17 +145,19 @@ public class JavaFXViewPanel extends ViewPanelImpl
   @Override
   public void setBufferedImage(BufferedImage pImage) {
     super.setBufferedImage(pImage);
-    WritableImage writableImage =getImage(pImage);
+    WritableImage writableImage = getImage(pImage);
     imageView.setImage(writableImage);
   }
-  
+
   /**
    * get the image for the given Swing BufferedImage
+   * 
    * @param pImage
    * @return the JavaFX writeAble Image
    */
   public WritableImage getImage(BufferedImage pImage) {
-    final WritableImage writableImage = new WritableImage(pImage.getWidth(),  pImage.getHeight());
+    final WritableImage writableImage = new WritableImage(pImage.getWidth(),
+        pImage.getHeight());
     SwingFXUtils.toFXImage(pImage, writableImage);
     return writableImage;
   }
@@ -173,17 +179,17 @@ public class JavaFXViewPanel extends ViewPanelImpl
 
   @Override
   public void handle(ActionEvent event) {
-    Object eventSource=event.getSource();
+    Object eventSource = event.getSource();
     if (eventSource instanceof Button) {
-      Button eventButton=(Button) eventSource;
+      Button eventButton = (Button) eventSource;
       if (eventButton.equals(startButton)) {
-        String url=this.urlArea.getText();
+        String url = this.urlArea.getText();
         this.setUrl(url);
         startStreaming();
       } else if (eventButton.equals(rotateButton)) {
         BufferedImage rotateButtonIcon = rotate();
         if (rotateButtonIcon != null) {
-          WritableImage writableImage =getImage(rotateButtonIcon);
+          WritableImage writableImage = getImage(rotateButtonIcon);
           rotateButton.setGraphic(new ImageView(writableImage));
         }
       }
