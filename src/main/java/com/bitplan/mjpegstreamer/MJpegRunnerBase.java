@@ -52,7 +52,7 @@ import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 /**
  * base class for MJPegRunners
  * 
- * @author muf
+ * @author wf
  * 
  */
 public abstract class MJpegRunnerBase implements MJpegReaderRunner {
@@ -302,7 +302,6 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 	public String getTimeMsg() {
 		return getTimeMsg("");
 	}
-
 	
 	/**
 	 * read
@@ -353,7 +352,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 					if (listener.isPostListener())
 						listener.onRead(this, rotatedImage);
 				}
-				// how many frames we acutally displayed
+				// how many frames we actually displayed
 				framesRenderedCount++;
 				fpsFrameNanoTime=now;
 				fpscountOut++;

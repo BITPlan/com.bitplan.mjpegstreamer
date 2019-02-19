@@ -90,14 +90,21 @@ public class JavaFXViewPanel extends ViewPanelImpl
     buttonBar.getButtons().add(button);
     return button;
   };
+  
+  public void initImage() throws Exception {
+    imageView.setFitHeight(480);
+    imageView.setFitWidth(640);
+    imageView.setPreserveRatio(true);
+    imageView.fitHeightProperty().bind(pane.heightProperty());
+    imageView.fitWidthProperty().bind(pane.widthProperty());
+    setEmptyImage();
+    pane.requestLayout();
+  }
 
   @Override
   public void setup() throws Exception {
     imageView = new ImageView();
-    imageView.setFitHeight(480);
-    imageView.setFitWidth(640);
-    setEmptyImage();
-
+  
     slider = new Slider();
     slider.setMin(0);
     slider.setMax(60);
@@ -116,6 +123,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
     pane.getChildren().add(urlArea);
     pane.getChildren().add(statusBar);
     pane.getChildren().add(buttonBar);
+    initImage();
   }
 
   @Override
@@ -133,8 +141,11 @@ public class JavaFXViewPanel extends ViewPanelImpl
    */
   @Override
   public void setUrl(String url) {
-    Platform.runLater(() -> this.urlArea.setText(url));
-    super.setUrl(url);
+    Platform.runLater(() -> {
+      this.urlArea.setText(url);
+      super.setUrl(url);
+      pane.requestLayout();
+    });
   }
 
   /**

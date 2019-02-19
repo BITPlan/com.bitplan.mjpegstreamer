@@ -50,7 +50,7 @@ public class MJpegViewer  {
 
   @Option(name = "-d", aliases = {
       "--debug" }, usage = "debug\nadds debugging output")
-  boolean debug = false;
+  boolean debug = true;
 
   @Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
   boolean showHelp = false;

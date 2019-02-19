@@ -110,6 +110,10 @@ public abstract class ViewPanelImpl implements ViewPanel {
       this.close();
   }
   
+  /**
+   * get a new rotated Icon for a rotate button
+   * @return the icons's Buffered Image
+   */
   public BufferedImage rotate() {
     int rotation = this.getViewerSetting().rotation;
     rotation += 90;
