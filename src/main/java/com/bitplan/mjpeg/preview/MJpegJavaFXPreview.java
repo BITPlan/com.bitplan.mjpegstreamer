@@ -22,7 +22,6 @@ package com.bitplan.mjpeg.preview;
 
 import java.awt.Color;
 
-import com.bitplan.mjpegstreamer.JavaFXViewPanel;
 import com.bitplan.mjpegstreamer.MJpegReaderRunner2;
 import com.bitplan.mjpegstreamer.MJpegViewer;
 import com.bitplan.mjpegstreamer.RectangleOverlay;
@@ -63,7 +62,6 @@ public class MJpegJavaFXPreview extends PreviewBase {
 	public void start() throws Exception {
 	  String url=runner.getUrlString();
 		viewPanel.setup(url);
-		viewPanel.setUrl(url);
 		super.start();
 	}
 }

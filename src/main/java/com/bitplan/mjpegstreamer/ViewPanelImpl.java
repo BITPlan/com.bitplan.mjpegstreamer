@@ -24,7 +24,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 public abstract class ViewPanelImpl implements ViewPanel {
   protected static final String ROTATE_BUTTON_ICON_PATH = "/images/paper0r.png";
@@ -34,6 +36,7 @@ public abstract class ViewPanelImpl implements ViewPanel {
   
   private ViewerSetting viewerSetting = new ViewerSetting();
   private String url;
+  BooleanProperty open=new SimpleBooleanProperty();
   
   private BufferedImage image;
   
@@ -101,6 +104,7 @@ public abstract class ViewPanelImpl implements ViewPanel {
   @Override
   public void init() {
     this.showMessage("started");
+    open.set(true);
   }
 
   @Override
@@ -108,6 +112,15 @@ public abstract class ViewPanelImpl implements ViewPanel {
     this.showMessage("stopped:" + msg);
     if (viewerSetting.autoClose)
       this.close();
+  }
+  
+  @Override
+  public BooleanProperty isOpen() {
+    return open;
+  }
+  
+  public void close() {
+    open.set(false);
   }
   
   /**

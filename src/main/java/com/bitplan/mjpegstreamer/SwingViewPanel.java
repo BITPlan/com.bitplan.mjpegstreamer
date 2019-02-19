@@ -35,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.Node;
 
@@ -215,6 +216,7 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
    */
   public void close() {
     frame.dispose();
+    super.close();
   }
 
 }

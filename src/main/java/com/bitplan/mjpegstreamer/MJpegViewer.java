@@ -103,6 +103,16 @@ public class MJpegViewer  {
 
   private static MJpegViewer viewer;
 
+  private static Integer result=null;
+  
+  /**
+   * constructor 
+   */
+  public MJpegViewer() {
+    Translator.APPLICATION_PREFIX = "mjpeg";
+    Translator.initialize("mjpeg", "en");
+  }
+
   /**
    * @return the autoClose
    */
@@ -359,8 +369,6 @@ public class MJpegViewer  {
    * @param args
    */
   public int maininstance(String[] args) {
-    Translator.APPLICATION_PREFIX = "mjpeg";
-    Translator.initialize("mjpeg", "en");
     parser = new CmdLineParser(this);
     try {
       parser.parseArgument(args);
@@ -372,6 +380,9 @@ public class MJpegViewer  {
         showHelp();
       } else {
         setupViewPanel();
+        if (javaFx) {
+          mJpegApp.waitClose();
+        }
         exitCode = 0;
       }
     } catch (CmdLineException e) {
@@ -392,7 +403,7 @@ public class MJpegViewer  {
    */
   public static void main(String[] args) {
     viewer = new MJpegViewer();
-    int result = viewer.maininstance(args);
+    result = viewer.maininstance(args);
     if (!testMode && result != 0)
       System.exit(result);
   }

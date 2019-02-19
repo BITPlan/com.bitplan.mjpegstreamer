@@ -25,7 +25,6 @@ import java.io.InputStream;
 
 import org.controlsfx.control.StatusBar;
 
-import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -90,7 +89,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
     buttonBar.getButtons().add(button);
     return button;
   };
-  
+
   public void initImage() throws Exception {
     imageView.setFitHeight(480);
     imageView.setFitWidth(640);
@@ -104,7 +103,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   @Override
   public void setup() throws Exception {
     imageView = new ImageView();
-  
+
     slider = new Slider();
     slider.setMin(0);
     slider.setMax(60);
@@ -112,8 +111,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
     startButton = addButton("start", START_BUTTON_ICON_PATH, KeyCode.S);
     rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyCode.R);
     // https://www.iconfinder.com/icons/49386/settings_icon#size=48
-    settingsButton = addButton("settings", SETTINGS_BUTTON_ICON_PATH,
-        KeyCode.P);
+    // @TODO potentially activate again
+    //settingsButton = addButton("settings", SETTINGS_BUTTON_ICON_PATH,
+    //    KeyCode.P);
     urlArea = new TextArea();
     statusBar = new StatusBar();
 
@@ -128,10 +128,8 @@ public class JavaFXViewPanel extends ViewPanelImpl
 
   @Override
   public void showMessage(String msg) {
-    Platform.runLater(() -> {
-      statusBar.setText(msg);
-      pane.requestLayout();
-    });
+    statusBar.setText(msg);
+    pane.requestLayout();
   }
 
   /**
@@ -141,11 +139,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
    */
   @Override
   public void setUrl(String url) {
-    Platform.runLater(() -> {
-      this.urlArea.setText(url);
-      super.setUrl(url);
-      pane.requestLayout();
-    });
+    this.urlArea.setText(url);
+    super.setUrl(url);
+    pane.requestLayout();
   }
 
   /**
@@ -185,7 +181,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
 
   @Override
   public void close() {
-
+    super.close();
   }
 
   @Override

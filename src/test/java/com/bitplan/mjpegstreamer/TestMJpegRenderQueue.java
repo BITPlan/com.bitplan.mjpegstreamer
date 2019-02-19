@@ -146,8 +146,8 @@ public class TestMJpegRenderQueue {
         TEST_URL2 };
     int frames[] = { 51, 11, 11 };
     int index = 0;
+    Preview[] previews = { new MJpegJavaFXPreview(), new MJpegPreview()  };
     for (String url : urls) {
-      Preview[] previews = { new MJpegJavaFXPreview(), new MJpegPreview() };
       for (Preview lpreview : previews) {
         preview = lpreview;
         checkPreview(url, frames[index]);

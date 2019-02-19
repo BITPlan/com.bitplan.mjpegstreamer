@@ -30,7 +30,6 @@ import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.TaskLaunch;
 
 import javafx.application.Platform;
-import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -183,7 +182,6 @@ public class MJpegApp extends GenericApp {
     if (selectedFile != null) {
       Platform.runLater(() -> viewPanel.setUrl(selectedFile.toURI().toString()));
     }
-
   }
 
   /**

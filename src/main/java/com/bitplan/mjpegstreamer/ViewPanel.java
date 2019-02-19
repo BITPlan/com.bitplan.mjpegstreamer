@@ -22,9 +22,17 @@ package com.bitplan.mjpegstreamer;
 
 import java.awt.image.BufferedImage;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.Node;
 
+/**
+ * View Panel interface
+ * @author wf
+ *
+ */
 public interface ViewPanel extends MJpegRenderer {
+  BooleanProperty isOpen();
+  
   /**
    * @return the viewerSetting
    */
