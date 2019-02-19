@@ -1,9 +1,9 @@
-<!-- 
-  Copyright (c) 2013-2018 BITPlan GmbH 
-  
-  Project details and license at: 
-	
-	https://github.com/BITPlan/com.bitplan.mjpegstreamer 
+<!--
+  Copyright (c) 2013-2018 BITPlan GmbH
+
+  Project details and license at:
+
+	https://github.com/BITPlan/com.bitplan.mjpegstreamer
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -11,8 +11,8 @@
 	<parent>
 		<groupId>com.bitplan.pom</groupId>
 		<artifactId>com.bitplan.pom</artifactId>
-		<version>0.0.24</version>
-		<relativePath>../com.bitplan.pom/pom.xml</relativePath> 
+		<version>0.0.25</version>
+		<relativePath>../com.bitplan.pom/pom.xml</relativePath>
 	</parent>
 	<groupId>com.bitplan</groupId>
 	<artifactId>com.bitplan.mjpegstreamer</artifactId>
@@ -82,7 +82,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<!-- executable jar with dependencies see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven 
+			<!-- executable jar with dependencies see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven
 				run with mvn clean compile assembly:single -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -101,4 +101,3 @@
 		</plugins>
 	</build>
 </project>
-	
