@@ -22,9 +22,11 @@ package com.bitplan.mjpeg.preview;
 
 import java.awt.Color;
 
+import com.bitplan.mjpegstreamer.JavaFXViewPanel;
 import com.bitplan.mjpegstreamer.MJpegReaderRunner2;
 import com.bitplan.mjpegstreamer.MJpegViewer;
 import com.bitplan.mjpegstreamer.RectangleOverlay;
+import com.bitplan.mjpegstreamer.ViewPanel;
 import com.bitplan.mjpegstreamer.ViewerSetting;
 
 /**
@@ -32,15 +34,19 @@ import com.bitplan.mjpegstreamer.ViewerSetting;
  * @author wf
  *
  */
-public class MJpegSwingPreview extends PreviewBase {
+public class MJpegJavaFXPreview extends PreviewBase {
 	private MJpegViewer mJpegViewer;
+  private ViewPanel viewPanel;
 
 	/**
 	 * default constructor
+	 * @throws Exception 
 	 */
-	public MJpegSwingPreview() {
+	public MJpegJavaFXPreview() throws Exception {
 		mJpegViewer = new MJpegViewer();
-		viewer=mJpegViewer.getViewPanel();
+		mJpegViewer.setupViewPanel();
+		viewPanel=mJpegViewer.getViewPanel();
+		viewer=viewPanel;
 		runner = new MJpegReaderRunner2();
 		runner.setViewer(viewer);
 		ViewerSetting s = viewer.getViewerSetting();
@@ -52,10 +58,12 @@ public class MJpegSwingPreview extends PreviewBase {
 	
 	@Override
 	/**
-	 * make sure the viewpanel is prepared
+	 * make sure the view panel is prepared
 	 */
 	public void start() throws Exception {
-		mJpegViewer.getViewPanel().setup(runner.getUrlString());
+	  String url=runner.getUrlString();
+		viewPanel.setup(url);
+		viewPanel.setUrl(url);
 		super.start();
 	}
 }

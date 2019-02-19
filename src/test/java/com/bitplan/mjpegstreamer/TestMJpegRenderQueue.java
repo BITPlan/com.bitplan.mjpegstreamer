@@ -30,7 +30,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bitplan.mjpeg.preview.MJpegPreview;
-import com.bitplan.mjpeg.preview.MJpegSwingPreview;
+import com.bitplan.mjpeg.preview.MJpegJavaFXPreview;
 import com.bitplan.mjpeg.preview.Preview;
 import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 import com.bitplan.user.User;
@@ -147,7 +147,7 @@ public class TestMJpegRenderQueue {
     int frames[] = { 51, 11, 11 };
     int index = 0;
     for (String url : urls) {
-      Preview[] previews = { new MJpegSwingPreview(), new MJpegPreview() };
+      Preview[] previews = { new MJpegJavaFXPreview(), new MJpegPreview() };
       for (Preview lpreview : previews) {
         preview = lpreview;
         checkPreview(url, frames[index]);

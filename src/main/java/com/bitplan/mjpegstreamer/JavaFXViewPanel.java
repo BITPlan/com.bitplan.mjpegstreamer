@@ -129,7 +129,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
    */
   @Override
   public void setUrl(String url) {
-    this.urlArea.setText(url);
+    Platform.runLater(()->this.urlArea.setText(url));
     super.setUrl(url);
   }
   
