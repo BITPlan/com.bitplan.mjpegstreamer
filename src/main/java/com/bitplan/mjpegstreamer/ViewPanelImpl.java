@@ -24,9 +24,37 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public abstract class ViewPanelImpl implements ViewPanel {
+  protected static final String ROTATE_BUTTON_ICON_PATH = "/images/paper0r.png";
+  protected static final String START_BUTTON_ICON_PATH = "/images/start.png";
+  // https://www.iconfinder.com/icons/49386/settings_icon#size=64
+  protected static final String SETTINGS_BUTTON_ICON_PATH = "/images/1394392895_settings.png";
+  
   private ViewerSetting viewerSetting = new ViewerSetting();
+  private String url;
+  
+  private BufferedImage image;
+  
+  /**
+   * set the Buffered Image
+   * 
+   * @param pImage
+   */
+  public void setBufferedImage(BufferedImage pImage) {
+    image = pImage;
+  }
+  
+  /**
+   * set the Image and render it
+   * 
+   * @param pImage
+   */
+
+  public void renderNextImage(BufferedImage pImage) {
+    setBufferedImage(pImage);
+  }
   
   /**
    * @return the viewerSetting
@@ -43,9 +71,30 @@ public abstract class ViewPanelImpl implements ViewPanel {
     this.viewerSetting = viewerSetting;
   }
   
+  /**
+   * set the url to the given value
+   * 
+   * @param url
+   */
+  public void setUrl(String url) {
+    this.url = url;
+  }
+  
+  /**
+   * setup the viewPanel
+   * 
+   * @param url
+   * @throws Exception
+   */
+  public void setup(String url) throws Exception {
+    setup();
+    this.setUrl(url);
+  }
+  
   public void start(String url) {
+    this.setUrl(url);
     if (viewerSetting.autoStart) {
-      this.startStreaming(url);
+      this.startStreaming();
     }
   }
 
@@ -59,6 +108,23 @@ public abstract class ViewPanelImpl implements ViewPanel {
     this.showMessage("stopped:" + msg);
     if (viewerSetting.autoClose)
       this.close();
+  }
+  
+  public BufferedImage rotate() {
+    int rotation = this.getViewerSetting().rotation;
+    rotation += 90;
+    if (rotation >= 360)
+      rotation = 0;
+    this.getViewerSetting().rotation = rotation;
+    BufferedImage rotateButtonIcon=null;
+    try {
+      rotateButtonIcon = getBufferedImage(
+          SwingViewPanel.ROTATE_BUTTON_ICON_PATH);
+      rotateButtonIcon = runner.getRotatedImage(rotateButtonIcon, rotation);
+    } catch (Exception e1) {
+      handle(e1);
+    }
+    return rotateButtonIcon;
   }
   
   /**
@@ -95,6 +161,12 @@ public abstract class ViewPanelImpl implements ViewPanel {
     }
     return result;
   }
+  
+  public void setEmptyImage() throws Exception {
+    BufferedImage bg = getBufferedImage("/images/screen640x480.png");
+    if (bg != null)
+      setBufferedImage(bg);
+  }
 
   
   MJpegReaderRunner runner;
@@ -115,7 +187,7 @@ public abstract class ViewPanelImpl implements ViewPanel {
    * 
    * @return the runner
    */
-  public MJpegReaderRunner startStreaming(String url) {
+  public MJpegReaderRunner startStreaming() {
     if (runner != null) {
       runner.stop("stopping earlier runner");
     }

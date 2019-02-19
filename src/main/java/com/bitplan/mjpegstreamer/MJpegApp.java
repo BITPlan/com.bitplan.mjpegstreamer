@@ -51,13 +51,13 @@ public class MJpegApp extends GenericApp {
   public static final String RESOURCE_PATH = "com/bitplan/mjpeg/gui";
   public static final String MJPEG_APP_PATH = RESOURCE_PATH + "/mjpeg.json";
   private static MJpegApp instance;
-  private SwingViewPanel viewPanel;
+  private ViewPanel viewPanel;
 
-  public SwingViewPanel getViewPanel() {
+  public ViewPanel getViewPanel() {
     return viewPanel;
   }
 
-  public void setViewPanel(SwingViewPanel viewPanel) {
+  public void setViewPanel(ViewPanel viewPanel) {
     this.viewPanel = viewPanel;
   }
 
@@ -121,9 +121,7 @@ public class MJpegApp extends GenericApp {
    */
   private void setupContent() {
     Tab videoTab = xyTabPane.getTab(MJpegI18n.VIDEO_FORM);
-    final SwingNode swingNode = new SwingNode();
-    swingNode.setContent(this.viewPanel.getPanel());
-    videoTab.setContent(swingNode);
+    videoTab.setContent(viewPanel.getPanel());
   }
 
   @Override

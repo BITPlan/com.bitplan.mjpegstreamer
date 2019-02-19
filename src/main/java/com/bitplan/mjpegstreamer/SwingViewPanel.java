@@ -27,15 +27,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
+import javafx.embed.swing.SwingNode;
+import javafx.scene.Node;
 
 /**
  * View Panel
@@ -45,16 +46,9 @@ import javax.swing.JTextArea;
  */
 public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
 
-  private static final long serialVersionUID = 7976060967404295181L;
-  private static final String ROTATE_BUTTON_ICON_PATH = "/images/paper0r.png";
-  private static final String START_BUTTON_ICON_PATH = "/images/start.png";
-  // https://www.iconfinder.com/icons/49386/settings_icon#size=64
-  private static final String SETTINGS_BUTTON_ICON_PATH = "/images/1394392895_settings.png";
-  private String url;
-
   // GUI elements
   protected static JFrame frame;
-  private BufferedImage image;
+
   protected JTextArea urlArea;
   private JTextArea msgArea;
   private JPanel urlPanel;
@@ -66,40 +60,41 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
   private JButton settingsButton;
   private JPanel panel;
 
+  private SwingNode swingNode;
 
-  public JPanel getPanel() {
-    return panel;
-  }
-
-  public void setPanel(JPanel panel) {
-    this.panel = panel;
+  @Override
+  public Node getPanel() {
+    return swingNode;
   }
 
   /**
    * construct me
    */
   public SwingViewPanel() {
-    setPanel(new JPanel());
+    panel = new JPanel();
+    swingNode = new SwingNode();
+    swingNode.setContent(panel);
   }
-  
+
   /**
    * set the url to the given value
    * 
    * @param url
    */
+  @Override
   public void setUrl(String url) {
     this.urlArea.setText(url);
-    this.url = url;
+    super.setUrl(url);
   }
-
 
   /**
    * set the Buffered Image
    * 
    * @param pImage
    */
+  @Override
   public void setBufferedImage(BufferedImage pImage) {
-    image = pImage;
+    super.setBufferedImage(pImage);
     imageIcon.setImage(pImage);
   }
 
@@ -108,11 +103,12 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
    * 
    * @param pImage
    */
-
+  @Override
   public void renderNextImage(BufferedImage pImage) {
-    setBufferedImage(pImage);
-    getPanel().setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
-    getPanel().repaint();
+    super.setBufferedImage(pImage);
+    panel
+        .setPreferredSize(new Dimension(pImage.getWidth(), pImage.getHeight()));
+    panel.repaint();
   }
 
   /**
@@ -122,7 +118,7 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
    */
   public void showMessage(String msg) {
     this.msgArea.setText(msg);
-    getPanel().repaint();
+    panel.repaint();
   }
 
   /**
@@ -146,23 +142,12 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
   /**
    * setup the viewPanel
    * 
-   * @param url
    * @throws Exception
    */
-  public void setup(String url) throws Exception {
-    setup();
-    this.setUrl(url);
-  }
-
-  /**
-   * setup the viewPanel
-   * @throws Exception
-   */
+  @Override
   public void setup() throws Exception {
-    BufferedImage bg = getBufferedImage("/images/screen640x480.png");
-    if (bg != null)
-      setBufferedImage(bg);
-    getPanel().setLayout(new BorderLayout());
+    setEmptyImage();
+    panel.setLayout(new BorderLayout());
     startButton = addButton("start", START_BUTTON_ICON_PATH, KeyEvent.VK_S);
     rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyEvent.VK_R);
     // https://www.iconfinder.com/icons/49386/settings_icon#size=48
@@ -184,8 +169,8 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
     this.bottomPanel.add(msgArea, BorderLayout.NORTH);
     this.bottomPanel.add(urlPanel, BorderLayout.SOUTH);
 
-    getPanel().add(label, BorderLayout.CENTER);
-    getPanel().add(bottomPanel, BorderLayout.SOUTH);
+    panel.add(label, BorderLayout.CENTER);
+    panel.add(bottomPanel, BorderLayout.SOUTH);
   }
 
   /**
@@ -196,7 +181,7 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
   public void createFrame(String title) {
     frame = new JFrame(title);
 
-    frame.getContentPane().add("Center", getPanel());
+    frame.getContentPane().add("Center", panel);
     frame.setSize(640, 480);
 
     frame.pack(); // makes the frame shrink to minimum size
@@ -205,7 +190,6 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
   }
 
-
   // http://forum.codecall.net/topic/69182-java-image-rotation/
   /**
    * react on actions e.g. a button hit
@@ -213,24 +197,16 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     String cmd = e.getActionCommand();
     if ("start".equals(cmd)) {
-      url=this.urlArea.getText();
-      startStreaming(url);
+      String url = this.urlArea.getText();
+      this.setUrl(url);
+      startStreaming();
     } else if ("rotate".equals(cmd)) {
-      int rotation = this.getViewerSetting().rotation;
-      rotation += 90;
-      if (rotation >= 360)
-        rotation = 0;
-      this.getViewerSetting().rotation = rotation;
-      BufferedImage rotateButtonIcon;
-      try {
-        rotateButtonIcon = getBufferedImage(SwingViewPanel.ROTATE_BUTTON_ICON_PATH);
-        rotateButtonIcon = runner.getRotatedImage(rotateButtonIcon, rotation);
+      BufferedImage rotateButtonIcon = rotate();
+      if (rotateButtonIcon != null) {
         ImageIcon buttonIcon = new ImageIcon(rotateButtonIcon);
         rotateButton.setIcon(buttonIcon);
-      } catch (Exception e1) {
-        handle(e1);
       }
-      getPanel().repaint();
+      panel.repaint();
     }
   }
 

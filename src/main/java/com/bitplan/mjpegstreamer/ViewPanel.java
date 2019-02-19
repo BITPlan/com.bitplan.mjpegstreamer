@@ -22,7 +22,9 @@ package com.bitplan.mjpegstreamer;
 
 import java.awt.image.BufferedImage;
 
-public interface ViewPanel extends  MJpegRenderer {
+import javafx.scene.Node;
+
+public interface ViewPanel extends MJpegRenderer {
   /**
    * @return the viewerSetting
    */
@@ -33,13 +35,30 @@ public interface ViewPanel extends  MJpegRenderer {
    *          the viewerSetting to set
    */
   public void setViewerSetting(ViewerSetting viewerSetting);
-  
+
+  /**
+   * set the url to the given value
+   * 
+   * @param url
+   */
+  public void setUrl(String url);
+
+  /*
+   * setup the viewPanel
+   * 
+   * @throws Exception
+   */
+  public void setup() throws Exception;
+
+  public void setup(String url) throws Exception;
+
   public void start(String url);
 
   public void init();
 
   public void stop(String msg);
-  
+
+  public BufferedImage rotate();
   /**
    * set the Image and render it
    * 
@@ -47,29 +66,33 @@ public interface ViewPanel extends  MJpegRenderer {
    */
 
   public void renderNextImage(BufferedImage pImage);
-  
+  public void setEmptyImage() throws Exception;
+  public void setBufferedImage(BufferedImage pImage);
+    
   /**
    * set the failed string
    * 
    * @param msg
    */
   public void showMessage(String msg);
-  
+
   /**
    * set Failed String
    * 
    * @param ex
    */
   public void handle(Exception ex);
-  
+
   public MJpegReaderRunner startStreaming(MJpegReaderRunner runner);
-  
+
   /**
    * start the streaming
    * 
    * @return the runner
    */
-  public MJpegReaderRunner startStreaming(String url);
-  
+  public MJpegReaderRunner startStreaming();
+
   public void close();
+  
+  Node getPanel();
 }

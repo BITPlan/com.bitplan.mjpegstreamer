@@ -26,8 +26,6 @@ package com.bitplan.mjpegstreamer;
 import java.awt.Color;
 import java.io.File;
 
-import javax.swing.JPanel;
-
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -35,6 +33,7 @@ import org.kohsuke.args4j.Option;
 import com.bitplan.error.SoftwareVersion;
 import com.bitplan.i18n.Translator;
 import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
+import com.bitplan.mjpegstreamer.SwingViewPanel;
 
 /**
  * Viewer for MJPeg
@@ -42,12 +41,7 @@ import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
  * @author wf
  * 
  */
-public class MJpegViewer extends JPanel  {
-
-  /**
-   * VersionUID
-   */
-  private static final long serialVersionUID = -8411137280369817459L;
+public class MJpegViewer  {
 
   /**
    * current Version of the tool
@@ -90,18 +84,17 @@ public class MJpegViewer extends JPanel  {
 
   @Option(name = "-u", aliases = { "--url" }, usage = "url\nurl to be used")
   String url = "http://cam2/mjpeg.cgi";
-  
+
   @Option(name = "-f", aliases = { "--file" }, usage = "file\nfile to open")
   String fileName = null;
-
 
   @Option(name = "-v", aliases = {
       "--version" }, usage = "showVersion\nshow current version if this switch is used")
   boolean showVersion = false;
 
-  private SwingViewPanel viewPanel = new SwingViewPanel();
-
   private MJpegApp mJpegApp;
+
+  private ViewPanel viewPanel;
 
   public static boolean testMode = false;
 
@@ -138,21 +131,6 @@ public class MJpegViewer extends JPanel  {
    */
   public void setReadTimeOut(int readTimeOut) {
     this.readTimeOut = readTimeOut;
-  }
-
-  /**
-   * @return the viewPanel
-   */
-  public SwingViewPanel getViewPanel() {
-    return viewPanel;
-  }
-
-  /**
-   * @param viewPanel
-   *          the viewPanel to set
-   */
-  public void setViewPanel(SwingViewPanel viewPanel) {
-    this.viewPanel = viewPanel;
   }
 
   /**
@@ -228,6 +206,14 @@ public class MJpegViewer extends JPanel  {
    */
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public ViewPanel getViewPanel() {
+    return viewPanel;
+  }
+
+  public void setViewPanel(ViewPanel viewPanel) {
+    this.viewPanel = viewPanel;
   }
 
   /**
@@ -326,7 +312,15 @@ public class MJpegViewer extends JPanel  {
    * @return the view panel for setup
    * @throws Exception
    */
-  public SwingViewPanel setupViewPanel() throws Exception {
+  public ViewPanel setupViewPanel() throws Exception {
+    if (javaFx) {
+      mJpegApp = MJpegApp.getInstance(new MJpegVersion(), debug);
+      MJpegApp.toolkitInit();
+      mJpegApp.setViewPanel(new JavaFXViewPanel());
+      viewPanel = mJpegApp.getViewPanel();
+    } else {
+      viewPanel = new SwingViewPanel();
+    }
     ViewerSetting s = viewPanel.getViewerSetting();
     s.title = title;
     s.autoStart = autoStart;
@@ -337,22 +331,23 @@ public class MJpegViewer extends JPanel  {
       s.imageListener = new RectangleOverlay(50, 50, 50, 50, Color.BLUE);
     if (debug)
       s.debugMode = DebugMode.Verbose;
-    if (fileName!=null) {
-      File file=new File(fileName);
+    if (fileName != null) {
+      File file = new File(fileName);
       if (!file.canRead()) {
-        throw new Exception("Can't read "+file.getPath());
+        throw new Exception("Can't read " + file.getPath());
       }
-      url=file.toURI().toString();
+      url = file.toURI().toString();
     }
-      
     viewPanel.setup(url);
+
     if (javaFx) {
-      mJpegApp = MJpegApp.getInstance(new MJpegVersion(),debug);
-      mJpegApp.setViewPanel(viewPanel);
       mJpegApp.show();
       mJpegApp.waitOpen();
     } else {
-      viewPanel.createFrame(s.title);
+      if (viewPanel instanceof SwingViewPanel) {
+        SwingViewPanel swingViewPanel = (SwingViewPanel) viewPanel;
+        swingViewPanel.createFrame(s.title);
+      }
     }
     viewPanel.start(url);
     return viewPanel;
