@@ -11,13 +11,13 @@
 	<parent>
 		<groupId>com.bitplan.pom</groupId>
 		<artifactId>com.bitplan.pom</artifactId>
-		<version>0.0.8</version>
+		<version>0.0.24</version>
 		<relativePath>../com.bitplan.pom/pom.xml</relativePath> 
 	</parent>
 	<groupId>com.bitplan</groupId>
 	<artifactId>com.bitplan.mjpegstreamer</artifactId>
 	<name>mjpegstreamer</name>
-	<version>0.0.7</version>
+	<version>0.0.8</version>
 	<description>Java library for handing MJPEG streams - can e.g. display stream from a Webcam as a preview</description>
 	<properties>
 		<!-- for parent pom to work -->
@@ -26,6 +26,10 @@
 		<documentation.wiki>http://www.bitplan.com/MJpegStreamer</documentation.wiki>
 	</properties>
 	<dependencies>
+	  <dependency>
+      <groupId>com.bitplan.gui</groupId>
+      <artifactId>com.bitplan.javafx</artifactId>
+    </dependency>
 		<!-- apache commons codec (e.g. Base64) -->
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -42,15 +46,25 @@
 		<dependency>
 			<groupId>args4j</groupId>
 			<artifactId>args4j</artifactId>
-			<version>${args4j.version}</version>
 		</dependency>
 		<!-- JUnit testing -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit4.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all -->
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+    </dependency>
+		<!-- TestI18n dependency -->
+    <dependency>
+      <groupId>com.bitplan.gui</groupId>
+      <artifactId>com.bitplan.gui</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
 	</dependencies>
 	<build>
 		<plugins>

@@ -5,13 +5,13 @@
 ![Screenshot](examples/Screenshot.png)
 ## Usage
 ```
-java -jar mjpegstreamer.jar --help
+java -jar mjpeg.jar --help
 Help
-MJpegViewer Version: 0.0.6
+MJpegViewer Version: 0.0.8
 
- github: https://github.com/BITPlan/com.bitplan.mjpegstreamer
+ github: https://github.com/BITPlan/com.bitplan.mjpeg
 
-  usage: java com.bitplan.mjpegstreamer.MJpegViewer
+  usage: java com.bitplan.mjpeg.MJpegViewer
  -ac (--autoclose)      : auto close
                           close when stream is finished
  -d (--debug)           : debug
@@ -32,18 +32,18 @@ MJpegViewer Version: 0.0.6
                           show current version if this switch is used
 ```
 ## Examples
-java -jar mjpegstreamer.jar --url http://iris.not.iac.es/axis-cgi/mjpg/video.cgi?resolution=640x480 --start --title "NORDIC Telescope on Observatorio del Roque de Los Muchachos - La Palma"
+java -jar mjpeg.jar --url http://iris.not.iac.es/axis-cgi/mjpg/video.cgi?resolution=640x480 --start --title "NORDIC Telescope on Observatorio del Roque de Los Muchachos - La Palma"
 
 ![Screenshot](examples/nordictelescope.png)
 
-java -jar mjpegstreamer.jar --url http://87.139.217.70/mjpg/video.mjpg?resolution=640x480 --start --title "Dollnstein/Germany"
+java -jar mjpeg.jar --url http://87.139.217.70/mjpg/video.mjpg?resolution=640x480 --start --title "Dollnstein/Germany"
 
 ![Screenshot](examples/dollnstein.png)
 
 see http://www.insecam.org for more publicly accessible test cameras
 
 ### gphoto2 stream e.g. for Canon EOS Preview
-gphoto2 --capture-movie --stdout | java -jar mjpegstreamer.jar -u - --start --title "Canon EOS preview"
+gphoto2 --capture-movie --stdout | java -jar mjpeg.jar -u - --start --title "Canon EOS preview"
 ![Screenshot](examples/canonpreview.png)
 
 
@@ -51,13 +51,18 @@ see preview script for more details on how to handle the release of the USB port
 
 ## Installation
 ```
-git clone https://github.com/BITPlan/com.bitplan.mjpegstreamer
+git clone https://github.com/BITPlan/com.bitplan.mjpeg
 mvn install
 ```
-to use as a library 
+to use as a library
 
 ```
 mvn clean compile assembly:single
 ```
-to create a stand alone jar
 
+or
+```
+./release
+```
+
+to create a stand alone jar

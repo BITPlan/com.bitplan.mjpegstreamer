@@ -188,7 +188,9 @@ public class ViewPanel extends JPanel implements ActionListener, MJpegRenderer {
 
 		add(label, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
-		createFrame(viewerSetting.title);
+	}
+	
+	public void start() {
 		if (viewerSetting.autoStart) {
 			this.startStreaming();
 		}
