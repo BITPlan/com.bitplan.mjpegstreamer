@@ -169,4 +169,10 @@ public class MJpegRenderQueue implements MJpegRenderer {
 		this.viewerSetting = viewerSetting;
 	}
 
+  @Override
+  public void showProgress(int framesReadCount,long bytesRead, int totalSize) {
+    
+    
+  }
+
 }

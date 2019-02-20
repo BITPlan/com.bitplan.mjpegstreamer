@@ -209,4 +209,10 @@ public class JavaFXViewPanel extends ViewPanelImpl
     return pane;
   }
 
+  @Override
+  public void showProgress(int framesReadCount, long bytesRead, int totalSize) {
+    this.slider.setMax(totalSize);
+    this.slider.setValue(bytesRead);
+  }
+
 }

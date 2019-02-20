@@ -219,4 +219,10 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
     super.close();
   }
 
+  @Override
+  public void showProgress(int framesReadCount, long bytesRead,int totalSize) {
+  
+    
+  }
+
 }

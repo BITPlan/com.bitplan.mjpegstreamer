@@ -50,7 +50,7 @@ public class MJpegViewer  {
 
   @Option(name = "-d", aliases = {
       "--debug" }, usage = "debug\nadds debugging output")
-  boolean debug = true;
+  boolean debug = false;
 
   @Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
   boolean showHelp = false;
@@ -291,8 +291,7 @@ public class MJpegViewer  {
     if (t.getMessage() != null)
       msg += ":" + t.getMessage();
     System.err.println(t.getClass().getSimpleName() + msg);
-    if (debug)
-      t.printStackTrace();
+    t.printStackTrace();
   }
 
   /**

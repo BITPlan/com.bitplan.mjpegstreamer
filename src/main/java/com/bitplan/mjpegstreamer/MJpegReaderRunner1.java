@@ -67,7 +67,6 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 		stringWriter = new StringWriter(128);
 	}
 	
-
 	/**
 	 * Keeps running while process() returns true
 	 * 

@@ -152,7 +152,7 @@ public class TestMJpegRenderQueue {
         preview = lpreview;
         checkPreview(url, frames[index]);
         // Wait a bit before next test
-        Thread.sleep(150);
+        Thread.sleep(200);
       }
       index++;
     }
