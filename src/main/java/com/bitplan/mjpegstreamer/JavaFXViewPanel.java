@@ -144,6 +144,8 @@ public class JavaFXViewPanel extends ViewPanelImpl
     slider.setMin(0);
     slider.setMax(60);
     buttonBar = new ButtonBar();
+    // see https://fontawesome.com/v4.7.0/icons/
+    // for potential icons
     startButton = addButton("start", FontAwesome.Glyph.PLAY, KeyCode.PLAY);
     pauseButton = addButton("pause",FontAwesome.Glyph.PAUSE,KeyCode.PAUSE);
     stopButton = addButton("stop",FontAwesome.Glyph.STOP,KeyCode.STOP);
