@@ -347,13 +347,15 @@ public class MJpegViewer  {
       }
       url = file.toURI().toString();
     }
-    viewPanel.setup(url);
-
+   
     if (javaFx) {
       mJpegApp.show();
       mJpegApp.waitOpen();
+      ((JavaFXViewPanel) viewPanel).setXyTabPane(mJpegApp.getXyTabPane());
+      viewPanel.setup(url);
     } else {
       if (viewPanel instanceof SwingViewPanel) {
+        viewPanel.setup(url);
         SwingViewPanel swingViewPanel = (SwingViewPanel) viewPanel;
         swingViewPanel.createFrame(s.title);
       }

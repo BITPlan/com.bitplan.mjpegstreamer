@@ -23,9 +23,11 @@ package com.bitplan.mjpegstreamer;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
-import org.controlsfx.control.StatusBar;
+import org.controlsfx.control.StatusBar;import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.FontAwesome.Glyph;
 
 import com.bitplan.javafx.ImageViewPane;
+import com.bitplan.javafx.XYTabPane;
 
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -62,11 +64,23 @@ public class JavaFXViewPanel extends ViewPanelImpl
   private Button settingsButton;
   private TextArea urlArea;
   private Slider slider;
+  private XYTabPane xyTabPane;
+  private Button pauseButton;
+  private Button stopButton;
+  
+  public XYTabPane getXyTabPane() {
+    return xyTabPane;
+  }
+
+  public void setXyTabPane(XYTabPane xyTabPane) {
+    this.xyTabPane = xyTabPane;
+  }
 
   /**
    * construct me
    */
   public JavaFXViewPanel() {
+   
   }
 
   /**
@@ -82,6 +96,30 @@ public class JavaFXViewPanel extends ViewPanelImpl
 
     Image image = new Image(input);
     ImageView imageView = new ImageView(image);
+    Button button=addButton(title,imageView,kk);
+    return button;
+  }
+  
+  /**
+   * add a button with the given title, glyph and keycode using the xyTabPane
+   * @param title
+   * @param glyph
+   * @param kk
+   * @return the Button
+   */
+  protected Button addButton(String title, Glyph glyph, KeyCode kk) {
+    Button button=addButton(title,xyTabPane.getIcon(glyph.name(), xyTabPane.getIconSize()),kk);
+    return button;
+  }
+  
+  /**
+   * add a button with the given title icon and keycode
+   * @param title
+   * @param icon
+   * @param kk
+   * @return the button
+   */
+  private Button addButton(String title, Node icon, KeyCode kk) {
     Button button = new Button(title, imageView);
     button.setOnAction(this);
     // TODO - fix later
@@ -113,6 +151,8 @@ public class JavaFXViewPanel extends ViewPanelImpl
     buttonBar = new ButtonBar();
     startButton = addButton("start", START_BUTTON_ICON_PATH, KeyCode.S);
     rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyCode.R);
+    pauseButton = addButton("pause",FontAwesome.Glyph.PAUSE,KeyCode.PAUSE);
+    stopButton = addButton("stop",FontAwesome.Glyph.STOP,KeyCode.STOP);
     // https://www.iconfinder.com/icons/49386/settings_icon#size=48
     // @TODO potentially activate again
     // settingsButton = addButton("settings", SETTINGS_BUTTON_ICON_PATH,
@@ -202,6 +242,10 @@ public class JavaFXViewPanel extends ViewPanelImpl
         String url = this.urlArea.getText();
         this.setUrl(url);
         startStreaming();
+      } else if (eventButton.equals(stopButton)) {
+        this.stop("stopped");
+      } else if (eventButton.equals(pauseButton)) {
+        this.stop("paused"); // FIXME implement Toggle     
       } else if (eventButton.equals(rotateButton)) {
         BufferedImage rotateButtonIcon = rotate();
         if (rotateButtonIcon != null) {
