@@ -39,6 +39,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -55,6 +56,7 @@ import javafx.scene.layout.VBox;
 public class JavaFXViewPanel extends ViewPanelImpl
     implements EventHandler<ActionEvent> {
 
+  public static int ICON_SIZE=24;
   private ImageView imageView;
   private Pane pane;
   private ButtonBar buttonBar;
@@ -64,17 +66,8 @@ public class JavaFXViewPanel extends ViewPanelImpl
   private Button settingsButton;
   private TextArea urlArea;
   private Slider slider;
-  private XYTabPane xyTabPane;
   private Button pauseButton;
   private Button stopButton;
-  
-  public XYTabPane getXyTabPane() {
-    return xyTabPane;
-  }
-
-  public void setXyTabPane(XYTabPane xyTabPane) {
-    this.xyTabPane = xyTabPane;
-  }
 
   /**
    * construct me
@@ -108,7 +101,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
    * @return the Button
    */
   protected Button addButton(String title, Glyph glyph, KeyCode kk) {
-    Button button=addButton(title,xyTabPane.getIcon(glyph.name(), xyTabPane.getIconSize()),kk);
+    Button button=addButton(title,XYTabPane.getIcon(glyph.name(), ICON_SIZE),kk);
     return button;
   }
   
@@ -120,7 +113,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
    * @return the button
    */
   private Button addButton(String title, Node icon, KeyCode kk) {
-    Button button = new Button(title, imageView);
+    Button button = new Button();
+    button.setGraphic(icon);
+    button.setTooltip(new Tooltip(title));
     button.setOnAction(this);
     // TODO - fix later
     // KeyCombination kc = new KeyCodeCombination(kk,KeyCombination.ALT_ANY);
@@ -149,11 +144,11 @@ public class JavaFXViewPanel extends ViewPanelImpl
     slider.setMin(0);
     slider.setMax(60);
     buttonBar = new ButtonBar();
-    startButton = addButton("start", START_BUTTON_ICON_PATH, KeyCode.S);
-    rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyCode.R);
+    startButton = addButton("start", FontAwesome.Glyph.PLAY, KeyCode.PLAY);
     pauseButton = addButton("pause",FontAwesome.Glyph.PAUSE,KeyCode.PAUSE);
     stopButton = addButton("stop",FontAwesome.Glyph.STOP,KeyCode.STOP);
-    // https://www.iconfinder.com/icons/49386/settings_icon#size=48
+    rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyCode.R);
+       // https://www.iconfinder.com/icons/49386/settings_icon#size=48
     // @TODO potentially activate again
     // settingsButton = addButton("settings", SETTINGS_BUTTON_ICON_PATH,
     // KeyCode.P);
