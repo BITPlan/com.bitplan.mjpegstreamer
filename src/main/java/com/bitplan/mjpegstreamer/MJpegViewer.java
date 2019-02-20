@@ -335,6 +335,7 @@ public class MJpegViewer  {
     s.autoStart = autoStart;
     s.readTimeOut = readTimeOut;
     s.rotation = rotation;
+    // remember the autoClose in the Viewer Settings
     s.autoClose = autoClose;
     if (overlay)
       s.imageListener = new RectangleOverlay(50, 50, 50, 50, Color.BLUE);

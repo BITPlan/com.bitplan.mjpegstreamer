@@ -30,6 +30,8 @@ import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.TaskLaunch;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -121,6 +123,21 @@ public class MJpegApp extends GenericApp {
   private void setupContent() {
     Tab videoTab = xyTabPane.getTab(MJpegI18n.VIDEO_FORM);
     videoTab.setContent(viewPanel.getPanel());
+    // enable auto close if asked for
+    if (viewPanel.getViewerSetting().autoClose) {
+      // Add change listener
+      ChangeListener<Boolean> closeListener = new ChangeListener<Boolean>() {
+        @Override
+        public void changed(ObservableValue<? extends Boolean> observable,
+            Boolean oldValue, Boolean newValue) {
+          // close the application when the viewer is finished
+          // that is the new open value is false
+          if (!newValue)
+            close();
+        }
+      };
+      viewPanel.isOpen().addListener(closeListener);
+    }
   }
 
   @Override
@@ -180,8 +197,18 @@ public class MJpegApp extends GenericApp {
         new ExtensionFilter("All Files", "*.*"));
     File selectedFile = fileChooser.showOpenDialog(this.getStage());
     if (selectedFile != null) {
-      Platform.runLater(() -> viewPanel.setUrl(selectedFile.toURI().toString()));
+      Platform
+          .runLater(() -> viewPanel.setUrl(selectedFile.toURI().toString()));
     }
+  }
+  
+  /**
+   * close me
+   */
+  @Override
+  public void close() {
+    super.close();
+    instance=null;
   }
 
   /**

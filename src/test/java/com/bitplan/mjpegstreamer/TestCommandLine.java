@@ -40,7 +40,7 @@ import com.bitplan.executil.Piper;
 public class TestCommandLine {
   
   // checked on 2018-08-22
-  public static final String TEST_URL1="http://posta.mukolin.cz/axis-cgi/mjpg/video.cgi";
+  public static final String TEST_URL1="http://83.136.196.135/mjpg/video.mjpg";
   // you could use your own Camera here e.g.
   // "http://cam2/mjpeg.cgi", 
   
