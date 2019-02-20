@@ -25,6 +25,9 @@ import java.io.InputStream;
 
 import org.controlsfx.control.StatusBar;
 
+import com.bitplan.javafx.ImageViewPane;
+
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -91,11 +94,11 @@ public class JavaFXViewPanel extends ViewPanelImpl
   };
 
   public void initImage() throws Exception {
-    imageView.setFitHeight(480);
-    imageView.setFitWidth(640);
+    // imageView.setFitHeight(480);
+    // imageView.setFitWidth(640);
     imageView.setPreserveRatio(true);
-    imageView.fitHeightProperty().bind(pane.heightProperty());
-    imageView.fitWidthProperty().bind(pane.widthProperty());
+    // imageView.fitHeightProperty().bind(pane.heightProperty());
+    // imageView.fitWidthProperty().bind(pane.widthProperty());
     setEmptyImage();
     pane.requestLayout();
   }
@@ -112,24 +115,30 @@ public class JavaFXViewPanel extends ViewPanelImpl
     rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyCode.R);
     // https://www.iconfinder.com/icons/49386/settings_icon#size=48
     // @TODO potentially activate again
-    //settingsButton = addButton("settings", SETTINGS_BUTTON_ICON_PATH,
-    //    KeyCode.P);
+    // settingsButton = addButton("settings", SETTINGS_BUTTON_ICON_PATH,
+    // KeyCode.P);
     urlArea = new TextArea();
     statusBar = new StatusBar();
 
+    Pane bottomPane = new VBox();
+    bottomPane.getChildren().add(slider);
+    bottomPane.getChildren().add(urlArea);
+    bottomPane.getChildren().add(statusBar);
+    bottomPane.getChildren().add(buttonBar);
+
     pane = new VBox();
-    pane.getChildren().add(imageView);
-    pane.getChildren().add(slider);
-    pane.getChildren().add(urlArea);
-    pane.getChildren().add(statusBar);
-    pane.getChildren().add(buttonBar);
+    pane.getChildren().add(new ImageViewPane(imageView));
+    pane.getChildren().add(bottomPane);
+
     initImage();
   }
 
   @Override
   public void showMessage(String msg) {
-    statusBar.setText(msg);
-    pane.requestLayout();
+    Platform.runLater(() -> {
+      statusBar.setText(msg);
+      pane.requestLayout();
+    });
   }
 
   /**
@@ -213,6 +222,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   public void showProgress(int framesReadCount, long bytesRead, int totalSize) {
     this.slider.setMax(totalSize);
     this.slider.setValue(bytesRead);
+    pane.requestLayout();
   }
 
 }
