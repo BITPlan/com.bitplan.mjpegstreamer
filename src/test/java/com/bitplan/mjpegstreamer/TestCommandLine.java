@@ -79,7 +79,7 @@ public class TestCommandLine {
     // ad your own camera url here
     String[] args = { "-u", 
         TEST_URL1,
-        "--start", "--autoclose" };
+        "--start", "--autoclose", "--limit", "2" };
     testMJpegStreamer(args, 0, 1250);
   }
 

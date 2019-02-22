@@ -35,7 +35,8 @@ import java.util.logging.Logger;
 // JDK 8
 // import java.util.Base64;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.time.StopWatch;
 
 import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 
@@ -86,6 +87,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
   private long now;
 
   private int totalSize;
+
+  private StopWatch stopWatch;
 
   /**
    * @return the viewer
@@ -234,6 +237,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
     viewer.init();
     this.streamReader = new Thread(this, "Stream reader");
     streamReader.start();
+    stopWatch = new StopWatch();
+    stopWatch.start();
   }
 
   /**
@@ -320,6 +325,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 
   /**
    * read
+   * @return true if we can continue
    */
   public boolean read() {
     try {
@@ -396,7 +402,12 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
     } catch (Throwable th) {
       handle("Error acquiring the frame: ", th);
     }
-    return framesRenderedCount < viewer.getViewerSetting().pictureCount;
+    ViewerSetting viewerSetting = viewer.getViewerSetting();
+    boolean done=framesRenderedCount >= viewerSetting.pictureCount;
+    if (!done) {
+      done=stopWatch.getTime()>=viewerSetting.timeLimitSecs*1000;
+    }
+    return !done;
   }
 
   /**

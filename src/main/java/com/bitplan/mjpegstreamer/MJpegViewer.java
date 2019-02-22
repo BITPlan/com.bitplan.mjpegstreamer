@@ -57,6 +57,9 @@ public class MJpegViewer  {
 
   @Option(name = "-j", aliases = { "--javafx" }, usage = "javafx\nuse javafx")
   boolean javaFx = true;
+  
+  @Option(name = "-l", aliases = { "--limit" }, usage = "limit\nlimit display/recording to given secs")
+  int limit=3600*24; // default is one day
 
   @Option(name = "-o", aliases = {
       "--overlay" }, usage = "adds a rectangle overlay")
@@ -335,6 +338,8 @@ public class MJpegViewer  {
     s.autoStart = autoStart;
     s.readTimeOut = readTimeOut;
     s.rotation = rotation;
+    s.timeLimitSecs=limit;
+    
     // remember the autoClose in the Viewer Settings
     s.autoClose = autoClose;
     if (overlay)

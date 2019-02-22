@@ -33,7 +33,7 @@ public class ViewerSetting {
 		int rotation=0;                     // 0,90,180 or 270 degrees rotated
 		int pictureCount=Integer.MAX_VALUE; // when to stop - pictureCount*fpsLimit gives the number of seconds to run
 		int fpsLimit=50;                    // maximum number of Frames per seconds
-		int previewTime;
+		int timeLimitSecs;
 		int readTimeOut=1000;
 		DebugMode debugMode=DebugMode.None;
 		ImageListener imageListener=null;
@@ -88,19 +88,14 @@ public class ViewerSetting {
 		public void setFpsLimit(int fpsLimit) {
 			this.fpsLimit = fpsLimit;
 		}
-		/**
-		 * @return the previewTime
-		 */
-		public int getPreviewTime() {
-			return previewTime;
-		}
-		/**
-		 * @param previewTime the previewTime to set
-		 */
-		public void setPreviewTime(int previewTime) {
-			this.previewTime = previewTime;
-		}
-		/**
+		
+		public int getTimeLimitSecs() {
+      return timeLimitSecs;
+    }
+    public void setTimeLimitSecs(int timeLimitSecs) {
+      this.timeLimitSecs = timeLimitSecs;
+    }
+    /**
 		 * @return the readTimeOut
 		 */
 		public int getReadTimeOut() {
