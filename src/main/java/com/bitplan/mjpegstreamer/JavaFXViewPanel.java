@@ -211,7 +211,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   public WritableImage getImage(BufferedImage pImage) {
     final WritableImage writableImage = new WritableImage(pImage.getWidth(),
         pImage.getHeight());
-    SwingFXUtils.toFXImage(pImage, writableImage);
+    com.bitplan.javafx.SwingFXUtils.toFXImage(pImage, writableImage);
     return writableImage;
   }
 
