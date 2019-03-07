@@ -29,8 +29,8 @@ import java.util.logging.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.bitplan.mjpeg.preview.MJpegPreview;
 import com.bitplan.mjpeg.preview.MJpegJavaFXPreview;
+import com.bitplan.mjpeg.preview.MJpegPreview;
 import com.bitplan.mjpeg.preview.Preview;
 import com.bitplan.mjpegstreamer.ViewerSetting.DebugMode;
 import com.bitplan.user.User;
@@ -42,6 +42,7 @@ import com.bitplan.user.User;
  * 
  */
 public class TestMJpegRenderQueue {
+  boolean debug=false;
   // find examples e.g. at https://www.ipcams.ch/WebCam.aspx?nr=1729
   public static String TEST_URL2 = "http://213.193.89.202/axis-cgi/mjpg/video.cgi";
   // "http://iris.not.iac.es/axis-cgi/mjpg/video.cgi?resolution=320x240",
@@ -75,11 +76,13 @@ public class TestMJpegRenderQueue {
   public void checkPreview(String url, String user, String pass, int frames)
       throws Exception {
     LOGGER.log(Level.INFO, "reading from url " + url);
+    MJpegRenderer viewer = preview.getViewer();
+    viewer.showMessage("reading from url " + url);
     preview.getRunner().init(url, user, pass);
     ViewerSetting settings = preview.getViewer().getViewerSetting();
     settings.setPictureCount(frames);
-    // settings.setDebugMode(DebugMode.Verbose);
-    settings.setDebugMode(DebugMode.FPS);
+    settings.setDebugMode(DebugMode.Verbose);
+    // settings.setDebugMode(DebugMode.FPS);
     ImageListener listener = new ImageListener() {
 
       @Override
@@ -96,14 +99,14 @@ public class TestMJpegRenderQueue {
     count = 0;
     preview.start();
     preview.getRunner().join();
-    boolean debug = true;
+    viewer.stop("finished");
+
     /*
-     * long timeout = System.currentTimeMillis() + 2000; int count=0; while
-     * (System.currentTimeMillis() < timeout) { if (renderQueue.isStarted()) {
-     * BufferedImage image; while ((image = renderQueue.getImageBuffer().poll())
-     * != null) { count++; assertNotNull(image); } if (renderQueue.isStopped())
-     * break; try { Thread.sleep(1); } catch (InterruptedException e) { } } }
+     * StopWatch stopWatch = new StopWatch(); stopWatch.start(); while
+     * (stopWatch.getTime() <= 2000) { if (preview.getRunner().getFramesRead() <
+     * frames) { try { Thread.sleep(1); } catch (InterruptedException e) { } } }
      */
+    assertEquals(String.format("%s:%s",preview.getClass().getSimpleName(),url), frames, preview.getRunner().getFramesRead());
     if (debug)
       LOGGER.log(Level.INFO, "found " + count + " frames");
     assertEquals(settings.pictureCount, count);
@@ -141,18 +144,22 @@ public class TestMJpegRenderQueue {
    */
   @Test
   public void testPreview() throws Exception {
+    debug=true;
     String urls[] = {
+
         ClassLoader.getSystemResource("testmovie/movie.mjpg").toExternalForm(),
         TEST_URL2 };
-    int frames[] = { 51, 11, 11 };
+    int frames[] = { 11, 51, 11, 51 };
+
     int index = 0;
-    Preview[] previews = { new MJpegJavaFXPreview(), new MJpegPreview()  };
+  
     for (String url : urls) {
+      Preview[] previews = { new MJpegJavaFXPreview()
+          //, new MJpegPreview() 
+          };
       for (Preview lpreview : previews) {
         preview = lpreview;
         checkPreview(url, frames[index]);
-        // Wait a bit before next test
-        Thread.sleep(200);
       }
       index++;
     }

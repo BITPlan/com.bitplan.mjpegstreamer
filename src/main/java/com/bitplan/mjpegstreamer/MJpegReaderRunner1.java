@@ -41,23 +41,6 @@ public class MJpegReaderRunner1 extends MJpegRunnerBase {
 	private static final String CONTENT_LENGTH = "Content-length: ";
 	private static final String CONTENT_TYPE = "Content-type: image/jpeg";
 	private StringWriter stringWriter;
-	
-
-	/**
-	 * initialize with the given parameters
-	 * 
-	 * @param urlString
-	 * @param user
-	 * @param pass
-	 * @throws IOException
-	 */
-	public void init(String urlString, String user,
-			String pass) throws IOException {
-		this.urlString=urlString;
-		this.user=user;
-		this.pass=pass;
-		init(null);
-	}
 
 	@Override
 	public void init(InputStream inputStream)

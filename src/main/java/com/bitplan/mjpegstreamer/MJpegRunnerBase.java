@@ -51,14 +51,14 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
       .getLogger("com.bitplan.mjpegstreamer");
 
   protected MJpegRenderer viewer;
-  protected String urlString, user, pass;
+  private String urlString, user, pass;
   protected boolean frameAvailable = false;
   protected BufferedInputStream inputStream;
 
-  protected URL url;
+  private URL url;
   protected byte[] curFrame;
   // count each frame
-  protected int framesReadCount;
+  private int framesReadCount;
   protected long bytesRead=0;
 
   protected int framesRenderedCount;
@@ -89,6 +89,25 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
   private int totalSize;
 
   private StopWatch stopWatch;
+  
+  /**
+   * create a MJpegRunner
+   * 
+   * @param urlString
+   * @param user
+   * @param pass
+   * @throws IOException
+   */
+  @Override
+  public void init(String urlString, String user, String pass)
+      throws IOException {
+    this.urlString = urlString;
+    this.user = user;
+    this.pass = pass;
+    url=new URL(urlString);
+    init(url.openStream());
+  }
+
 
   /**
    * @return the viewer
@@ -236,9 +255,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
       this.addImageListener(viewer.getViewerSetting().imageListener);
     viewer.init();
     this.streamReader = new Thread(this, "Stream reader");
-    streamReader.start();
     stopWatch = new StopWatch();
     stopWatch.start();
+    streamReader.start();
   }
 
   /**

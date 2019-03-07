@@ -49,23 +49,6 @@ public class MJpegReaderRunner2 extends MJpegRunnerBase {
 
 	}
 
-	/**
-	 * create a MJpegRunner
-	 * 
-	 * @param urlString
-	 * @param user
-	 * @param pass
-	 * @throws IOException
-	 */
-	@Override
-	public void init(String urlString, String user, String pass)
-			throws IOException {
-		this.urlString = urlString;
-		this.user = user;
-		this.pass = pass;
-		init(null);
-	}
-
 	@Override
 	public void init(InputStream inputStream) throws IOException {
 		this.curFrame = new byte[0];

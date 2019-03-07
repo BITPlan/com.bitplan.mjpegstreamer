@@ -28,6 +28,11 @@ import javax.imageio.ImageIO;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
+/**
+ * view panel implementation
+ * @author wf
+ *
+ */
 public abstract class ViewPanelImpl implements ViewPanel {
   protected static final String ROTATE_BUTTON_ICON_PATH = "/images/paper0r.png";
   protected static final String START_BUTTON_ICON_PATH = "/images/start.png";

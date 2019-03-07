@@ -112,7 +112,7 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @return true if reading may continue
 	 */
 	public boolean read();
-
+	
 	/**
 	 * add an imageListener
 	 * @param listener

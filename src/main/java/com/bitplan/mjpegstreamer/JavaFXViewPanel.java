@@ -23,14 +23,14 @@ package com.bitplan.mjpegstreamer;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
-import org.controlsfx.control.StatusBar;import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.control.StatusBar;
+import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.FontAwesome.Glyph;
 
 import com.bitplan.javafx.ImageViewPane;
 import com.bitplan.javafx.XYTabPane;
 
 import javafx.application.Platform;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
