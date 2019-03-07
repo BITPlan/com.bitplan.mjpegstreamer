@@ -59,7 +59,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
   protected byte[] curFrame;
   // count each frame
   private int framesReadCount;
-  protected long bytesRead=0;
+  protected long bytesRead = 0;
 
   protected int framesRenderedCount;
   // count frames in last second for frame per second calculation
@@ -86,10 +86,10 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 
   private long now;
 
-  private int totalSize;
+  private long totalSize;
 
   private StopWatch stopWatch;
-  
+
   /**
    * create a MJpegRunner
    * 
@@ -104,10 +104,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
     this.urlString = urlString;
     this.user = user;
     this.pass = pass;
-    url=new URL(urlString);
+    url = new URL(urlString);
     init(url.openStream());
   }
-
 
   /**
    * @return the viewer
@@ -227,12 +226,12 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
   public void connect() {
     connected = true;
     // if inputStream has been set - keep it!
-    if (inputStream != null)
-      return;
-    if ("-".equals(urlString))
-      inputStream = new BufferedInputStream(System.in, INPUT_BUFFER_SIZE);
-    else
-      inputStream = openConnection();
+    if (inputStream == null) {
+      if ("-".equals(urlString))
+        inputStream = new BufferedInputStream(System.in, INPUT_BUFFER_SIZE);
+      else
+        inputStream = openConnection();
+    }
     try {
       // will this work?
       // https://stackoverflow.com/questions/1119332/determine-the-size-of-an-inputstream
@@ -344,6 +343,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 
   /**
    * read
+   * 
    * @return true if we can continue
    */
   public boolean read() {
@@ -356,9 +356,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
         this.firstFrameNanoTime = System.nanoTime();
         this.fpsFrameNanoTime = firstFrameNanoTime;
         this.fpssecond = fpsFrameNanoTime;
-        this.bytesRead=0;
+        this.bytesRead = 0;
       }
-      bytesRead+=curFrame.length;
+      bytesRead += curFrame.length;
       framesReadCount++;
       fpscountIn++;
       frameAvailable = false;
@@ -378,7 +378,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
           TimeUnit.NANOSECONDS);
       // is a second over?
       if (secmillisecs > 1000) {
-        showProgress(framesReadCount, bytesRead,totalSize);
+        showProgress(framesReadCount, bytesRead, totalSize);
         fpsIn = fpscountIn;
         fpsOut = fpscountOut;
         fpscountOut = 0;
@@ -422,9 +422,9 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
       handle("Error acquiring the frame: ", th);
     }
     ViewerSetting viewerSetting = viewer.getViewerSetting();
-    boolean done=framesRenderedCount >= viewerSetting.pictureCount;
+    boolean done = framesRenderedCount >= viewerSetting.pictureCount;
     if (!done) {
-      done=stopWatch.getTime()>=viewerSetting.timeLimitSecs*1000;
+      done = stopWatch.getTime() >= viewerSetting.timeLimitSecs * 1000;
     }
     return !done;
   }
@@ -433,11 +433,11 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
    * show the Progress to be overridden in implementation as you see fit
    * 
    * @param framesReadCount
-   * @param bytesRead 
+   * @param bytesRead
    * @param totalSize
    */
-  public void showProgress(int framesReadCount, long bytesRead, int totalSize) {
-    viewer.showProgress(framesReadCount, bytesRead,totalSize);
+  public void showProgress(int framesReadCount, long bytesRead, long totalSize) {
+    viewer.showProgress(framesReadCount, bytesRead, totalSize);
   }
 
   /**

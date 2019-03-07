@@ -48,8 +48,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 /**
  * Java FX Version of View panel
@@ -289,7 +287,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   }
 
   @Override
-  public void showProgress(int framesReadCount, long bytesRead, int totalSize) {
+  public void showProgress(int framesReadCount, long bytesRead, long totalSize) {
     this.slider.setMax(totalSize);
     this.slider.setValue(bytesRead);
     refresh();

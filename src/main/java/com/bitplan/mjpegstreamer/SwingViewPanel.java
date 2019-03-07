@@ -220,7 +220,7 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
   }
 
   @Override
-  public void showProgress(int framesReadCount, long bytesRead,int totalSize) {
+  public void showProgress(int framesReadCount, long bytesRead,long totalSize) {
   
     
   }

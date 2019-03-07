@@ -170,7 +170,7 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	}
 
   @Override
-  public void showProgress(int framesReadCount,long bytesRead, int totalSize) {
+  public void showProgress(int framesReadCount,long bytesRead, long totalSize) {
     
     
   }
