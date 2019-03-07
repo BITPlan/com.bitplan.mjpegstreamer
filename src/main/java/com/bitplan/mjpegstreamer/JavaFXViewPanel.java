@@ -29,12 +29,14 @@ import org.controlsfx.control.StatusBar;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.FontAwesome.Glyph;
 
+import com.bitplan.javafx.ConstrainedGridPane;
 import com.bitplan.javafx.ImageViewPane;
 import com.bitplan.javafx.XYTabPane;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -61,7 +63,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   public boolean debug=false;
   public static int ICON_SIZE=24;
   private ImageView imageView;
-  private Pane pane;
+  private ConstrainedGridPane pane;
   private ButtonBar buttonBar;
   private StatusBar statusBar;
   private Button startButton;
@@ -170,16 +172,16 @@ public class JavaFXViewPanel extends ViewPanelImpl
     urlArea = new TextArea();
     statusBar = new StatusBar();
 
-    Pane bottomPane = new VBox();
-    bottomPane.getChildren().add(slider);
-    bottomPane.getChildren().add(urlArea);
-    bottomPane.getChildren().add(statusBar);
-    bottomPane.getChildren().add(buttonBar);
-
-    pane = new VBox();
-    pane.getChildren().add(new ImageViewPane(imageView));
-    pane.getChildren().add(bottomPane);
-
+    ImageViewPane imageViewPane = new ImageViewPane(imageView);
+    pane = new ConstrainedGridPane();
+    pane.add(imageViewPane,0,0);
+    pane.add(slider, 0, 1);
+    pane.add(buttonBar,0,2);
+    pane.add(urlArea,0,3);
+    pane.add(statusBar,0,4);
+    pane.setAlignment(Pos.TOP_CENTER);
+    pane.fixRowSizes(0,75,5,10,5,5);
+    pane.fixColumnSizes(3,100);
     initImage();
   }
 
