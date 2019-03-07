@@ -113,7 +113,7 @@ public class TestMJpegRenderQueue {
     preview.start();
     runner.join();
     viewer.stop("finished");
-
+    preview.stop();
     /*
      * StopWatch stopWatch = new StopWatch(); stopWatch.start(); while
      * (stopWatch.getTime() <= 2000) { if (preview.getRunner().getFramesRead() <
@@ -159,7 +159,7 @@ public class TestMJpegRenderQueue {
    */
   @Test
   public void testPreview() throws Exception {
-    // debug = true;
+    debug = true;
     String urls[] = {
 
         ClassLoader.getSystemResource("testmovie/movie.mjpg").toExternalForm(),

@@ -54,4 +54,6 @@ public interface Preview {
 	 * @throws Exception 
 	 */
 	public void start() throws Exception;
+
+  public void stop();
 }

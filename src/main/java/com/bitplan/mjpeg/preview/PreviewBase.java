@@ -30,7 +30,7 @@ import com.bitplan.mjpegstreamer.MJpegRenderer;
  * @author wf
  *
  */
-public class PreviewBase  implements Preview {
+public abstract class PreviewBase  implements Preview {
 	protected Logger LOGGER=Logger.getLogger("com.bitplan.mjpeg.preview");
 	protected MJpegRenderer viewer;
 	protected MJpegReaderRunner runner;

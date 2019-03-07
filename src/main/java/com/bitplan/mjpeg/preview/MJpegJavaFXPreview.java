@@ -20,13 +20,9 @@
  */
 package com.bitplan.mjpeg.preview;
 
-import java.awt.Color;
-
 import com.bitplan.mjpegstreamer.MJpegReaderRunner2;
 import com.bitplan.mjpegstreamer.MJpegViewer;
-import com.bitplan.mjpegstreamer.RectangleOverlay;
 import com.bitplan.mjpegstreamer.ViewPanel;
-import com.bitplan.mjpegstreamer.ViewerSetting;
 
 /**
  * swing preview via mJpegViewer
@@ -47,7 +43,7 @@ public class MJpegJavaFXPreview extends PreviewBase {
 		mJpegViewer.setAutoStart(false);// we start ourselves in the start function below
 		mJpegViewer.setAutoClose(true);
 		mJpegViewer.setReadTimeOut(1000); // watchit -lower than default!
-		mJpegViewer.setupViewPanel();
+		mJpegViewer.setupViewPanel(); // does also show and waitOpen
 		viewPanel=mJpegViewer.getViewPanel();
 		viewer=viewPanel;
 		runner = new MJpegReaderRunner2();
@@ -60,7 +56,12 @@ public class MJpegJavaFXPreview extends PreviewBase {
 	 */
 	public void start() throws Exception {
 	  String url=runner.getUrlString();
-		viewPanel.setup(url);
+		viewPanel.setUrl(url);
 		super.start();
 	}
+
+  @Override
+  public void stop() {
+    this.mJpegViewer.close();
+  }
 }

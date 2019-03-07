@@ -48,4 +48,9 @@ public class MJpegPreview extends PreviewBase {
 	public MJpegRenderQueue getRenderQueue() {
 		return (MJpegRenderQueue) viewer;
 	}
+
+  @Override
+  public void stop() {
+    
+  }
 }

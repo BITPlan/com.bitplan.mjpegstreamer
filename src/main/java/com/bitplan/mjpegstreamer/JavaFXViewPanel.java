@@ -129,6 +129,10 @@ public class JavaFXViewPanel extends ViewPanelImpl
     return button;
   };
 
+  /**
+   * initialize the image
+   * @throws Exception
+   */
   public void initImage() throws Exception {
     // imageView.setFitHeight(480);
     // imageView.setFitWidth(640);
@@ -136,7 +140,6 @@ public class JavaFXViewPanel extends ViewPanelImpl
     // imageView.fitHeightProperty().bind(pane.heightProperty());
     // imageView.fitWidthProperty().bind(pane.widthProperty());
     setEmptyImage();
-    
   }
   
   public void refresh() {
@@ -207,8 +210,6 @@ public class JavaFXViewPanel extends ViewPanelImpl
       refresh();
     });
   }
-  
-  
 
   /**
    * set the Buffered Image
@@ -219,6 +220,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
   public void setBufferedImage(BufferedImage pImage) {
     super.setBufferedImage(pImage);
     WritableImage writableImage = getImage(pImage);
+    if (debug) {
+      LOGGER.log(Level.INFO, String.format("updating image %.0f x %.0f",writableImage.getWidth(),writableImage.getHeight()));
+    }
     imageView.setImage(writableImage);
   }
 

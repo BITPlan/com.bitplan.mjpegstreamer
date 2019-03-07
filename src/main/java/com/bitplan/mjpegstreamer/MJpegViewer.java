@@ -386,9 +386,7 @@ public class MJpegViewer  {
         showHelp();
       } else {
         setupViewPanel();
-        if (javaFx) {
-          mJpegApp.waitClose();
-        }
+        close();
         exitCode = 0;
       }
     } catch (CmdLineException e) {
@@ -400,6 +398,15 @@ public class MJpegViewer  {
       exitCode = 1;
     }
     return exitCode;
+  }
+
+  /**
+   * close me
+   */
+  public void close() {
+    if (javaFx) {
+      mJpegApp.waitClose();
+    }
   }
 
   /**
