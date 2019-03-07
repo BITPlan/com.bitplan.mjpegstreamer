@@ -26,12 +26,9 @@ import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.bitplan.i18n.Translator;
-import com.bitplan.javafx.WaitableApp;
 import com.bitplan.mjpeg.preview.MJpegJavaFXPreview;
 import com.bitplan.mjpeg.preview.MJpegPreview;
 import com.bitplan.mjpeg.preview.Preview;
@@ -159,7 +156,7 @@ public class TestMJpegRenderQueue {
    */
   @Test
   public void testPreview() throws Exception {
-    debug = true;
+    debug = false;
     String urls[] = {
 
         ClassLoader.getSystemResource("testmovie/movie.mjpg").toExternalForm(),
