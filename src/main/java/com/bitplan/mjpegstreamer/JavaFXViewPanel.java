@@ -22,6 +22,8 @@ package com.bitplan.mjpegstreamer;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.controlsfx.control.StatusBar;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -55,7 +57,8 @@ import javafx.scene.layout.VBox;
  */
 public class JavaFXViewPanel extends ViewPanelImpl
     implements EventHandler<ActionEvent> {
-
+  protected Logger LOGGER=Logger.getLogger("com.bitplan.mjpegstreamer");
+  public boolean debug=false;
   public static int ICON_SIZE=24;
   private ImageView imageView;
   private Pane pane;
@@ -185,9 +188,13 @@ public class JavaFXViewPanel extends ViewPanelImpl
    */
   @Override
   public void setUrl(String url) {
-    this.urlArea.setText(url);
-    super.setUrl(url);
-    pane.requestLayout();
+    Platform.runLater(()-> {
+      if (debug) {
+        LOGGER.log(Level.INFO,String.format("setting url to %s", url));
+      }   this.urlArea.setText(url);
+      super.setUrl(url);
+      pane.requestLayout();
+    });
   }
 
   /**
