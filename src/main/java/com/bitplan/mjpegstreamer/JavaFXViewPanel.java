@@ -136,6 +136,13 @@ public class JavaFXViewPanel extends ViewPanelImpl
     // imageView.fitHeightProperty().bind(pane.heightProperty());
     // imageView.fitWidthProperty().bind(pane.widthProperty());
     setEmptyImage();
+    
+  }
+  
+  public void refresh() {
+    if (debug) {
+      LOGGER.log(Level.INFO,"refreshing pane");
+    }
     pane.requestLayout();
   }
 
@@ -177,7 +184,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   public void showMessage(String msg) {
     Platform.runLater(() -> {
       statusBar.setText(msg);
-      pane.requestLayout();
+      refresh();
     });
   }
 
@@ -188,14 +195,20 @@ public class JavaFXViewPanel extends ViewPanelImpl
    */
   @Override
   public void setUrl(String url) {
+    if (debug) {
+      LOGGER.log(Level.INFO,String.format("run Later to set url to %s", url));
+    }   
     Platform.runLater(()-> {
       if (debug) {
         LOGGER.log(Level.INFO,String.format("setting url to %s", url));
-      }   this.urlArea.setText(url);
+      }   
+      this.urlArea.setText(url);
       super.setUrl(url);
-      pane.requestLayout();
+      refresh();
     });
   }
+  
+  
 
   /**
    * set the Buffered Image
@@ -229,6 +242,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
    */
   @Override
   public void renderNextImage(BufferedImage pImage) {
+    if (debug) {
+      LOGGER.log(Level.INFO,"rendering next image");
+    }
     setBufferedImage(pImage);
   }
 
@@ -270,7 +286,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   public void showProgress(int framesReadCount, long bytesRead, int totalSize) {
     this.slider.setMax(totalSize);
     this.slider.setValue(bytesRead);
-    pane.requestLayout();
+    refresh();
   }
 
 }

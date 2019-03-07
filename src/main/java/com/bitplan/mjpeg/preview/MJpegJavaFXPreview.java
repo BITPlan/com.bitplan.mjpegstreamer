@@ -43,16 +43,15 @@ public class MJpegJavaFXPreview extends PreviewBase {
 	 */
 	public MJpegJavaFXPreview() throws Exception {
 		mJpegViewer = new MJpegViewer();
+		mJpegViewer.setOverlay(true);
+		mJpegViewer.setAutoStart(false);// we start ourselves in the start function below
+		mJpegViewer.setAutoClose(true);
+		mJpegViewer.setReadTimeOut(1000); // watchit -lower than default!
 		mJpegViewer.setupViewPanel();
 		viewPanel=mJpegViewer.getViewPanel();
 		viewer=viewPanel;
 		runner = new MJpegReaderRunner2();
 		runner.setViewer(viewer);
-		ViewerSetting s = viewer.getViewerSetting();
-		s.setAutoStart(false); // we start ourselves in the start function below
-		s.setAutoClose(true);
-		s.setImageListener(new RectangleOverlay(50,50,50,50,Color.BLUE));
-		s.setReadTimeOut(1000); // watchit -lower than default!
 	}
 	
 	@Override

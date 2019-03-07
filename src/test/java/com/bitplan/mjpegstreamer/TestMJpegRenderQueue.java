@@ -26,9 +26,12 @@ import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.bitplan.i18n.Translator;
+import com.bitplan.javafx.WaitableApp;
 import com.bitplan.mjpeg.preview.MJpegJavaFXPreview;
 import com.bitplan.mjpeg.preview.MJpegPreview;
 import com.bitplan.mjpeg.preview.Preview;
@@ -42,6 +45,8 @@ import com.bitplan.user.User;
  * 
  */
 public class TestMJpegRenderQueue {
+  
+  
   boolean debug = false;
   // find examples e.g. at https://www.ipcams.ch/WebCam.aspx?nr=1729
   public static String TEST_URL2 = "http://213.193.89.202/axis-cgi/mjpg/video.cgi";
@@ -75,19 +80,21 @@ public class TestMJpegRenderQueue {
    */
   public void checkPreview(String url, String user, String pass, int frames)
       throws Exception {
+    JavaFXViewPanel viewPanel=null;
     LOGGER.log(Level.INFO, "reading from url " + url);
     MJpegRenderer viewer = preview.getViewer();
     viewer.showMessage("reading from url " + url);
     if (viewer instanceof JavaFXViewPanel) {
-      JavaFXViewPanel viewPanel = (JavaFXViewPanel) viewer;
-      viewPanel.debug = true;
+      viewPanel = (JavaFXViewPanel) viewer;
+      viewPanel.debug = debug;
       viewPanel.setUrl(url);
     }
     MJpegReaderRunner runner = preview.getRunner();
     runner.init(url, user, pass);
     ViewerSetting settings = preview.getViewer().getViewerSetting();
     settings.setPictureCount(frames);
-    settings.setDebugMode(DebugMode.Verbose);
+    if (debug)
+      settings.setDebugMode(DebugMode.Verbose);
     // settings.setDebugMode(DebugMode.FPS);
     ImageListener listener = new ImageListener() {
 
@@ -104,7 +111,6 @@ public class TestMJpegRenderQueue {
     runner.addImageListener(listener);
     count = 0;
     preview.start();
-    
     runner.join();
     viewer.stop("finished");
 
@@ -153,7 +159,7 @@ public class TestMJpegRenderQueue {
    */
   @Test
   public void testPreview() throws Exception {
-    debug = true;
+    // debug = true;
     String urls[] = {
 
         ClassLoader.getSystemResource("testmovie/movie.mjpg").toExternalForm(),
