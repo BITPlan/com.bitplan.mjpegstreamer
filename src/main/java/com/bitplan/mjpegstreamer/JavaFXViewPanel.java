@@ -34,7 +34,9 @@ import com.bitplan.javafx.ImageViewPane;
 import com.bitplan.javafx.JFXStopWatch;
 import com.bitplan.javafx.XYTabPane;
 
+import eu.hansolo.LcdGauge;
 import eu.hansolo.medusa.Clock;
+import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -77,6 +79,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   private Button recordButton;
   private boolean recording;
   private JFXStopWatch stopWatch;
+  private Gauge framesGauge;
 
   /**
    * construct me
@@ -167,11 +170,17 @@ public class JavaFXViewPanel extends ViewPanelImpl
     slider.setMin(0);
     slider.setMax(60);
     buttonBar = new ButtonBar();
+    // FIXME i18n 
     stopWatch = new JFXStopWatch("time");
     stopWatch.halt();
     stopWatch.reset();
     ButtonBar.setButtonData(stopWatch.get(), ButtonData.LEFT);
     buttonBar.getButtons().add(stopWatch.get());
+    // FIXME i18n
+    framesGauge = LcdGauge.createGauge("frames", "x"); 
+    framesGauge.setDecimals(0);
+    ButtonBar.setButtonData(framesGauge,ButtonData.LEFT);
+    buttonBar.getButtons().add(framesGauge);
     // see https://fontawesome.com/v4.7.0/icons/
     // for potential icons
     startButton = addButton("start", FontAwesome.Glyph.PLAY, KeyCode.PLAY);
@@ -287,6 +296,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
     stopWatch.start();
     return super.startStreaming();
   }
+  
   @Override
   public void handle(ActionEvent event) {
     Object eventSource = event.getSource();
@@ -297,8 +307,10 @@ public class JavaFXViewPanel extends ViewPanelImpl
         this.setUrl(url);
         startStreaming();
       } else if (eventButton.equals(stopButton)) {
-        this.stop("stopped");
-        stopWatch.halt();
+        if (runner!=null) {
+          runner.stop("stopped");
+          stopWatch.halt();
+        }
         setRecordingState(false);
       } else if (eventButton.equals(pauseButton)) {
         this.stop("paused"); // FIXME implement Toggle
@@ -350,6 +362,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   @Override
   public void showProgress(MJPeg mjpeg) {
     Stats stats=mjpeg.getStats();
+    framesGauge.setValue(stats.count);
     //this.slider.setMax(stats.);
     // this.slider.setValue(bytesRead);
     // refresh();

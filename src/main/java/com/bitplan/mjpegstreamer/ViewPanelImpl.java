@@ -188,6 +188,9 @@ public abstract class ViewPanelImpl implements ViewPanel {
     return result;
   }
 
+  /**
+   * prepare me with an empty image
+   */
   public void setEmptyImage() throws Exception {
     BufferedImage bg = getBufferedImage("/images/screen640x480.png");
     if (bg != null)
