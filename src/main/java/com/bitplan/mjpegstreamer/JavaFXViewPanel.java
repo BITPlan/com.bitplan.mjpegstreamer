@@ -80,6 +80,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
   private boolean recording;
   private JFXStopWatch stopWatch;
   private Gauge framesGauge;
+  private Button diffButton;
+  private boolean showDiff;
+  private BufferedImage triggerImage;
 
   /**
    * construct me
@@ -170,16 +173,16 @@ public class JavaFXViewPanel extends ViewPanelImpl
     slider.setMin(0);
     slider.setMax(60);
     buttonBar = new ButtonBar();
-    // FIXME i18n 
+    // FIXME i18n
     stopWatch = new JFXStopWatch("time");
     stopWatch.halt();
     stopWatch.reset();
     ButtonBar.setButtonData(stopWatch.get(), ButtonData.LEFT);
     buttonBar.getButtons().add(stopWatch.get());
     // FIXME i18n
-    framesGauge = LcdGauge.createGauge("frames", "x"); 
+    framesGauge = LcdGauge.createGauge("frames", "x");
     framesGauge.setDecimals(0);
-    ButtonBar.setButtonData(framesGauge,ButtonData.LEFT);
+    ButtonBar.setButtonData(framesGauge, ButtonData.LEFT);
     buttonBar.getButtons().add(framesGauge);
     // see https://fontawesome.com/v4.7.0/icons/
     // for potential icons
@@ -188,6 +191,8 @@ public class JavaFXViewPanel extends ViewPanelImpl
     stopButton = addButton("stop", FontAwesome.Glyph.STOP, KeyCode.STOP);
     recordButton = addButton("record", FontAwesome.Glyph.CIRCLE,
         KeyCode.RECORD);
+    diffButton = addButton("difference", FontAwesome.Glyph.ANGLE_RIGHT,
+        KeyCode.D);
     rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyCode.R);
     // https://www.iconfinder.com/icons/49386/settings_icon#size=48
     // @TODO potentially activate again
@@ -276,13 +281,21 @@ public class JavaFXViewPanel extends ViewPanelImpl
     if (debug) {
       LOGGER.log(Level.INFO, "rendering next image");
     }
-    setBufferedImage(jpeg.getImage());
+    if (triggerImage == null)
+      triggerImage = jpeg.getImage();
+    if (showDiff) {
+      BufferedImage diffImage = MJpegHelper.getDifferenceImage(triggerImage, jpeg.getImage());
+      setBufferedImage(diffImage);
+    } else {
+      setBufferedImage(jpeg.getImage());
+    }
     if (recording)
       try {
         jpeg.save();
       } catch (Exception e) {
-        LOGGER.log(Level.WARNING, String.format("could not save jpeg image %d",
-            jpeg.getFrameIndex()),e);
+        LOGGER.log(Level.WARNING,
+            String.format("could not save jpeg image %d", jpeg.getFrameIndex()),
+            e);
       }
   }
 
@@ -296,7 +309,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
     stopWatch.start();
     return super.startStreaming();
   }
-  
+
   @Override
   public void handle(ActionEvent event) {
     Object eventSource = event.getSource();
@@ -307,7 +320,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
         this.setUrl(url);
         startStreaming();
       } else if (eventButton.equals(stopButton)) {
-        if (runner!=null) {
+        if (runner != null) {
           runner.stop("stopped");
           stopWatch.halt();
         }
@@ -319,6 +332,10 @@ public class JavaFXViewPanel extends ViewPanelImpl
         stopClock.setRunning(!stopClock.isRunning());
       } else if (eventButton.equals(recordButton)) {
         setRecordingState(!recording);
+      } else if (eventButton.equals(diffButton)) {
+        showDiff = !showDiff;
+        triggerImage=null;
+        setColor(diffButton, showDiff ? Color.BLUE : Color.BLACK);
       } else if (eventButton.equals(rotateButton)) {
         BufferedImage rotateButtonIcon = rotate();
         if (rotateButtonIcon != null) {
@@ -328,20 +345,19 @@ public class JavaFXViewPanel extends ViewPanelImpl
       }
     }
   }
-  
+
   public void setRecordingState(boolean pState) {
-    recording=pState;
+    recording = pState;
     if (recording) {
-      setColor(recordButton,Color.RED);
+      setColor(recordButton, Color.RED);
     } else {
-      setColor(recordButton,Color.BLACK);
+      setColor(recordButton, Color.BLACK);
     }
   }
-  
-  
 
   /**
    * set the color of the given button's glyph
+   * 
    * @param button
    * @param newColor
    */
@@ -351,7 +367,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
       org.controlsfx.glyphfont.Glyph glyph = (org.controlsfx.glyphfont.Glyph) graphic;
       glyph.setColor(newColor);
     }
-    
+
   }
 
   @Override
@@ -361,9 +377,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
 
   @Override
   public void showProgress(MJPeg mjpeg) {
-    Stats stats=mjpeg.getStats();
+    Stats stats = mjpeg.getStats();
     framesGauge.setValue(stats.count);
-    //this.slider.setMax(stats.);
+    // this.slider.setMax(stats.);
     // this.slider.setValue(bytesRead);
     // refresh();
   }
