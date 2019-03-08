@@ -36,6 +36,7 @@ import com.bitplan.javafx.XYTabPane;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -48,6 +49,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 
 /**
  * Java FX Version of View panel
@@ -57,9 +62,9 @@ import javafx.scene.input.KeyCode;
  */
 public class JavaFXViewPanel extends ViewPanelImpl
     implements EventHandler<ActionEvent> {
-  protected Logger LOGGER=Logger.getLogger("com.bitplan.mjpegstreamer");
-  public boolean debug=false;
-  public static int ICON_SIZE=24;
+  protected Logger LOGGER = Logger.getLogger("com.bitplan.mjpegstreamer");
+  public boolean debug = false;
+  public static int ICON_SIZE = 24;
   private ImageView imageView;
   private ConstrainedGridPane pane;
   private ButtonBar buttonBar;
@@ -72,13 +77,13 @@ public class JavaFXViewPanel extends ViewPanelImpl
   private Button pauseButton;
   private Button stopButton;
   private Button recordButton;
-  private boolean record;
+  private boolean recording;
 
   /**
    * construct me
    */
   public JavaFXViewPanel() {
-   
+
   }
 
   /**
@@ -94,24 +99,27 @@ public class JavaFXViewPanel extends ViewPanelImpl
 
     Image image = new Image(input);
     ImageView imageView = new ImageView(image);
-    Button button=addButton(title,imageView,kk);
+    Button button = addButton(title, imageView, kk);
     return button;
   }
-  
+
   /**
    * add a button with the given title, glyph and keycode using the xyTabPane
+   * 
    * @param title
    * @param glyph
    * @param kk
    * @return the Button
    */
   protected Button addButton(String title, Glyph glyph, KeyCode kk) {
-    Button button=addButton(title,XYTabPane.getIcon(glyph.name(), ICON_SIZE),kk);
+    Button button = addButton(title, XYTabPane.getIcon(glyph.name(), ICON_SIZE),
+        kk);
     return button;
   }
-  
+
   /**
    * add a button with the given title icon and keycode
+   * 
    * @param title
    * @param icon
    * @param kk
@@ -133,6 +141,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
 
   /**
    * initialize the image
+   * 
    * @throws Exception
    */
   public void initImage() throws Exception {
@@ -143,10 +152,10 @@ public class JavaFXViewPanel extends ViewPanelImpl
     // imageView.fitWidthProperty().bind(pane.widthProperty());
     setEmptyImage();
   }
-  
+
   public void refresh() {
     if (debug) {
-      LOGGER.log(Level.INFO,"refreshing pane");
+      LOGGER.log(Level.INFO, "refreshing pane");
     }
     pane.requestLayout();
   }
@@ -162,11 +171,12 @@ public class JavaFXViewPanel extends ViewPanelImpl
     // see https://fontawesome.com/v4.7.0/icons/
     // for potential icons
     startButton = addButton("start", FontAwesome.Glyph.PLAY, KeyCode.PLAY);
-    pauseButton = addButton("pause",FontAwesome.Glyph.PAUSE,KeyCode.PAUSE);
-    stopButton = addButton("stop",FontAwesome.Glyph.STOP,KeyCode.STOP);
-    recordButton=addButton("record",FontAwesome.Glyph.CIRCLE,KeyCode.RECORD);
+    pauseButton = addButton("pause", FontAwesome.Glyph.PAUSE, KeyCode.PAUSE);
+    stopButton = addButton("stop", FontAwesome.Glyph.STOP, KeyCode.STOP);
+    recordButton = addButton("record", FontAwesome.Glyph.CIRCLE,
+        KeyCode.RECORD);
     rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyCode.R);
-       // https://www.iconfinder.com/icons/49386/settings_icon#size=48
+    // https://www.iconfinder.com/icons/49386/settings_icon#size=48
     // @TODO potentially activate again
     // settingsButton = addButton("settings", SETTINGS_BUTTON_ICON_PATH,
     // KeyCode.P);
@@ -175,14 +185,14 @@ public class JavaFXViewPanel extends ViewPanelImpl
 
     ImageViewPane imageViewPane = new ImageViewPane(imageView);
     pane = new ConstrainedGridPane();
-    pane.add(imageViewPane,0,0);
+    pane.add(imageViewPane, 0, 0);
     pane.add(slider, 0, 1);
-    pane.add(buttonBar,0,2);
-    pane.add(urlArea,0,3);
-    pane.add(statusBar,0,4);
+    pane.add(buttonBar, 0, 2);
+    pane.add(urlArea, 0, 3);
+    pane.add(statusBar, 0, 4);
     pane.setAlignment(Pos.TOP_CENTER);
-    pane.fixRowSizes(0,75,5,10,5,5);
-    pane.fixColumnSizes(3,100);
+    pane.fixRowSizes(0, 75, 5, 10, 5, 5);
+    pane.fixColumnSizes(3, 100);
     initImage();
   }
 
@@ -202,12 +212,12 @@ public class JavaFXViewPanel extends ViewPanelImpl
   @Override
   public void setUrl(String url) {
     if (debug) {
-      LOGGER.log(Level.INFO,String.format("run Later to set url to %s", url));
-    }   
-    Platform.runLater(()-> {
+      LOGGER.log(Level.INFO, String.format("run Later to set url to %s", url));
+    }
+    Platform.runLater(() -> {
       if (debug) {
-        LOGGER.log(Level.INFO,String.format("setting url to %s", url));
-      }   
+        LOGGER.log(Level.INFO, String.format("setting url to %s", url));
+      }
       this.urlArea.setText(url);
       super.setUrl(url);
       refresh();
@@ -224,7 +234,8 @@ public class JavaFXViewPanel extends ViewPanelImpl
     super.setBufferedImage(pImage);
     WritableImage writableImage = getImage(pImage);
     if (debug) {
-      LOGGER.log(Level.INFO, String.format("updating image %.0f x %.0f",writableImage.getWidth(),writableImage.getHeight()));
+      LOGGER.log(Level.INFO, String.format("updating image %.0f x %.0f",
+          writableImage.getWidth(), writableImage.getHeight()));
     }
     imageView.setImage(writableImage);
   }
@@ -250,14 +261,15 @@ public class JavaFXViewPanel extends ViewPanelImpl
   @Override
   public void renderNextImage(JPeg jpeg) {
     if (debug) {
-      LOGGER.log(Level.INFO,"rendering next image");
+      LOGGER.log(Level.INFO, "rendering next image");
     }
     setBufferedImage(jpeg.getImage());
-    if (record)
+    if (recording)
       try {
         jpeg.save();
       } catch (Exception e) {
-        LOGGER.log(Level.WARNING, "could not save jpeg image", jpeg.getFrameIndex());
+        LOGGER.log(Level.WARNING, String.format("could not save jpeg image %d",
+            jpeg.getFrameIndex()),e);
       }
   }
 
@@ -277,10 +289,12 @@ public class JavaFXViewPanel extends ViewPanelImpl
         startStreaming();
       } else if (eventButton.equals(stopButton)) {
         this.stop("stopped");
+        setRecordingState(false);
       } else if (eventButton.equals(pauseButton)) {
         this.stop("paused"); // FIXME implement Toggle
+        setRecordingState(false);
       } else if (eventButton.equals(recordButton)) {
-        record=true;
+        setRecordingState(!recording);
       } else if (eventButton.equals(rotateButton)) {
         BufferedImage rotateButtonIcon = rotate();
         if (rotateButtonIcon != null) {
@@ -289,7 +303,31 @@ public class JavaFXViewPanel extends ViewPanelImpl
         }
       }
     }
+  }
+  
+  public void setRecordingState(boolean pState) {
+    recording=pState;
+    if (recording) {
+      setColor(recordButton,Color.RED);
+    } else {
+      setColor(recordButton,Color.BLACK);
+    }
+  }
+  
+  
 
+  /**
+   * set the color of the given button's glyph
+   * @param button
+   * @param newColor
+   */
+  private void setColor(Button button, Color newColor) {
+    Node graphic = button.getGraphic();
+    if (graphic instanceof org.controlsfx.glyphfont.Glyph) {
+      org.controlsfx.glyphfont.Glyph glyph = (org.controlsfx.glyphfont.Glyph) graphic;
+      glyph.setColor(newColor);
+    }
+    
   }
 
   @Override
@@ -298,7 +336,8 @@ public class JavaFXViewPanel extends ViewPanelImpl
   }
 
   @Override
-  public void showProgress(int framesReadCount, long bytesRead, long totalSize) {
+  public void showProgress(int framesReadCount, long bytesRead,
+      long totalSize) {
     this.slider.setMax(totalSize);
     this.slider.setValue(bytesRead);
     refresh();

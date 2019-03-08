@@ -25,22 +25,24 @@ import java.util.logging.Logger;
 
 /**
  * MJPeg implementation
+ * 
  * @author wf
  *
  */
 public class MJPegImpl implements MJPeg {
-  
+
   public boolean debug = false;
   protected Stats stats;
   protected static Logger LOGGER = Logger
       .getLogger("com.bitplan.mjpegstreamer");
 
   public MJPegImpl() {
-    stats=new Stats();
+    stats = new Stats();
   }
-  
+
   /**
    * add the given jpeg
+   * 
    * @param jpeg
    * @param offset
    */
@@ -50,7 +52,7 @@ public class MJPegImpl implements MJPeg {
       stats.add(jpeg.getLength());
     }
   }
-  
+
   @Override
   public Stats getStats() {
     return stats;
@@ -58,8 +60,12 @@ public class MJPegImpl implements MJPeg {
 
   @Override
   public File getImageFile(JPeg jPeg) {
-    String filePath=String.format("/tmp/image%5d", jPeg.getFrameIndex());
-    return new File(filePath);
+    String filePath = String.format("/tmp/timelapse/image%05d.jpg",
+        jPeg.getFrameIndex());
+    File imageFile = new File(filePath);
+    if (!imageFile.getParentFile().exists())
+      imageFile.getParentFile().mkdirs();
+    return imageFile;
   }
 
   @Override

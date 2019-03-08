@@ -73,6 +73,7 @@ public class JPegImpl implements JPeg {
    */
   public JPegImpl(MJPeg mjpeg, int frameIndex, long offset) {
     this.mjpeg=mjpeg;
+    this.frameIndex=frameIndex;
     this.offset = offset;
   }
 
@@ -117,10 +118,7 @@ public class JPegImpl implements JPeg {
     jpgWriter.setOutput(outputStream);
     IIOImage outputImage = new IIOImage(jpegImg, null, null);
     jpgWriter.write(null, outputImage, jpgWriteParam);
-    jpgWriter.dispose();
-    
+    jpgWriter.dispose(); 
   }
-
-
  
 }
