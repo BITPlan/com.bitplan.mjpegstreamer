@@ -21,6 +21,7 @@
 package com.bitplan.mjpegstreamer;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -182,26 +183,51 @@ public class MJpegHelper {
    * @return - the difference image
    */
   public static BufferedImage getDifferenceImage1(BufferedImage img1,
-      BufferedImage img2) {
+      BufferedImage img2, int width, int height,Rectangle r) {
     // convert images to pixel arrays...
-    final int w = img1.getWidth(), h = img1.getHeight(),
-        highlight = Color.MAGENTA.getRGB();
-    final int[] p1 = img1.getRGB(0, 0, w, h, null, 0, w);
-    final int[] p2 = img2.getRGB(0, 0, w, h, null, 0, w);
+        
+    final int[] p1 = img1.getRGB(r.x, r.y, r.width, r.height, null, 0, r.width);
+    final int[] p2 = img2.getRGB(r.x, r.y, r.width, r.height, null, 0, r.width);
     // compare img1 to img2, pixel by pixel. If different, highlight img1's
     // pixel...
     for (int i = 0; i < p1.length; i++) {
-      if (p1[i] != p2[i]) {
-        p1[i] = highlight;
-      }
+      int rgb1=p1[i];
+      int rgb2=p2[i];
+      int r1 = (rgb1 >> 16) & 0xff;
+      int g1 = (rgb1 >> 8) & 0xff;
+      int b1 = (rgb1) & 0xff;
+      int r2 = (rgb2 >> 16) & 0xff;
+      int g2 = (rgb2 >> 8) & 0xff;
+      int b2 = (rgb2) & 0xff;
+
+      int rd=r1>r2?r1-r2:r2-r1;
+      int gd=g1>g2?g1-g2:g2-g1;
+      int bd=b1>b2?b1-b2:b2-b1;
+      int d = (rd << 16) | (gd << 8) | bd;
+      p1[i] = d;
     }
     // save img1's pixels to a new BufferedImage, and return it...
     // (May require TYPE_INT_ARGB)
-    final BufferedImage out = new BufferedImage(w, h,
+    final BufferedImage out = new BufferedImage(width, height,
         BufferedImage.TYPE_INT_RGB);
-    out.setRGB(0, 0, w, h, p1, 0, w);
+    out.setRGB(r.x, r.y, r.width, r.height, p1, 0, r.width);
     return out;
   }
+  
+  /**
+   * get the difference image
+   * @param img1
+   * @param img2
+   * @return
+   */
+  public static BufferedImage getDifferenceImage1(BufferedImage img1,
+      BufferedImage img2) {
+    int w=img1.getWidth();
+    int h=img1.getHeight();
+    Rectangle r=new Rectangle(0,0,w,h);
+    return getDifferenceImage1(img1,img2,w,h,r); 
+  }
+      
   
   /**
    * get a difference image see
