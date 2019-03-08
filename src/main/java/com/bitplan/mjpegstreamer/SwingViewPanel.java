@@ -35,7 +35,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.Node;
 
@@ -105,10 +104,10 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
    * @param pImage
    */
   @Override
-  public void renderNextImage(BufferedImage pImage) {
-    super.setBufferedImage(pImage);
+  public void renderNextImage(JPeg jpeg) {
+    super.setBufferedImage(jpeg.getImage());
     panel
-        .setPreferredSize(new Dimension(pImage.getWidth(), pImage.getHeight()));
+        .setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
     panel.repaint();
   }
 

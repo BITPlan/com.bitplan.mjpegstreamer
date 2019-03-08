@@ -22,7 +22,6 @@ package com.bitplan.mjpegstreamer;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,7 +95,7 @@ public class TestMJpegRenderQueue {
     ImageListener listener = new ImageListener() {
 
       @Override
-      public void onRead(Object context, BufferedImage image) {
+      public void onRead(Object context, JPeg jpeg) {
         count++;
       }
 

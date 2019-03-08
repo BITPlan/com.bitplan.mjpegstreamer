@@ -20,24 +20,53 @@
  */
 package com.bitplan.mjpegstreamer;
 
+import java.awt.image.BufferedImage;
+
 /**
- * a JPeg fragment
+ * a JPeg fragment of an MJPeg stream or file
  * 
  * @author wf
  *
  */
-public class JPeg {
+public class JPegImpl implements JPeg {
+  // we try to keep the dataset small since at 60 fps we might need
+  // 216.000 records of this kind per hour at 12 bytes per record
+  // this would be 2.5 MBytes per hour
   long offset;
   long length;
+  BufferedImage jpegImg;
 
   /**
    * a JPeg Image within the file
    * 
    * @param offset
    */
-  public JPeg(long offset) {
+  public JPegImpl(long offset) {
     super();
     this.offset = offset;
   }
 
+  /**
+   * create me from the given frame
+   * @param offset
+   * @param frame
+   * @throws Exception
+   */
+  public JPegImpl(long offset, byte[] frame) throws Exception {
+    this(offset);
+    this.length=frame.length;
+    jpegImg= MJpegHelper.getImage(frame);
+  }
+  
+  @Override
+  public BufferedImage getRotatedImage(int rotation) {
+    BufferedImage result = MJpegHelper.getRotatedImage(jpegImg, rotation);
+    return result;
+  }
+
+  @Override
+  public void rotate(int rotation) {
+    this.jpegImg=getRotatedImage(rotation);
+  }
+ 
 }

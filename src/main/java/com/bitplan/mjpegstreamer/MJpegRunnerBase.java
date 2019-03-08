@@ -299,12 +299,6 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
     viewer.showMessage(msg);
   }
 
-  @Override
-  public BufferedImage getRotatedImage(BufferedImage inputImage, int rotation) {
-    BufferedImage result = MJpegHelper.getRotatedImage(inputImage, rotation);
-    return result;
-  }
-
   /**
    * get the total elapsedTime
    * 
@@ -348,10 +342,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
    */
   public boolean read() {
     try {
-      BufferedImage bufImg = MJpegHelper.getImage(curFrame);
-      if (bufImg == null) {
-        throw new IOException("image is null");
-      }
+      JPegImpl jpeg=new JPegImpl(bytesRead,curFrame);
       if (framesReadCount == 0) {
         this.firstFrameNanoTime = System.nanoTime();
         this.fpsFrameNanoTime = firstFrameNanoTime;
@@ -389,14 +380,13 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
       if (framemillisecs >= this.fpsLimitMillis) {
         for (ImageListener listener : this.imageListeners) {
           if (!listener.isPostListener())
-            listener.onRead(this, bufImg);
+            listener.onRead(this, jpeg);
         }
-        BufferedImage rotatedImage = this.getRotatedImage(bufImg,
-            viewer.getViewerSetting().rotation);
-        viewer.renderNextImage(rotatedImage);
+        jpeg.rotate(viewer.getViewerSetting().rotation);
+        viewer.renderNextImage(jpeg);
         for (ImageListener listener : this.imageListeners) {
           if (listener.isPostListener())
-            listener.onRead(this, rotatedImage);
+            listener.onRead(this, jpeg);
         }
         // how many frames we actually displayed
         framesRenderedCount++;

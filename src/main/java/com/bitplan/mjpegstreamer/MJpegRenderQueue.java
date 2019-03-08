@@ -100,11 +100,11 @@ public class MJpegRenderQueue implements MJpegRenderer {
 	}
 
 	@Override
-	public void renderNextImage(BufferedImage jpegImg) {
+	public void renderNextImage(JPeg jpeg) {
 		if (!active)
 			return;
 		if (getImageBuffer().size() < maxSize)
-			getImageBuffer().add(jpegImg);
+			getImageBuffer().add(jpeg.getImage());
 		else {
 			long newTimeStamp = System.currentTimeMillis();
 			if (newTimeStamp - timeStamp > 2000) {

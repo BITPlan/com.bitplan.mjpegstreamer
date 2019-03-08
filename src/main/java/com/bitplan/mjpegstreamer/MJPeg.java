@@ -110,7 +110,7 @@ public class MJPeg {
         min = value;
     }
 
-    public void add(JPeg jpeg, long offset) {
+    public void add(JPegImpl jpeg, long offset) {
       if (jpeg != null) {
         jpeg.length = offset - jpeg.offset;
         add(jpeg.length);
@@ -160,7 +160,7 @@ public class MJPeg {
     long offset = 0;
 
     int bi = 0; // bufferIndex
-    JPeg jpeg = null;
+    JPegImpl jpeg = null;
     while (((readCount = raf.read(buffer)) > 0)
         && (bytesRead <= guessFromSize)) {
       bytesRead += readCount;
@@ -176,7 +176,7 @@ public class MJPeg {
         offset++;
         if (prev == (byte) 0xFF && cur == (byte) 0xD8) {
           stats.add(jpeg, offset);
-          jpeg = new JPeg(offset);
+          jpeg = new JPegImpl(offset);
         }
         prev = cur;
       }

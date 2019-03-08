@@ -242,14 +242,14 @@ public class JavaFXViewPanel extends ViewPanelImpl
   /**
    * set the Image and render it
    * 
-   * @param pImage
+   * @param jpeg
    */
   @Override
-  public void renderNextImage(BufferedImage pImage) {
+  public void renderNextImage(JPeg jpeg) {
     if (debug) {
       LOGGER.log(Level.INFO,"rendering next image");
     }
-    setBufferedImage(pImage);
+    setBufferedImage(jpeg.getImage());
   }
 
   @Override

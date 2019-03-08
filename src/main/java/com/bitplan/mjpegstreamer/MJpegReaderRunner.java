@@ -20,7 +20,6 @@
  */
 package com.bitplan.mjpegstreamer;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -97,15 +96,6 @@ public interface MJpegReaderRunner extends Runnable {
 	 * @return whether we are connected
 	 */
 	public boolean isConnected();
-
-	/**
-	 * get a rotated image
-	 * @param image - the image to rotate
-	 * @param rotation e.g. 0/90/180/270
-	 * @return the rotated image
-	 */
-	public BufferedImage getRotatedImage(BufferedImage image,
-			int rotation);
 	
 	/**
 	 * read image from current frame buffer

@@ -73,9 +73,9 @@ public interface ViewPanel extends MJpegRenderer {
    * @param pImage
    */
 
-  public void renderNextImage(BufferedImage pImage);
+  public void renderNextImage(JPeg jpeg);
   public void setEmptyImage() throws Exception;
-  public void setBufferedImage(BufferedImage pImage);
+  public void setBufferedImage(BufferedImage image);
     
   /**
    * set the failed string

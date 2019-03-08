@@ -20,8 +20,6 @@
  */
 package com.bitplan.mjpegstreamer;
 
-import java.awt.image.BufferedImage;
-
 /**
  * generic MJpegRendering interface
  * @author wf
@@ -36,9 +34,9 @@ public interface MJpegRenderer {
 	
 	/**
 	 * render the next image
-	 * @param jpegImg
+	 * @param jpeg
 	 */
-	public void renderNextImage(BufferedImage jpegImg);
+	public void renderNextImage(JPeg jpeg);
 	
 	/**
 	 * stop rendering

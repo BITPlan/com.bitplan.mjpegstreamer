@@ -30,6 +30,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 /**
  * view panel implementation
+ * 
  * @author wf
  *
  */
@@ -38,32 +39,33 @@ public abstract class ViewPanelImpl implements ViewPanel {
   protected static final String START_BUTTON_ICON_PATH = "/images/start.png";
   // https://www.iconfinder.com/icons/49386/settings_icon#size=64
   protected static final String SETTINGS_BUTTON_ICON_PATH = "/images/1394392895_settings.png";
-  
+
   private ViewerSetting viewerSetting = new ViewerSetting();
   private String url;
-  BooleanProperty open=new SimpleBooleanProperty();
-  
-  private BufferedImage image;
-  
+  BooleanProperty open = new SimpleBooleanProperty();
+
+  protected BufferedImage image;
+
   /**
-   * set the Buffered Image
+   * set the JPeg Image
    * 
-   * @param pImage
+   * @param jpeg
    */
-  public void setBufferedImage(BufferedImage pImage) {
-    image = pImage;
+  @Override
+  public void setBufferedImage(BufferedImage image) {
+    this.image=image;
   }
-  
+
   /**
    * set the Image and render it
    * 
    * @param pImage
    */
-
-  public void renderNextImage(BufferedImage pImage) {
-    setBufferedImage(pImage);
+  @Override
+  public void renderNextImage(JPeg jpeg) {
+    setBufferedImage(jpeg.getImage());
   }
-  
+
   /**
    * @return the viewerSetting
    */
@@ -78,7 +80,7 @@ public abstract class ViewPanelImpl implements ViewPanel {
   public void setViewerSetting(ViewerSetting viewerSetting) {
     this.viewerSetting = viewerSetting;
   }
-  
+
   /**
    * set the url to the given value
    * 
@@ -87,7 +89,7 @@ public abstract class ViewPanelImpl implements ViewPanel {
   public void setUrl(String url) {
     this.url = url;
   }
-  
+
   /**
    * setup the viewPanel
    * 
@@ -98,7 +100,7 @@ public abstract class ViewPanelImpl implements ViewPanel {
     setup();
     this.setUrl(url);
   }
-  
+
   public void start(String url) {
     this.setUrl(url);
     if (viewerSetting.autoStart) {
@@ -118,18 +120,19 @@ public abstract class ViewPanelImpl implements ViewPanel {
     if (viewerSetting.autoClose)
       this.close();
   }
-  
+
   @Override
   public BooleanProperty isOpen() {
     return open;
   }
-  
+
   public void close() {
     open.set(false);
   }
-  
+
   /**
    * get a new rotated Icon for a rotate button
+   * 
    * @return the icons's Buffered Image
    */
   public BufferedImage rotate() {
@@ -138,17 +141,18 @@ public abstract class ViewPanelImpl implements ViewPanel {
     if (rotation >= 360)
       rotation = 0;
     this.getViewerSetting().rotation = rotation;
-    BufferedImage rotateButtonIcon=null;
+    BufferedImage rotateButtonIcon = null;
     try {
       rotateButtonIcon = getBufferedImage(
           SwingViewPanel.ROTATE_BUTTON_ICON_PATH);
-      rotateButtonIcon = runner.getRotatedImage(rotateButtonIcon, rotation);
+      rotateButtonIcon = MJpegHelper.getRotatedImage(rotateButtonIcon,
+          rotation);
     } catch (Exception e1) {
       handle(e1);
     }
     return rotateButtonIcon;
   }
-  
+
   /**
    * set Failed String
    * 
@@ -157,7 +161,7 @@ public abstract class ViewPanelImpl implements ViewPanel {
   public void handle(Exception ex) {
     this.showMessage(ex.getMessage());
   }
-  
+
   /**
    * get the given buffered Image
    * 
@@ -183,14 +187,13 @@ public abstract class ViewPanelImpl implements ViewPanel {
     }
     return result;
   }
-  
+
   public void setEmptyImage() throws Exception {
     BufferedImage bg = getBufferedImage("/images/screen640x480.png");
     if (bg != null)
       setBufferedImage(bg);
   }
 
-  
   MJpegReaderRunner runner;
 
   /**

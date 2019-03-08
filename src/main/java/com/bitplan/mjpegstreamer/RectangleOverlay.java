@@ -64,7 +64,8 @@ public class RectangleOverlay implements ImageListener {
 	}
 
 	@Override
-	public void onRead(Object context, BufferedImage image) {
+	public void onRead(Object context, JPeg jpeg) {
+	  BufferedImage image = jpeg.getImage();
 		Graphics2D g2d = image.createGraphics();
 
 		// Draw on the buffered image
