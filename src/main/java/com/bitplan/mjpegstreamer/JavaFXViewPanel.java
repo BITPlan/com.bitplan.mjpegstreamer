@@ -71,6 +71,8 @@ public class JavaFXViewPanel extends ViewPanelImpl
   private Slider slider;
   private Button pauseButton;
   private Button stopButton;
+  private Button recordButton;
+  private boolean record;
 
   /**
    * construct me
@@ -162,6 +164,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
     startButton = addButton("start", FontAwesome.Glyph.PLAY, KeyCode.PLAY);
     pauseButton = addButton("pause",FontAwesome.Glyph.PAUSE,KeyCode.PAUSE);
     stopButton = addButton("stop",FontAwesome.Glyph.STOP,KeyCode.STOP);
+    recordButton=addButton("record",FontAwesome.Glyph.CIRCLE,KeyCode.RECORD);
     rotateButton = addButton("rotate", ROTATE_BUTTON_ICON_PATH, KeyCode.R);
        // https://www.iconfinder.com/icons/49386/settings_icon#size=48
     // @TODO potentially activate again
@@ -250,6 +253,12 @@ public class JavaFXViewPanel extends ViewPanelImpl
       LOGGER.log(Level.INFO,"rendering next image");
     }
     setBufferedImage(jpeg.getImage());
+    if (record)
+      try {
+        jpeg.save();
+      } catch (Exception e) {
+        LOGGER.log(Level.WARNING, "could not save jpeg image", jpeg.getFrameIndex());
+      }
   }
 
   @Override
@@ -269,7 +278,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
       } else if (eventButton.equals(stopButton)) {
         this.stop("stopped");
       } else if (eventButton.equals(pauseButton)) {
-        this.stop("paused"); // FIXME implement Toggle     
+        this.stop("paused"); // FIXME implement Toggle
+      } else if (eventButton.equals(recordButton)) {
+        record=true;
       } else if (eventButton.equals(rotateButton)) {
         BufferedImage rotateButtonIcon = rotate();
         if (rotateButtonIcon != null) {

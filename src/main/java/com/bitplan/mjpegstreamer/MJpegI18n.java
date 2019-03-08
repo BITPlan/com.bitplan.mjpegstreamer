@@ -44,5 +44,10 @@ public class MJpegI18n {
   public static final String PREVIEW_GROUP="PreviewGroup"; //Preview
   public static final String VIDEO_FORM="VideoForm"; // Video
   public static final String PICTURE_FORM="PictureForm"; // Picture
+  
+  public static final String PREFERENCES_GROUP="PreferencesGroup"; //Preferences
+  public static final String TIMELAPSE_FORM="TimelapseForm";
+  
+  
   public static final String NETWORK_IS_UNREACHABLE="networkIsUnreachable"; //network is unreachable
  }

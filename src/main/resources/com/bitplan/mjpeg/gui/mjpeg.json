@@ -21,7 +21,45 @@
 					"fields": []
 				}
 			]
-		}
+		},
+		{
+      "title": "Preferences",
+      "icon": "cogs",
+      "forms": [
+        {
+          "title": "Timelapse",
+          "icon": "tint",
+          "headerText": "choose timelaps settings",
+          "fields": [
+            {
+              "title": "debug",
+              "hint": "output debugging information for the application",
+              "format": "%s",
+              "type": "Boolean"
+            },
+             {
+              "title": "imagePrefix",
+              "hint": "the prefix to use for stored images",
+              "format": "%s"
+            },
+             {
+              "title": "fps",
+              "label": "fps",
+              "hint": "frames per second",
+              "format": "%s",
+              "type": "Integer"
+            },
+            {
+              "title": "imageDirectory",
+              "hint": "the directory in which to store timelapse images",
+              "format": "%s",
+              "type": "Directory",
+              "fieldSize": 60
+            }
+          ]
+        }
+      ]
+    }
 	],
 	"mainMenu": {
 		"subMenus": [

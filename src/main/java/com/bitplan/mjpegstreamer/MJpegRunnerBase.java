@@ -90,6 +90,13 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
 
   private StopWatch stopWatch;
 
+  private MJPeg mjpeg;
+  
+  public MJpegRunnerBase() {
+    // FIXME - should be constructor parameter
+    this.mjpeg=new MJPegImpl();
+  }
+
   /**
    * create a MJpegRunner
    * 
@@ -342,15 +349,15 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
    */
   public boolean read() {
     try {
-      JPegImpl jpeg=new JPegImpl(bytesRead,curFrame);
       if (framesReadCount == 0) {
         this.firstFrameNanoTime = System.nanoTime();
         this.fpsFrameNanoTime = firstFrameNanoTime;
         this.fpssecond = fpsFrameNanoTime;
         this.bytesRead = 0;
       }
+      JPegImpl jpeg=new JPegImpl(mjpeg,framesReadCount++,bytesRead,curFrame);
       bytesRead += curFrame.length;
-      framesReadCount++;
+     
       fpscountIn++;
       frameAvailable = false;
 

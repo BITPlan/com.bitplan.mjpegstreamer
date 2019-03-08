@@ -21,6 +21,7 @@
 package com.bitplan.mjpegstreamer;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 /**
  * Interface for Jpeg images
@@ -28,6 +29,24 @@ import java.awt.image.BufferedImage;
  *
  */
 public interface JPeg {
+  
+  /**
+   * get the MJPeg I am belonging to
+   */
+  public MJPeg getMJPeg();
+  
+  /**
+   * what's my index in the MJPeg
+   * @return the index starting from 0 for the first frame
+   */
+  public int getFrameIndex();
+  
+  public long getLength();
+
+  public void setLength(long length);
+  
+  public long getOffset();
+  
   /**
    * get the image
    * @return
@@ -48,4 +67,19 @@ public interface JPeg {
    * @param rotation
    */
   public void rotate(int rotation);
+  
+  /**
+   * save me to the default location
+   * @throws Exception 
+   */
+  public default void save() throws Exception {
+    save(getMJPeg().getImageFile(this));
+  };
+  
+  /**
+   * save me to the given image file
+   * @param imageFile
+   * @throws Exception 
+   */
+  public void save(File imageFile) throws Exception;
 }

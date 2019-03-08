@@ -20,33 +20,56 @@
  */
 package com.bitplan.mjpegstreamer;
 
-import java.io.File;
-
 /**
- * MJPeg video interface
+ * Statistics
  * @author wf
  *
  */
-public interface MJPeg {
+public class Stats {
+  long len;
+  long min = Long.MAX_VALUE;
+  long max = 0;
+  long sum = 0;
+  long count = 0;
+  boolean guessed=false;
 
   /**
-   * get the statistics for this mjpeg file
+   * initialize me 
+   */
+  public Stats() {
+  }
+
+  /**
+   * add the given value
+   * @param value
+   */
+  public void add(long value) {
+    sum += value;
+    count++;
+    if (value > max)
+      max = value;
+    if (value < min)
+      min = value;
+  }
+
+  public double getAverage() {
+    if (count == 0)
+      return 0.0;
+    return sum / count;
+  }
+
+  /**
+   * potentially extrapolate (guess)
    * 
-   * @guessFromSize - the maximum size to read - after that guess based on the
-   *                current average
-   * @return the statistics
-   * @throws Exception
+   * @param guessFromSize
+   * @param bytesRead
    */
-  public Stats getStats(long guessFromSize) throws Exception;
-  
-  public Stats getStats();
-
-  /**
-   * get the file the given JPeg should be store in
-   * @param jPeg
-   * @return
-   */
-  public File getImageFile(JPeg jPeg);
-
-  
+  public void extrapolate(long guessFromSize, long bytesRead) {
+    if (bytesRead > guessFromSize) {
+      long avg = (long) getAverage();
+      count = len / avg;
+      sum = avg * count;
+      guessed=true;
+    }
+  }
 }

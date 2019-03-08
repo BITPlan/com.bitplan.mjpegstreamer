@@ -21,6 +21,14 @@
 package com.bitplan.mjpegstreamer;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
 
 /**
  * a JPeg fragment of an MJPeg stream or file
@@ -34,26 +42,50 @@ public class JPegImpl implements JPeg {
   // this would be 2.5 MBytes per hour
   long offset;
   long length;
+  MJPeg mjpeg; // the MJPeg i am belonging to
   BufferedImage jpegImg;
+  int frameIndex;
+  
+  @Override
+  public long getOffset() {
+    return offset;
+  }
+
+  public long getLength() {
+    return length;
+  }
+
+  public void setLength(long length) {
+    this.length = length;
+  }
+  
+  @Override
+  public int getFrameIndex() {
+    return frameIndex;
+  }
+ 
 
   /**
    * a JPeg Image within the file
-   * 
+   * @param frameIndex - the index in the mjpeg video
+   * @param mjpeg - the MJPeg i am belonging to
    * @param offset
    */
-  public JPegImpl(long offset) {
-    super();
+  public JPegImpl(MJPeg mjpeg, int frameIndex, long offset) {
+    this.mjpeg=mjpeg;
     this.offset = offset;
   }
 
   /**
    * create me from the given frame
+   * @param mjpeg - the MJPeg i am belonging to
+   * @param frameIndex - the index in the mjpeg video
    * @param offset
    * @param frame
    * @throws Exception
    */
-  public JPegImpl(long offset, byte[] frame) throws Exception {
-    this(offset);
+  public JPegImpl(MJPeg mjpeg,int frameIndex, long offset, byte[] frame) throws Exception {
+    this(mjpeg,frameIndex,offset);
     this.length=frame.length;
     jpegImg= MJpegHelper.getImage(frame);
   }
@@ -68,5 +100,27 @@ public class JPegImpl implements JPeg {
   public void rotate(int rotation) {
     this.jpegImg=getRotatedImage(rotation);
   }
+
+  @Override
+  public MJPeg getMJPeg() {
+    return mjpeg;
+  }
+
+  @Override
+  public void save(File imageFile) throws Exception {
+    ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
+    ImageWriteParam jpgWriteParam = jpgWriter.getDefaultWriteParam();
+    jpgWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+    jpgWriteParam.setCompressionQuality(0.7f);
+
+    ImageOutputStream outputStream = new FileImageOutputStream(imageFile); 
+    jpgWriter.setOutput(outputStream);
+    IIOImage outputImage = new IIOImage(jpegImg, null, null);
+    jpgWriter.write(null, outputImage, jpgWriteParam);
+    jpgWriter.dispose();
+    
+  }
+
+
  
 }

@@ -20,43 +20,50 @@
  */
 package com.bitplan.mjpegstreamer;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.junit.Test;
-
 /**
- * test MJPeg API
- * 
+ * MJPeg implementation
  * @author wf
  *
  */
-public class TestMJpeg {
+public class MJPegImpl implements MJPeg {
+  
+  public boolean debug = false;
+  protected Stats stats;
   protected static Logger LOGGER = Logger
       .getLogger("com.bitplan.mjpegstreamer");
 
-  @Test
-  public void testFrameCount() throws Exception {
-    File bigFile=new File("/Volumes/Timelapse/timelapse.mpeg");
-    List<String> urls=new ArrayList<String>();
-    urls.add(ClassLoader.getSystemResource("testmovie/movie.mjpg")
-            .toExternalForm());
-    if (bigFile.exists()) {
-      urls.add(bigFile.toURI().toString());
-    }
-    long[] expected= {51,360607}; 
-    int index=0;
-    for (String url : urls) {
-      MJPegRandomAccessFile mjpeg=new MJPegRandomAccessFile(url);
-      Stats stats = mjpeg.getStats(1024*1024*10);
-      LOGGER.log(Level.INFO,String.format("%s = %d frames %s", url,stats.count,stats.guessed?"(guessed)":""));
-      assertEquals(expected[index++],stats.count);
+  public MJPegImpl() {
+    stats=new Stats();
+  }
+  
+  /**
+   * add the given jpeg
+   * @param jpeg
+   * @param offset
+   */
+  public void add(JPeg jpeg, long offset) {
+    if (jpeg != null) {
+      jpeg.setLength(offset - jpeg.getOffset());
+      stats.add(jpeg.getLength());
     }
   }
+  
+  @Override
+  public Stats getStats() {
+    return stats;
+  }
 
+  @Override
+  public File getImageFile(JPeg jPeg) {
+    String filePath=String.format("/tmp/image%5d", jPeg.getFrameIndex());
+    return new File(filePath);
+  }
+
+  @Override
+  public Stats getStats(long guessFromSize) throws Exception {
+    return getStats();
+  }
 }
