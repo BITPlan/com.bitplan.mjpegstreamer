@@ -212,6 +212,7 @@ public abstract class ViewPanelImpl implements ViewPanel {
    * 
    * @return the runner
    */
+  @Override
   public MJpegReaderRunner startStreaming() {
     if (runner != null) {
       runner.stop("stopping earlier runner");

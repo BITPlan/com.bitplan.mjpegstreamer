@@ -20,7 +20,6 @@
  */
 package com.bitplan.mjpegstreamer;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -85,8 +84,6 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
   protected boolean connected = false;
 
   private long now;
-
-  private long totalSize;
 
   private StopWatch stopWatch;
 
@@ -242,7 +239,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
     try {
       // will this work?
       // https://stackoverflow.com/questions/1119332/determine-the-size-of-an-inputstream
-      totalSize = inputStream.available();
+      mjpeg.getStats().len = inputStream.available();
     } catch (IOException e) {
       LOGGER.log(Level.WARNING, "Could not determine totalsize of inputstream",
           e);
@@ -357,6 +354,8 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
       }
       JPegImpl jpeg=new JPegImpl(mjpeg,framesReadCount++,bytesRead,curFrame);
       bytesRead += curFrame.length;
+      // add afert having bytesRead increased so that add will calculate length correctly
+      mjpeg.add(jpeg, bytesRead);
      
       fpscountIn++;
       frameAvailable = false;
@@ -376,7 +375,7 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
           TimeUnit.NANOSECONDS);
       // is a second over?
       if (secmillisecs > 1000) {
-        showProgress(framesReadCount, bytesRead, totalSize);
+        showProgress(mjpeg);
         fpsIn = fpscountIn;
         fpsOut = fpscountOut;
         fpscountOut = 0;
@@ -429,12 +428,10 @@ public abstract class MJpegRunnerBase implements MJpegReaderRunner {
   /**
    * show the Progress to be overridden in implementation as you see fit
    * 
-   * @param framesReadCount
-   * @param bytesRead
-   * @param totalSize
+   * @param mjpeg - the video to show the progress for
    */
-  public void showProgress(int framesReadCount, long bytesRead, long totalSize) {
-    viewer.showProgress(framesReadCount, bytesRead, totalSize);
+  public void showProgress(MJPeg mjpeg) {
+    viewer.showProgress(mjpeg);
   }
 
   /**

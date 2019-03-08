@@ -45,7 +45,7 @@ import javafx.scene.Node;
  * 
  */
 public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
-
+  public static boolean debug = false;
   // GUI elements
   protected static JFrame frame;
 
@@ -219,9 +219,10 @@ public class SwingViewPanel extends ViewPanelImpl implements ActionListener {
   }
 
   @Override
-  public void showProgress(int framesReadCount, long bytesRead,long totalSize) {
-  
-    
+  public void showProgress(MJPeg mjpeg) {
+    if (debug) {
+      mjpeg.getStats().showDebug(100);
+    }
   }
 
 }

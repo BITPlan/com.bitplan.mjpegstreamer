@@ -27,7 +27,6 @@ import java.io.RandomAccessFile;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * MJPeg handler class
@@ -116,8 +115,7 @@ public class MJPegRandomAccessFile extends MJPegImpl implements MJPeg {
       if (debug) {
         LOGGER.log(Level.INFO, String.format("%d frames at %d MB %d",
             stats.count, bytesRead / 1024 / 1024, readCount));
-        LOGGER.log(Level.INFO, String.format("min %d max %d avg %.0f",
-            stats.min, stats.max, stats.getAverage()));
+        LOGGER.log(Level.INFO, stats.toString());
       }
       bi = 0;
       while (bi < buffer.length) {

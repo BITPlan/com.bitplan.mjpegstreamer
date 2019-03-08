@@ -62,10 +62,8 @@ public interface MJpegRenderer {
 	
 	/**
 	 * show the Progress
-	 * @param framesReadCount
-	 * @param bytesRead
-	 * @param totalSize
+	 * @param MJPeg mjpeg
 	 */
-  public void showProgress(int framesReadCount, long bytesRead, long totalSize);
+  public void showProgress(MJPeg mjpeg);
 
 }

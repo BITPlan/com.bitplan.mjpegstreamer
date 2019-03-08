@@ -40,6 +40,14 @@ public interface MJPeg {
   public Stats getStats(long guessFromSize) throws Exception;
   
   public Stats getStats();
+  
+  /**
+   * add the given jpeg
+   * 
+   * @param jpeg
+   * @param offset
+   */
+  public void add(JPeg jpeg, long offset);
 
   /**
    * get the file the given JPeg should be store in
@@ -48,5 +56,4 @@ public interface MJPeg {
    */
   public File getImageFile(JPeg jPeg);
 
-  
 }

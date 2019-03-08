@@ -31,12 +31,13 @@ import org.controlsfx.glyphfont.FontAwesome.Glyph;
 
 import com.bitplan.javafx.ConstrainedGridPane;
 import com.bitplan.javafx.ImageViewPane;
+import com.bitplan.javafx.JFXStopWatch;
 import com.bitplan.javafx.XYTabPane;
 
+import eu.hansolo.medusa.Clock;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -49,9 +50,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
 /**
@@ -78,6 +76,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   private Button stopButton;
   private Button recordButton;
   private boolean recording;
+  private JFXStopWatch stopWatch;
 
   /**
    * construct me
@@ -168,6 +167,11 @@ public class JavaFXViewPanel extends ViewPanelImpl
     slider.setMin(0);
     slider.setMax(60);
     buttonBar = new ButtonBar();
+    stopWatch = new JFXStopWatch("time");
+    stopWatch.halt();
+    stopWatch.reset();
+    ButtonBar.setButtonData(stopWatch.get(), ButtonData.LEFT);
+    buttonBar.getButtons().add(stopWatch.get());
     // see https://fontawesome.com/v4.7.0/icons/
     // for potential icons
     startButton = addButton("start", FontAwesome.Glyph.PLAY, KeyCode.PLAY);
@@ -279,6 +283,11 @@ public class JavaFXViewPanel extends ViewPanelImpl
   }
 
   @Override
+  public MJpegReaderRunner startStreaming() {
+    stopWatch.start();
+    return super.startStreaming();
+  }
+  @Override
   public void handle(ActionEvent event) {
     Object eventSource = event.getSource();
     if (eventSource instanceof Button) {
@@ -289,10 +298,13 @@ public class JavaFXViewPanel extends ViewPanelImpl
         startStreaming();
       } else if (eventButton.equals(stopButton)) {
         this.stop("stopped");
+        stopWatch.halt();
         setRecordingState(false);
       } else if (eventButton.equals(pauseButton)) {
         this.stop("paused"); // FIXME implement Toggle
         setRecordingState(false);
+        Clock stopClock = stopWatch.get();
+        stopClock.setRunning(!stopClock.isRunning());
       } else if (eventButton.equals(recordButton)) {
         setRecordingState(!recording);
       } else if (eventButton.equals(rotateButton)) {
@@ -336,11 +348,11 @@ public class JavaFXViewPanel extends ViewPanelImpl
   }
 
   @Override
-  public void showProgress(int framesReadCount, long bytesRead,
-      long totalSize) {
-    this.slider.setMax(totalSize);
-    this.slider.setValue(bytesRead);
-    refresh();
+  public void showProgress(MJPeg mjpeg) {
+    Stats stats=mjpeg.getStats();
+    //this.slider.setMax(stats.);
+    // this.slider.setValue(bytesRead);
+    // refresh();
   }
 
 }

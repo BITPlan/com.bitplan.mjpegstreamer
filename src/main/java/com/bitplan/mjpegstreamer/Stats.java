@@ -20,12 +20,18 @@
  */
 package com.bitplan.mjpegstreamer;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Statistics
  * @author wf
  *
  */
 public class Stats {
+  protected static Logger LOGGER = Logger
+      .getLogger("com.bitplan.mjpegstreamer");
+  
   long len;
   long min = Long.MAX_VALUE;
   long max = 0;
@@ -71,5 +77,19 @@ public class Stats {
       sum = avg * count;
       guessed=true;
     }
+  }
+  
+  public String toString() {
+    String text=String.format("min %d max %d avg %.0f",
+        min, max, getAverage());
+    return text;
+  }
+
+  public void showDebug(int freq) {
+   
+    if (count % 100 == 0) {
+      LOGGER.log(Level.INFO, toString());
+    }
+    
   }
 }
