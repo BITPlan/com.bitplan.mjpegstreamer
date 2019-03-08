@@ -89,28 +89,6 @@ public class MJPeg {
     raf.close();
   }
 
-  /**
-   * a JPeg fragment
-   * 
-   * @author wf
-   *
-   */
-  public class JPeg {
-    long offset;
-    long length;
-
-    /**
-     * a JPeg Image within the file
-     * 
-     * @param offset
-     */
-    public JPeg(long offset) {
-      super();
-      this.offset = offset;
-    }
-
-  }
-
   public class Stats {
     long len;
     long min = Long.MAX_VALUE;
