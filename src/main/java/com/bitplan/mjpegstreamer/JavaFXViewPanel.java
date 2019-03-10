@@ -52,7 +52,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import jfxtras.labs.scene.control.window.SelectableNode;
 
 /**
  * Java FX Version of View panel
@@ -81,8 +84,10 @@ public class JavaFXViewPanel extends ViewPanelImpl
   private JFXStopWatch stopWatch;
   private Gauge framesGauge;
   private Button diffButton;
-  private boolean showDiff;
+  private int showDiff;
   private BufferedImage triggerImage;
+  private Rectangle selectionRect=new Rectangle();
+  private ImageViewPane imageViewPane;
 
   /**
    * construct me
@@ -200,8 +205,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
     // KeyCode.P);
     urlArea = new TextArea();
     statusBar = new StatusBar();
-
-    ImageViewPane imageViewPane = new ImageViewPane(imageView);
+    imageViewPane = new ImageViewPane(imageView);
+    //SelectableImageViewPane imageViewPane = new SelectableImageViewPane(imageView);
+    //MouseControlUtil.addSelectionRectangleGesture(imageViewPane, selectionRect=new Rectangle());
     pane = new ConstrainedGridPane();
     pane.add(imageViewPane, 0, 0);
     pane.add(slider, 0, 1);
@@ -212,6 +218,19 @@ public class JavaFXViewPanel extends ViewPanelImpl
     pane.fixRowSizes(0, 75, 5, 10, 5, 5);
     pane.fixColumnSizes(3, 100);
     initImage();
+  }
+  
+  public class SelectableImageViewPane extends Pane implements SelectableNode {
+   
+    public SelectableImageViewPane(ImageView imageView) {
+      this.getChildren().add(imageView);
+    }
+
+    @Override
+    public boolean requestSelection(boolean select) {
+      return true;
+    }
+    
   }
 
   @Override
@@ -283,12 +302,19 @@ public class JavaFXViewPanel extends ViewPanelImpl
     }
     if (triggerImage == null)
       triggerImage = jpeg.getImage();
-    if (showDiff) {
-      BufferedImage diffImage = MJpegHelper.getDifferenceImage(triggerImage, jpeg.getImage());
-      setBufferedImage(diffImage);
-    } else {
-      setBufferedImage(jpeg.getImage());
+    BufferedImage image = jpeg.getImage();
+    switch (showDiff) {
+    case 0:
+      break;
+    case 1:
+      image = MJpegHelper.getDifferenceImage(triggerImage, jpeg.getImage());
+      break;
+    case 2:
+      image = MJpegHelper.getDifferenceImage1(triggerImage, jpeg.getImage());
+      break;
     }
+
+    setBufferedImage(image);
     if (recording)
       try {
         jpeg.save();
@@ -333,9 +359,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
       } else if (eventButton.equals(recordButton)) {
         setRecordingState(!recording);
       } else if (eventButton.equals(diffButton)) {
-        showDiff = !showDiff;
-        triggerImage=null;
-        setColor(diffButton, showDiff ? Color.BLUE : Color.BLACK);
+        showDiff = (showDiff+1)%3;
+        triggerImage = null;
+        setColor(diffButton, showDiff==0 ? Color.BLACK : Color.BLUE);
       } else if (eventButton.equals(rotateButton)) {
         BufferedImage rotateButtonIcon = rotate();
         if (rotateButtonIcon != null) {

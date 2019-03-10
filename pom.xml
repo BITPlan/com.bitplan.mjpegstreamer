@@ -1,11 +1,7 @@
-<!--
-  Copyright (c) 2013-2018 BITPlan GmbH
-
-  Project details and license at:
-
-	https://github.com/BITPlan/com.bitplan.mjpegstreamer
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<!-- Copyright (c) 2013-2018 BITPlan GmbH Project details and license at: 
+	https://github.com/BITPlan/com.bitplan.mjpegstreamer -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -26,10 +22,10 @@
 		<documentation.wiki>http://www.bitplan.com/MJpegStreamer</documentation.wiki>
 	</properties>
 	<dependencies>
-	  <dependency>
-      <groupId>com.bitplan.gui</groupId>
-      <artifactId>com.bitplan.javafx</artifactId>
-    </dependency>
+		<dependency>
+			<groupId>com.bitplan.gui</groupId>
+			<artifactId>com.bitplan.javafx</artifactId>
+		</dependency>
 		<!-- apache commons codec (e.g. Base64) -->
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -53,17 +49,24 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all -->
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-all</artifactId>
-    </dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+		</dependency>
 		<!-- TestI18n dependency -->
-    <dependency>
-      <groupId>com.bitplan.gui</groupId>
-      <artifactId>com.bitplan.gui</artifactId>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
+		<dependency>
+			<groupId>com.bitplan.gui</groupId>
+			<artifactId>com.bitplan.gui</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jfxtras/jfxtras-labs -->
+		<dependency>
+			<groupId>org.jfxtras</groupId>
+			<artifactId>jfxtras-labs</artifactId>
+			<version>8.0-r1</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -81,7 +84,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<!-- executable jar with dependencies see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven
+			<!-- executable jar with dependencies see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven 
 				run with mvn clean compile assembly:single -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
