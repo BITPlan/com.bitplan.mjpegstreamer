@@ -1,14 +1,11 @@
+#
 # this is a java project using maven
 language: java
-# do not install anything
-install: 
--
-# setup an GUI to allow running GUI based tests
-# see https://docs.travis-ci.com/user/gui-and-headless-browsers/
-before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
-# switch off gpg handling 
-# switch off tests would also need -DskipTests=true
-script: mvn install -Dgpg.skip=true
+# make sure things keep working see http://wiki.bitplan.com/index.php/Java8
+jdk: openjdk8
+# switch off gpg handling
+# be available in test phase
+# let's first compile without tests
+install: mvn install -DskipTests=true -Dgpg.skip=true
+# do the tests separately after xvfb has been installed
+script: mvn test
