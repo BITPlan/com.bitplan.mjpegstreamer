@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013-2018 BITPlan GmbH
+ * Copyright (c) 2013-2020 BITPlan GmbH
  *
  * http://www.bitplan.com
  *
@@ -64,7 +64,11 @@ public class JPegImpl implements JPeg {
     return frameIndex;
   }
  
-
+  @Override
+  public void setImage(BufferedImage image) {
+    this.jpegImg=image;
+  }
+  
   /**
    * a JPeg Image within the file
    * @param frameIndex - the index in the mjpeg video

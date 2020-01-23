@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013-2018 BITPlan GmbH
+ * Copyright (c) 2013-2020 BITPlan GmbH
  *
  * http://www.bitplan.com
  *
@@ -54,6 +54,12 @@ public interface JPeg {
   public default BufferedImage getImage() {
     return getRotatedImage(0);
   }
+  
+  /**
+   * modify the image
+   * @param image
+   */
+  public void setImage(BufferedImage image);
   
   /**
    * get a rotated image

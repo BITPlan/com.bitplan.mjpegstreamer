@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013-2018 BITPlan GmbH
+ * Copyright (c) 2013-2020 BITPlan GmbH
  *
  * http://www.bitplan.com
  *
@@ -34,13 +34,13 @@ import com.bitplan.executil.Piper;
 /**
  * Test command Line of mjpegstreamer
  * 
- * @author muf
+ * @author wf
  * 
  */
 public class TestCommandLine {
   
-  // checked on 2018-08-22
-  public static final String TEST_URL1="http://83.136.196.135/mjpg/video.mjpg";
+  // checked on 2020-01-23
+  public static final String TEST_URL1="http://213.193.89.202/axis-cgi/mjpg/video.cgi";
   // you could use your own Camera here e.g.
   // "http://cam2/mjpeg.cgi", 
   

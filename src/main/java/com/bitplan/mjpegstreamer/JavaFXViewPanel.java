@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013-2018 BITPlan GmbH
+ * Copyright (c) 2013-2020 BITPlan GmbH
  *
  * http://www.bitplan.com
  *
@@ -30,8 +30,8 @@ import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.FontAwesome.Glyph;
 
 import com.bitplan.javafx.ConstrainedGridPane;
-import com.bitplan.javafx.ImageViewPane;
 import com.bitplan.javafx.JFXStopWatch;
+import com.bitplan.javafx.SelectableImageViewPane;
 import com.bitplan.javafx.XYTabPane;
 
 import eu.hansolo.LcdGauge;
@@ -52,10 +52,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import jfxtras.labs.scene.control.window.SelectableNode;
 
 /**
  * Java FX Version of View panel
@@ -86,8 +83,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
   private Button diffButton;
   private int showDiff;
   private BufferedImage triggerImage;
-  private Rectangle selectionRect=new Rectangle();
-  private ImageViewPane imageViewPane;
+  private SelectableImageViewPane imageViewPane;
 
   /**
    * construct me
@@ -205,7 +201,9 @@ public class JavaFXViewPanel extends ViewPanelImpl
     // KeyCode.P);
     urlArea = new TextArea();
     statusBar = new StatusBar();
-    imageViewPane = new ImageViewPane(imageView);
+    imageViewPane = new SelectableImageViewPane(imageView);
+    imageViewPane.getImageViewPane().setShowBorder(true);
+    
     //SelectableImageViewPane imageViewPane = new SelectableImageViewPane(imageView);
     //MouseControlUtil.addSelectionRectangleGesture(imageViewPane, selectionRect=new Rectangle());
     pane = new ConstrainedGridPane();
@@ -215,22 +213,10 @@ public class JavaFXViewPanel extends ViewPanelImpl
     pane.add(urlArea, 0, 3);
     pane.add(statusBar, 0, 4);
     pane.setAlignment(Pos.TOP_CENTER);
-    pane.fixRowSizes(0, 75, 5, 10, 5, 5);
+    pane.fixRowSizes(0, 75, 4, 10, 6, 5);
     pane.fixColumnSizes(3, 100);
+    imageViewPane.getImageViewPane().bindSize(pane);
     initImage();
-  }
-  
-  public class SelectableImageViewPane extends Pane implements SelectableNode {
-   
-    public SelectableImageViewPane(ImageView imageView) {
-      this.getChildren().add(imageView);
-    }
-
-    @Override
-    public boolean requestSelection(boolean select) {
-      return true;
-    }
-    
   }
 
   @Override
@@ -317,6 +303,7 @@ public class JavaFXViewPanel extends ViewPanelImpl
     setBufferedImage(image);
     if (recording)
       try {
+        jpeg.setImage(image);
         jpeg.save();
       } catch (Exception e) {
         LOGGER.log(Level.WARNING,
