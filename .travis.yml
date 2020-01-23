@@ -1,15 +1,53 @@
 #
 # this is a java project using maven
 language: java
+#
+# Java 8
+#
+# to avoid Unsupported major.minor version 52.0 we need to specify the JDK to be used
+# https://stackoverflow.com/a/40208648/1497139
 # make sure things keep working see http://wiki.bitplan.com/index.php/Java8
 jdk: openjdk8
-# need javafx
+# support for headless Swing tests and other gui stuff
+# see https://docs.travis-ci.com/user/gui-and-headless-browsers/
+#
+# as of  2017-08 precise is only available as an option
+#
+# uncomment the following lines to use xvfb with precise
+#dist: precise
+#before_script:
+#  - "export DISPLAY=:99.0"
+#  - "sh -e /etc/init.d/xvfb start"
+#  - sleep 3 # give xvfb some time to start
+#
+# 2017-08-20: trusty xvfb configuration
+# see https://github.com/travis-ci/travis-ci/issues/8262#issue-251064430
+#
+# set the X11 Display variable as a global environment variable
+env:
+  global:
+    - DISPLAY=:99
+# start xvfb using the the DISPLAY port
+before_script:
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- $DISPLAY -ac -screen 0 1280x1024x24"
+  - sleep 3
 before_install:
   - sudo apt update
-  - sudo apt install openjfx
+  - sudo apt install xvfb openjfx
 # switch off gpg handling
+# and split install and test phase of maven since xvfb will only
 # be available in test phase
 # let's first compile without tests
-install: mvn install -DskipTests=true -Dgpg.skip=true
+install: mvn clean install -DskipTests=true -Dgpg.skip=true
 # do the tests separately after xvfb has been installed
-script: mvn test
+script: mvn -D coverage test
+# put the result on codecov.io
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+# we need a few extra packages to be installed
+# 1. for Java FX support the latest oracle-java8 needs to be installed
+# 2. xvfb is needed to run GUI tests and avoid headless mode
+addons:
+  apt:
+    packages:
+      - xvfb
