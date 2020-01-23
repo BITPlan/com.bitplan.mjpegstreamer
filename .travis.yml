@@ -3,6 +3,10 @@
 language: java
 # make sure things keep working see http://wiki.bitplan.com/index.php/Java8
 jdk: openjdk8
+# need javafx
+before_install:
+  - sudo apt update
+  - sudo apt install openjfx
 # switch off gpg handling
 # be available in test phase
 # let's first compile without tests
